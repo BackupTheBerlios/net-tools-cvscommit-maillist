@@ -1,0 +1,3035 @@
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 00:05:57 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 00:05:57 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.55,1.56
+Message-ID: <20081002220557.6E7BC53371@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv20183
+
+Modified Files:
+	netstat.c 
+Log Message:
+allow netstat to print Rcv/Snd-Q for TCP_LISTEN (containing accept
+backlog)
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.55
+retrieving revision 1.56
+diff -C2 -d -r1.55 -r1.56
+*** netstat.c	1 Dec 2007 19:00:40 -0000	1.55
+--- netstat.c	2 Oct 2008 22:05:54 -0000	1.56
+***************
+*** 766,775 ****
+  	return;
+      }
+-     if (state == TCP_LISTEN) {
+- 	time_len = 0;
+- 	retr = 0L;
+- 	rxq = 0L;
+- 	txq = 0L;
+-     }
+      safe_strncpy(local_addr, ap->sprint((struct sockaddr *) &localaddr, 
+  					flag_not), sizeof(local_addr));
+--- 766,769 ----
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 00:30:35 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 00:30:35 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/man/en_US netstat.8,1.19,1.20
+Message-ID: <20081002223035.7109C15397C@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv22493
+
+Modified Files:
+	netstat.8 
+Log Message:
+document the additional info in Send-Q/Recv-Q with recent kernels for
+listening sockets.
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.19
+retrieving revision 1.20
+diff -C2 -d -r1.19 -r1.20
+*** netstat.8	2 Dec 2007 04:42:32 -0000	1.19
+--- netstat.8	2 Oct 2008 22:30:25 -0000	1.20
+***************
+*** 9,13 ****
+  .\"
+  .\"
+! .TH NETSTAT 8 "2007-12-02" "net-tools" "Linux Programmer's Manual"
+  
+  .SH NAME
+--- 9,13 ----
+  .\"
+  .\"
+! .TH NETSTAT 8 "2008-10-04" "net-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+***************
+*** 184,190 ****
+  The protocol (tcp, udp, raw) used by the socket. 
+  .SS "Recv-Q"
+! The count of bytes not copied by the user program connected to this socket.
+  .SS "Send-Q"
+! The count of bytes not acknowledged by the remote host.
+  .SS "Local Address" 
+  Address and port number of the local end of the socket.  Unless the
+--- 184,192 ----
+  The protocol (tcp, udp, raw) used by the socket. 
+  .SS "Recv-Q"
+! Established: The count of bytes not copied by the user program connected to this socket.
+! Listening: Since Kernel 2.6.18 this column contains the current syn backlog.
+  .SS "Send-Q"
+! Established: The count of bytes not acknowledged by the remote host.
+! Listening: Since Kernel 2.6.18 this column contains the maximum size of the syn backlog.
+  .SS "Local Address" 
+  Address and port number of the local end of the socket.  Unless the
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 00:42:55 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 00:42:55 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/man/en_US arp.8,1.9,1.10
+Message-ID: <20081002224255.7080C150CED@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv3581/net-tools-HEAD/man/en_US
+
+Modified Files:
+	arp.8 
+Log Message:
+fix some more hypens, changed book name and updated date to 2008-10-03
+
+
+Index: arp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/arp.8,v
+retrieving revision 1.9
+retrieving revision 1.10
+diff -C2 -d -r1.9 -r1.10
+*** arp.8	17 Jun 2008 00:18:54 -0000	1.9
+--- arp.8	2 Oct 2008 22:42:51 -0000	1.10
+***************
+*** 1,3 ****
+! .TH ARP 8 "2008-06-17" "net-tools" "Linux Programmer's Manual"
+  .SH NAME
+  arp \- manipulate the system ARP cache
+--- 1,3 ----
+! .TH ARP 8 "2008-10-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME
+  arp \- manipulate the system ARP cache
+***************
+*** 116,120 ****
+  or user names.
+  .TP
+! .B "\-H type, \-\-hw-type type"
+  When setting or reading the ARP cache, this optional parameter tells
+  .B arp
+--- 116,120 ----
+  or user names.
+  .TP
+! .B "\-H type, \-\-hw\-type type"
+  When setting or reading the ARP cache, this optional parameter tells
+  .B arp
+***************
+*** 218,220 ****
+  rarp(8), route(8), ifconfig(8), netstat(8)
+  .SH AUTHORS
+! Fred N. van Kempen <waltje at uwalt.nl.mugnet.org>, Bernd Eckenfels <net-tools at lina.inka.de>.
+--- 218,220 ----
+  rarp(8), route(8), ifconfig(8), netstat(8)
+  .SH AUTHORS
+! Fred N. van Kempen <waltje at uwalt.nl.mugnet.org>, Bernd Eckenfels <net\-tools at lina.inka.de>.
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 01:17:02 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 01:17:02 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/man/en_US arp.8, 1.10, 1.11 ethers.5,
+	1.2, 1.3 hostname.1, 1.2, 1.3 ifconfig.8, 1.13,
+	1.14 mii-tool.8, 1.3, 1.4 nameif.8, 1.1, 1.2 netstat.8, 1.20,
+	1.21 plipconfig.8, 1.1, 1.2 rarp.8, 1.5, 1.6 route.8, 1.7,
+	1.8 slattach.8, 1.3, 1.4
+Message-ID: <20081002231702.6F806155BDC@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv11168
+
+Modified Files:
+	arp.8 ethers.5 hostname.1 ifconfig.8 mii-tool.8 nameif.8 
+	netstat.8 plipconfig.8 rarp.8 route.8 slattach.8 
+Log Message:
+Fix hypen in man pages (Debian Bug#288343 from Andrew Moise)
+Move man pages to sysadmin books
+update samples for route(8) (Debian Bug#400844, #368697 Danny Rathjens)
+update see also for ifconfig(8) (Debian Bug#365916 Dan Jacobs)
+
+
+Index: arp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/arp.8,v
+retrieving revision 1.10
+retrieving revision 1.11
+diff -C2 -d -r1.10 -r1.11
+*** arp.8	2 Oct 2008 22:42:51 -0000	1.10
+--- arp.8	2 Oct 2008 23:16:59 -0000	1.11
+***************
+*** 1,3 ****
+! .TH ARP 8 "2008-10-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME
+  arp \- manipulate the system ARP cache
+--- 1,3 ----
+! .TH ARP 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME
+  arp \- manipulate the system ARP cache
+
+Index: ethers.5
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/ethers.5,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** ethers.5	13 May 2005 22:34:20 -0000	1.2
+--- ethers.5	2 Oct 2008 23:16:59 -0000	1.3
+***************
+*** 1,3 ****
+! .TH ETHERS 5 "May 15th, 2005" "" "File formats"
+  .SH NAME \"{{{roff}}}\"{{{
+  ethers \- Ethernet address to IP number database
+--- 1,3 ----
+! .TH ETHERS 5 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME \"{{{roff}}}\"{{{
+  ethers \- Ethernet address to IP number database
+***************
+*** 8,22 ****
+  .sp
+  .RS
+! \fIEthernet-address\fP  \fIIP-number\fP
+  .RE
+  .sp
+  The two items are separated by any number of SPACE and/or TAB characters.
+  A \fB#\fP at the beginning of a line starts a comment
+! which extends to the end of the line.  The \fIEthernet-address\fP is
+  written as
+  .IR x : x : x : x : x : x ,
+  where \fIx\fP is a hexadecimal number between \fB0\fP and \fBff\fP
+  which represents one byte of the address, which is in network byte
+! order (big-endian).  The \fIIP-number\fP may be a hostname which
+  can be resolved by DNS or a dot separated number.
+  .\"}}}
+--- 8,22 ----
+  .sp
+  .RS
+! \fIEthernet\-address\fP  \fIIP\-number\fP
+  .RE
+  .sp
+  The two items are separated by any number of SPACE and/or TAB characters.
+  A \fB#\fP at the beginning of a line starts a comment
+! which extends to the end of the line.  The \fIEthernet\-address\fP is
+  written as
+  .IR x : x : x : x : x : x ,
+  where \fIx\fP is a hexadecimal number between \fB0\fP and \fBff\fP
+  which represents one byte of the address, which is in network byte
+! order (big-endian).  The \fIIP\-number\fP may be a hostname which
+  can be resolved by DNS or a dot separated number.
+  .\"}}}
+
+Index: hostname.1
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/hostname.1,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** hostname.1	27 Feb 1999 11:27:50 -0000	1.2
+--- hostname.1	2 Oct 2008 23:16:59 -0000	1.3
+***************
+*** 1,3 ****
+! .TH HOSTNAME 1 "28 Jan 1996" "net-tools" "Linux Programmer's Manual"
+  
+  .SH NAME
+--- 1,3 ----
+! .TH HOSTNAME 1 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+***************
+*** 24,28 ****
+  .RB [ \-\-fqdn ]
+  .RB [ \-i ]
+! .RB [ \-\-ip-address ]
+  .RB [ \-\-long ]
+  .RB [ \-s ]
+--- 24,28 ----
+  .RB [ \-\-fqdn ]
+  .RB [ \-i ]
+! .RB [ \-\-ip\-address ]
+  .RB [ \-\-long ]
+  .RB [ \-s ]
+***************
+*** 182,186 ****
+  Print a usage message and exit.
+  .TP
+! .I "\-i, \-\-ip-address"
+  Display the IP address(es) of the host.
+  .TP
+--- 182,186 ----
+  Print a usage message and exit.
+  .TP
+! .I "\-i, \-\-ip\-address"
+  Display the IP address(es) of the host.
+  .TP
+***************
+*** 206,212 ****
+  .B /etc/hosts
+  .SH AUTHOR
+! Peter Tobias, <tobias at et-inf.fho-emden.de>
+  .br
+! Bernd Eckenfels, <net-tools at lina.inka.de> (NIS and manpage).
+  .br
+  Steve Whitehouse, <SteveW at ACM.org> (DECnet support and manpage).
+--- 206,212 ----
+  .B /etc/hosts
+  .SH AUTHOR
+! Peter Tobias, <tobias at et\-inf.fho\-emden.de>
+  .br
+! Bernd Eckenfels, <net\-tools at lina.inka.de> (NIS and manpage).
+  .br
+  Steve Whitehouse, <SteveW at ACM.org> (DECnet support and manpage).
+
+Index: ifconfig.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/ifconfig.8,v
+retrieving revision 1.13
+retrieving revision 1.14
+diff -C2 -d -r1.13 -r1.14
+*** ifconfig.8	7 Nov 2007 23:01:38 -0000	1.13
+--- ifconfig.8	2 Oct 2008 23:16:59 -0000	1.14
+***************
+*** 1,3 ****
+! .TH IFCONFIG 8 "2007-11-07" "net-tools" "Linux Programmer's Manual"
+  .SH NAME
+  ifconfig \- configure a network interface
+--- 1,3 ----
+! .TH IFCONFIG 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME
+  ifconfig \- configure a network interface
+***************
+*** 19,23 ****
+  argument is given, it displays the status of the given interface
+  only; if a single
+! .B -a
+  argument is given, it displays the status of all interfaces, even
+  those that are down.  Otherwise, it configures an interface.
+--- 19,23 ----
+  argument is given, it displays the status of the given interface
+  only; if a single
+! .B \-a
+  argument is given, it displays the status of all interfaces, even
+  those that are down.  Otherwise, it configures an interface.
+***************
+*** 139,143 ****
+  all drivers can do this.
+  .TP
+! .B "[-]broadcast [addr]"
+  If the address argument is given, set the protocol broadcast
+  address for this interface.  Otherwise, set (or clear) the
+--- 139,143 ----
+  all drivers can do this.
+  .TP
+! .B "[\-]broadcast [addr]"
+  If the address argument is given, set the protocol broadcast
+  address for this interface.  Otherwise, set (or clear) the
+***************
+*** 145,149 ****
+  flag for the interface.
+  .TP
+! .B "[-]pointopoint [addr]"
+  This keyword enables the
+  .B point-to-point
+--- 145,149 ----
+  flag for the interface.
+  .TP
+! .B "[\-]pointopoint [addr]"
+  This keyword enables the
+  .B point-to-point
+***************
+*** 195,199 ****
+  command.
+  .LP
+! Since net-tools 1.61 ifconfig is printing byte counters and human readable
+  counters with IEC 60027-2 units. So 1 KiB are 2^10 byte. Note, the numbers 
+  are truncated to one decimal (which can by quite a large error if you 
+--- 195,199 ----
+  command.
+  .LP
+! Since net\-tools 1.60\-4 ifconfig is printing byte counters and human readable
+  counters with IEC 60027-2 units. So 1 KiB are 2^10 byte. Note, the numbers 
+  are truncated to one decimal (which can by quite a large error if you 
+***************
+*** 203,207 ****
+  .I (SIOCSIIFLAGS: Resource temporarily unavailable)
+  it is most likely a interrupt conflict. See
+! .I http://www.scyld.com/expert/irq-conflict.html
+  for more information.
+  .SH FILES
+--- 203,207 ----
+  .I (SIOCSIIFLAGS: Resource temporarily unavailable)
+  it is most likely a interrupt conflict. See
+! .I http://www.scyld.com/expert/irq\-conflict.html
+  for more information.
+  .SH FILES
+***************
+*** 215,219 ****
+  altered by this command.
+  .SH SEE ALSO
+! route(8), netstat(8), arp(8), rarp(8), ipchains(8), iptables(8)
+  .br
+  http://physics.nist.gov/cuu/Units/binary.html - Prefixes for binary multiples
+--- 215,219 ----
+  altered by this command.
+  .SH SEE ALSO
+! route(8), netstat(8), arp(8), rarp(8), ipchains(8), iptables(8), ifup(8), interfaces(5).
+  .br
+  http://physics.nist.gov/cuu/Units/binary.html - Prefixes for binary multiples
+***************
+*** 227,229 ****
+  Andi Kleen
+  .br
+! Bernd Eckenfels, <net-tools at lina.inka.de>
+--- 227,229 ----
+  Andi Kleen
+  .br
+! Bernd Eckenfels, <net\-tools at lina.inka.de>
+
+Index: mii-tool.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/mii-tool.8,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -C2 -d -r1.3 -r1.4
+*** mii-tool.8	13 May 2005 22:31:41 -0000	1.3
+--- mii-tool.8	2 Oct 2008 23:16:59 -0000	1.4
+***************
+*** 2,12 ****
+  .\" mii-tool.8 1.5 2000/04/25 22:58:19
+  .\"
+! .TH MII-TOOL 8 "2004/03/28 23:30:00" "net-tools"
+  
+  .SH NAME
+! mii-tool \- view, manipulate media-independent interface status
+  
+  .SH SYNOPSIS
+! .B mii-tool
+  [\fB\-v\fR, \fB\-\-verbose\fR]
+  [\fB\-V\fR, \fB\-\-version\fR]
+--- 2,12 ----
+  .\" mii-tool.8 1.5 2000/04/25 22:58:19
+  .\"
+! .TH MII\-TOOL 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+! mii\-tool \- view, manipulate media-independent interface status
+  
+  .SH SYNOPSIS
+! .B mii\-tool
+  [\fB\-v\fR, \fB\-\-verbose\fR]
+  [\fB\-V\fR, \fB\-\-version\fR]
+***************
+*** 33,42 ****
+  simply detecting either a 10baseT or 100baseT link beat.  The \fB\-F\fR
+  or \fB\-\-force\fR options can be used to force the MII to operate in
+! one mode, instead of autonegotiating.  The \fB\-A\fR and \fB-F\fR
+  options are mutually exclusive.
+  .PP
+  The default short output reports the negotiated link speed and link
+  status for each interface.  If an interface or interfaces are not
+! specified on the command line, then \fBmii-tool\fR will check any
+  available interfaces from \fBeth0\fR through \fBeth7\fR.
+  .SH OPTIONS
+--- 33,42 ----
+  simply detecting either a 10baseT or 100baseT link beat.  The \fB\-F\fR
+  or \fB\-\-force\fR options can be used to force the MII to operate in
+! one mode, instead of autonegotiating.  The \fB\-A\fR and \fB\-F\fR
+  options are mutually exclusive.
+  .PP
+  The default short output reports the negotiated link speed and link
+  status for each interface.  If an interface or interfaces are not
+! specified on the command line, then \fBmii\-tool\fR will check any
+  available interfaces from \fBeth0\fR through \fBeth7\fR.
+  .SH OPTIONS
+***************
+*** 60,64 ****
+  .TP
+  \fB\-l\fR, \fB\-\-log\fR
+! Used with \fB-w\fR, records link status changes in the system log
+  instead of printing on standard output.
+  .TP
+--- 60,64 ----
+  .TP
+  \fB\-l\fR, \fB\-\-log\fR
+! Used with \fB\-w\fR, records link status changes in the system log
+  instead of printing on standard output.
+  .TP
+
+Index: nameif.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/nameif.8,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -C2 -d -r1.1 -r1.2
+*** nameif.8	18 Oct 2000 17:26:29 -0000	1.1
+--- nameif.8	2 Oct 2008 23:16:59 -0000	1.2
+***************
+*** 1,9 ****
+! .TH NAMEIF 8 "18 Oct 2000" "net-tools" "Linux's Administrator's Manual"
+  .SH NAME
+  nameif \- name network interfaces based on MAC addresses
+  .SH SYNOPSIS
+! .B "nameif [-c configfile] [-s]"
+  .br
+! .B "nameif [-c configfile] [-s] {interface macaddress}"
+  .SH DESCRIPTION
+  .B nameif 
+--- 1,9 ----
+! .TH NAMEIF 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME
+  nameif \- name network interfaces based on MAC addresses
+  .SH SYNOPSIS
+! .B "nameif [\-c configfile] [\-s]"
+  .br
+! .B "nameif [\-c configfile] [\-s] {interface macaddress}"
+  .SH DESCRIPTION
+  .B nameif 
+***************
+*** 19,27 ****
+  
+  When the 
+! .I -s
+  argument is given all error messages go to the syslog.
+  
+  When the 
+! .I -c 
+  argument is given with a file name that file is read instead of /etc/mactab.
+  
+--- 19,27 ----
+  
+  When the 
+! .I \-s
+  argument is given all error messages go to the syslog.
+  
+  When the 
+! .I \-c 
+  argument is given with a file name that file is read instead of /etc/mactab.
+  
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.20
+retrieving revision 1.21
+diff -C2 -d -r1.20 -r1.21
+*** netstat.8	2 Oct 2008 22:30:25 -0000	1.20
+--- netstat.8	2 Oct 2008 23:16:59 -0000	1.21
+***************
+*** 9,13 ****
+  .\"
+  .\"
+! .TH NETSTAT 8 "2008-10-04" "net-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+--- 9,13 ----
+  .\"
+  .\"
+! .TH NETSTAT 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+***************
+*** 24,28 ****
+  .RB [ \-\-all | \-a ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric-hosts "] [" \-\-numeric-ports "] [" \-\-numeric-users ]
+  .RB [ \-\-symbolic | \-N ]
+  .RB [ \-\-extend | \-e  [ \-\-extend | \-e] ]
+--- 24,28 ----
+  .RB [ \-\-all | \-a ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric\-hosts "] [" \-\-numeric\-ports "] [" \-\-numeric\-users ]
+  .RB [ \-\-symbolic | \-N ]
+  .RB [ \-\-extend | \-e  [ \-\-extend | \-e] ]
+***************
+*** 38,42 ****
+  .RB [ \-\-verbose | \-v ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric-hosts "] [" \-\-numeric-ports "] [" \-\-numeric-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+--- 38,42 ----
+  .RB [ \-\-verbose | \-v ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric\-hosts "] [" \-\-numeric\-ports "] [" \-\-numeric\-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+***************
+*** 54,58 ****
+  .RB { \-\-groups | \-g }
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric-hosts "] [" \-\-numeric-ports "] [" \-\-numeric-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+--- 54,58 ----
+  .RB { \-\-groups | \-g }
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric\-hosts "] [" \-\-numeric\-ports "] [" \-\-numeric\-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+***************
+*** 61,65 ****
+  .RB [ \-\-extend | \-e ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric-hosts "] [" \-\-numeric-ports "] [" \-\-numeric-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+--- 61,65 ----
+  .RB [ \-\-extend | \-e ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric\-hosts "] [" \-\-numeric\-ports "] [" \-\-numeric\-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+***************
+*** 122,132 ****
+  Show numerical addresses instead of trying to determine symbolic host, port
+  or user names.
+! .SS "\-\-numeric-hosts"
+  shows numerical host addresses but does not affect the resolution of
+  port or user names.
+! .SS "\-\-numeric-ports"
+  shows numerical port numbers but does not affect the resolution of
+  host or user names.
+! .SS "\-\-numeric-users"
+  shows numerical user IDs but does not affect the resolution of host or
+  port names.
+--- 122,132 ----
+  Show numerical addresses instead of trying to determine symbolic host, port
+  or user names.
+! .SS "\-\-numeric\-hosts"
+  shows numerical host addresses but does not affect the resolution of
+  port or user names.
+! .SS "\-\-numeric\-ports"
+  shows numerical port numbers but does not affect the resolution of
+  host or user names.
+! .SS "\-\-numeric\-users"
+  shows numerical user IDs but does not affect the resolution of host or
+  port names.
+***************
+*** 171,175 ****
+  .SS "\-a, \-\-all"
+  Show both listening and non-listening sockets.  With the
+! .B --interfaces
+  option, show interfaces that are not up
+  .SS "\-F"
+--- 171,175 ----
+  .SS "\-a, \-\-all"
+  Show both listening and non-listening sockets.  With the
+! .B \-\-interfaces
+  option, show interfaces that are not up
+  .SS "\-F"
+***************
+*** 183,190 ****
+  .SS "Proto" 
+  The protocol (tcp, udp, raw) used by the socket. 
+! .SS "Recv-Q"
+  Established: The count of bytes not copied by the user program connected to this socket.
+  Listening: Since Kernel 2.6.18 this column contains the current syn backlog.
+! .SS "Send-Q"
+  Established: The count of bytes not acknowledged by the remote host.
+  Listening: Since Kernel 2.6.18 this column contains the maximum size of the syn backlog.
+--- 183,190 ----
+  .SS "Proto" 
+  The protocol (tcp, udp, raw) used by the socket. 
+! .SS "Recv\-Q"
+  Established: The count of bytes not copied by the user program connected to this socket.
+  Listening: Since Kernel 2.6.18 this column contains the current syn backlog.
+! .SS "Send\-Q"
+  Established: The count of bytes not acknowledged by the remote host.
+  Listening: Since Kernel 2.6.18 this column contains the maximum size of the syn backlog.
+***************
+*** 263,267 ****
+  Slash-separated pair of the process id (PID) and process name of the 
+  process that owns the socket.
+! .B --program
+  causes this column to be included.  You will also need
+  .I superuser
+--- 263,267 ----
+  Slash-separated pair of the process id (PID) and process name of the 
+  process that owns the socket.
+! .B \-\-program
+  causes this column to be included.  You will also need
+  .I superuser
+***************
+*** 366,370 ****
+  .SH NOTES
+  Starting with Linux release 2.2 
+! .B netstat -i 
+  does not show interface statistics for alias interfaces. To get per
+  alias interface counters you need to setup explicit rules using the
+--- 366,370 ----
+  .SH NOTES
+  Starting with Linux release 2.2 
+! .B netstat \-i 
+  does not show interface statistics for alias interfaces. To get per
+  alias interface counters you need to setup explicit rules using the
+***************
+*** 446,450 ****
+  .SH AUTHORS
+  The netstat user interface was written by Fred Baumgarten
+! <dc6iq at insu1.etec.uni-karlsruhe.de>, the man page basically
+  by Matt Welsh <mdw at tc.cornell.edu>. It was updated by
+  Alan Cox <Alan.Cox at linux.org> but could do with a bit more
+--- 446,450 ----
+  .SH AUTHORS
+  The netstat user interface was written by Fred Baumgarten
+! <dc6iq at insu1.etec.uni\-karlsruhe.de>, the man page basically
+  by Matt Welsh <mdw at tc.cornell.edu>. It was updated by
+  Alan Cox <Alan.Cox at linux.org> but could do with a bit more
+***************
+*** 452,456 ****
+  <tqhoang at bigfoot.com>.
+  .br
+! The man page and the command included in the net-tools
+  package is totally rewritten by Bernd Eckenfels 
+  <ecki at linux.de>.
+--- 452,456 ----
+  <tqhoang at bigfoot.com>.
+  .br
+! The man page and the command included in the net\-tools
+  package is totally rewritten by Bernd Eckenfels 
+  <ecki at linux.de>.
+
+Index: plipconfig.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/plipconfig.8,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -C2 -d -r1.1 -r1.2
+*** plipconfig.8	9 Jan 1999 14:36:46 -0000	1.1
+--- plipconfig.8	2 Oct 2008 23:16:59 -0000	1.2
+***************
+*** 1,3 ****
+! .TH PLIPCONFIG 8 "17 February 1995" "" ""
+  .SH NAME
+  plipconfig \- fine tune PLIP device parameters 
+--- 1,3 ----
+! .TH PLIPCONFIG 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME
+  plipconfig \- fine tune PLIP device parameters 
+
+Index: rarp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/rarp.8,v
+retrieving revision 1.5
+retrieving revision 1.6
+diff -C2 -d -r1.5 -r1.6
+*** rarp.8	5 Nov 2001 13:12:11 -0000	1.5
+--- rarp.8	2 Oct 2008 23:16:59 -0000	1.6
+***************
+*** 1,13 ****
+! .TH RARP 8 "4 August 1997" "net-tools" "Linux Programmer's Manual"
+  .SH NAME
+  rarp \- manipulate the system RARP table
+  .SH SYNOPSIS
+! .B "rarp [-V] [--version] [-h] [--help]"
+  .br
+! .B "rarp -a"
+  .br
+! .B "rarp [-v] -d hostname ..."
+  .br
+! .B "rarp [-v] [-t type] -s hostname hw_addr"
+  .SH NOTE
+  .P
+--- 1,13 ----
+! .TH RARP 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME
+  rarp \- manipulate the system RARP table
+  .SH SYNOPSIS
+! .B "rarp [\-V] [\-\-version] [\-h] [\-\-help]"
+  .br
+! .B "rarp \-a"
+  .br
+! .B "rarp [\-v] \-d hostname ..."
+  .br
+! .B "rarp [\-v] [\-t type] \-s hostname hw_addr"
+  .SH NOTE
+  .P
+***************
+*** 15,19 ****
+  no longer contains RARP support.  For a replacement RARP daemon, see
+  .I
+! ftp://ftp.dementia.org/pub/net-tools
+  .SH DESCRIPTION
+  .B Rarp
+--- 15,19 ----
+  no longer contains RARP support.  For a replacement RARP daemon, see
+  .I
+! ftp://ftp.dementia.org/pub/net\-tools
+  .SH DESCRIPTION
+  .B Rarp
+
+Index: route.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/route.8,v
+retrieving revision 1.7
+retrieving revision 1.8
+diff -C2 -d -r1.7 -r1.8
+*** route.8	13 May 2005 22:28:41 -0000	1.7
+--- route.8	2 Oct 2008 23:16:59 -0000	1.8
+***************
+*** 1,3 ****
+! .TH ROUTE 8 "02 October 2003" "net-tools" "Linux Programmer's Manual"
+  .SH NAME
+  route \- show / manipulate the IP routing table
+--- 1,3 ----
+! .TH ROUTE 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME
+  route \- show / manipulate the IP routing table
+***************
+*** 52,56 ****
+  .RB [ \-\-version ]
+  .RB [ \-h ]
+! .RB [ \--help ]
+  .SH DESCRIPTION
+  .B Route
+--- 52,56 ----
+  .RB [ \-\-version ]
+  .RB [ \-h ]
+! .RB [ \-\-help ]
+  .SH DESCRIPTION
+  .B Route
+***************
+*** 74,87 ****
+  .TP
+  .B \-A family
+! use the specified address family (eg `inet'; use `route --help' for a full 
+  list).
+  
+  .TP 
+! .B -F
+  operate on the kernel's FIB (Forwarding Information Base) routing
+  table. 
+  This is the default.
+  .TP 
+! .B -C
+  operate on the kernel's routing cache.
+  
+--- 74,87 ----
+  .TP
+  .B \-A family
+! use the specified address family (eg `inet'; use `route \-\-help' for a full 
+  list).
+  
+  .TP 
+! .B \-F
+  operate on the kernel's FIB (Forwarding Information Base) routing
+  table. 
+  This is the default.
+  .TP 
+! .B \-C
+  operate on the kernel's routing cache.
+  
+***************
+*** 97,101 ****
+  .B \-e
+  use
+! .BR netstat (8)-format
+  for displaying the routing table.
+  .B \-ee 
+--- 97,101 ----
+  .B \-e
+  use
+! .BR netstat (8)\-format
+  for displaying the routing table.
+  .B \-ee 
+***************
+*** 118,122 ****
+  is a network.
+  .TP
+! .B -host
+  the
+  .B target 
+--- 118,122 ----
+  is a network.
+  .TP
+! .B \-host
+  the
+  .B target 
+***************
+*** 180,201 ****
+  .SH EXAMPLES
+  .TP
+! .B route add -net 127.0.0.0
+! adds the normal loopback entry, using netmask 255.0.0.0 (class A net,
+! determined from the destination address) and associated with the 
+  "lo" device (assuming this device was previously set up correctly with
+  .BR ifconfig (8)). 
+  
+  .TP 
+! .B route add -net 192.56.76.0 netmask 255.255.255.0 dev eth0
+! adds a route to the network 192.56.76.x via 
+! "eth0". The Class C netmask modifier is not really necessary here because
+! 192.* is a Class C IP address. The word "dev" can be omitted here. 
+  
+  .TP
+! .B route add default gw mango-gw
+  adds a default route (which will be used if no other route matches).
+! All packets using this route will be gatewayed through "mango-gw". The
+  device which will actually be used for that route depends on how we
+! can reach "mango-gw" - the static route to "mango-gw" will have to be
+  set up before. 
+  
+--- 180,204 ----
+  .SH EXAMPLES
+  .TP
+! .B route add \-net 127.0.0.0 netmask 255.0.0.0 dev lo
+! adds the normal loopback entry, using netmask 255.0.0.0 and associated with the 
+  "lo" device (assuming this device was previously set up correctly with
+  .BR ifconfig (8)). 
+  
+  .TP 
+! .B route add \-net 192.56.76.0 netmask 255.255.255.0 dev eth0
+! adds a route to the local network 192.56.76.x via 
+! "eth0".  The word "dev" can be omitted here. 
+  
+  .TP
+! .B route del default
+! deletes the current default route, which is labeled "default" or 0.0.0.0
+! in the destination field of the current routing table.
+! 
+! .TP
+! .B route add default gw mango\-gw
+  adds a default route (which will be used if no other route matches).
+! All packets using this route will be gatewayed through "mango\-gw". The
+  device which will actually be used for that route depends on how we
+! can reach "mango\-gw" - the static route to "mango\-gw" will have to be
+  set up before. 
+  
+***************
+*** 206,215 ****
+  
+  .TP
+! .B route add -net 192.57.66.0 netmask 255.255.255.0 gw ipx4
+  This command adds the net "192.57.66.x" to be gatewayed through the former
+  route to the SLIP interface.
+  
+  .TP
+! .B route add -net 224.0.0.0 netmask 240.0.0.0 dev eth0
+  This is an obscure one documented so people know how to do it. This sets
+  all of the class D (multicast) IP routes to go via "eth0". This is the
+--- 209,218 ----
+  
+  .TP
+! .B route add \-net 192.57.66.0 netmask 255.255.255.0 gw ipx4
+  This command adds the net "192.57.66.x" to be gatewayed through the former
+  route to the SLIP interface.
+  
+  .TP
+! .B route add \-net 224.0.0.0 netmask 240.0.0.0 dev eth0
+  This is an obscure one documented so people know how to do it. This sets
+  all of the class D (multicast) IP routes to go via "eth0". This is the
+***************
+*** 217,221 ****
+  
+  .TP
+! .B route add -net 10.0.0.0 netmask 255.0.0.0 reject
+  This installs a rejecting route for the private network "10.x.x.x."
+  
+--- 220,224 ----
+  
+  .TP
+! .B route add \-net 10.0.0.0 netmask 255.0.0.0 reject
+  This installs a rejecting route for the private network "10.x.x.x."
+  
+***************
+*** 283,288 ****
+  .TP
+  .B Use
+! Count of lookups for the route.  Depending on the use of -F and -C this will
+! be either route cache misses (-F) or hits (-C).
+  .TP
+  .B Iface
+--- 286,291 ----
+  .TP
+  .B Use
+! Count of lookups for the route.  Depending on the use of \-F and \-C this will
+! be either route cache misses (\-F) or hits (\-C).
+  .TP
+  .B Iface
+***************
+*** 324,326 ****
+  Linux 1.1.22. irtt support and merged with netstat from Bernd Eckenfels.
+  .SH AUTHOR
+! Currently maintained by Phil Blundell <Philip.Blundell at pobox.com>.
+--- 327,329 ----
+  Linux 1.1.22. irtt support and merged with netstat from Bernd Eckenfels.
+  .SH AUTHOR
+! Currently maintained by Phil Blundell <Philip.Blundell at pobox.com> and Bernd Eckenfels <net-tools at lina.inka.de>.
+
+Index: slattach.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/slattach.8,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -C2 -d -r1.3 -r1.4
+*** slattach.8	10 Oct 2006 05:58:46 -0000	1.3
+--- slattach.8	2 Oct 2008 23:16:59 -0000	1.4
+***************
+*** 1,7 ****
+! .TH SLATTACH 8 "10 Oct 2006" "" ""
+  .SH NAME
+  slattach \- attach a network interface to a serial line
+  .SH SYNOPSIS
+! .B "slattach [-dehlLmnqv] [-c command] [-p proto] [-s speed] [tty]"
+  .br
+  .SH DESCRIPTION
+--- 1,7 ----
+! .TH SLATTACH 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  .SH NAME
+  slattach \- attach a network interface to a serial line
+  .SH SYNOPSIS
+! .B "slattach [\-dehlLmnqv] [\-c command] [\-p proto] [\-s speed] [tty]"
+  .br
+  .SH DESCRIPTION
+***************
+*** 12,16 ****
+  .SH OPTIONS
+  .TP
+! .B "[-c command]"
+  Execute
+  .B command
+--- 12,16 ----
+  .SH OPTIONS
+  .TP
+! .B "[\-c command]"
+  Execute
+  .B command
+***************
+*** 18,53 ****
+  connections when a link goes down.
+  .TP
+! .B "[-d]"
+  Enable debugging output.  Useful when determining why a given
+  setup doesn't work.
+  .TP
+! .B "[-h]"
+  Exit when the carrier is lost. This works on both /dev/tty and /dev/cua
+  devices by directly monitoring the carrier status every 15 seconds.
+  .TP
+! .B "[-v]"
+  Enable verbose output.  Useful in shell scripts.
+  .TP
+! .B "[-q]"
+  Operate in quiet mode - no messages at all.
+  .TP
+! .B "[-l]"
+  Create an UUCP-style lockfile for the device in /var/lock.
+  .TP
+! .B "[-n]"
+  Equivalent to the "mesg n" command.
+  .TP
+! .B "[-m]"
+  Do \fBnot\fP initialize the line into 8 bits raw mode.
+  .TP
+! .B "[-e]"
+  Exit right after initializing device, instead of waiting for the
+  line to hang up.
+  .TP
+! .B "[-L]"
+  Enable 3 wire operation. The terminal is moved into CLOCAL mode, 
+  carrier watching is disabled.
+  .TP
+! .B "[-p proto]"
+  Set a specific kind of protocol to use on the line.  The default
+  is set to
+--- 18,53 ----
+  connections when a link goes down.
+  .TP
+! .B "[\-d]"
+  Enable debugging output.  Useful when determining why a given
+  setup doesn't work.
+  .TP
+! .B "[\-h]"
+  Exit when the carrier is lost. This works on both /dev/tty and /dev/cua
+  devices by directly monitoring the carrier status every 15 seconds.
+  .TP
+! .B "[\-v]"
+  Enable verbose output.  Useful in shell scripts.
+  .TP
+! .B "[\-q]"
+  Operate in quiet mode - no messages at all.
+  .TP
+! .B "[\-l]"
+  Create an UUCP-style lockfile for the device in /var/lock.
+  .TP
+! .B "[\-n]"
+  Equivalent to the "mesg n" command.
+  .TP
+! .B "[\-m]"
+  Do \fBnot\fP initialize the line into 8 bits raw mode.
+  .TP
+! .B "[\-e]"
+  Exit right after initializing device, instead of waiting for the
+  line to hang up.
+  .TP
+! .B "[\-L]"
+  Enable 3 wire operation. The terminal is moved into CLOCAL mode, 
+  carrier watching is disabled.
+  .TP
+! .B "[\-p proto]"
+  Set a specific kind of protocol to use on the line.  The default
+  is set to
+***************
+*** 72,76 ****
+  program should be used.
+  .TP
+! .B "[-s speed]"
+  Set a specific line speed, other than the default.
+  .PP
+--- 72,76 ----
+  program should be used.
+  .TP
+! .B "[\-s speed]"
+  Set a specific line speed, other than the default.
+  .PP
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 01:31:06 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 01:31:06 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools ifconfig.c,1.57,1.58
+Message-ID: <20081002233106.BBE1C13F58A@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv18167
+
+Modified Files:
+	ifconfig.c 
+Log Message:
+Avoid segfault of ifconfig(8) on missing /proc/net/dev 
+(Debian Bug #222209 Pierre Lombard, Tollef Fog Heen)
+
+
+Index: ifconfig.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/ifconfig.c,v
+retrieving revision 1.57
+retrieving revision 1.58
+diff -C2 -d -r1.57 -r1.58
+*** ifconfig.c	10 Dec 2002 00:56:41 -0000	1.57
+--- ifconfig.c	2 Oct 2008 23:31:04 -0000	1.58
+***************
+*** 113,116 ****
+--- 113,119 ----
+  
+  	ife = lookup_interface(ifname);
++ 	if (!ife) {
++ 		return -1;
++ 	}
+  	res = do_if_fetch(ife); 
+  	if (res >= 0) 
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 02:05:24 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 02:05:24 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools netstat.c, 1.56, 1.57 statistics.c,
+	1.20, 1.21
+Message-ID: <20081003000524.976B071FCF@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv21692
+
+Modified Files:
+	netstat.c statistics.c 
+Log Message:
+Enable netstat -s for IPv6 (Debian Bug #453859 from Varun Chandramohan)
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.56
+retrieving revision 1.57
+diff -C2 -d -r1.56 -r1.57
+*** netstat.c	2 Oct 2008 22:05:54 -0000	1.56
+--- netstat.c	3 Oct 2008 00:05:20 -0000	1.57
+***************
+*** 106,109 ****
+--- 106,111 ----
+  void parsesnmp(int, int, int);
+  void inittab(void);
++ void parsesnmp6(int, int, int);
++ void inittab6(void);
+  
+  typedef enum {
+***************
+*** 1724,1730 ****
+  
+      if (flag_sta) {
+!         inittab();
+! 	parsesnmp(flag_raw, flag_tcp, flag_udp);
+! 	exit(0);
+      }
+      
+--- 1726,1751 ----
+  
+      if (flag_sta) {
+!         char *tmp1, *tmp2;
+!         char buf[256];
+!         if (!afname[0]) {
+!             inittab();
+!             parsesnmp(flag_raw, flag_tcp, flag_udp);
+!         } else {
+!             safe_strncpy(buf, afname, sizeof(buf));
+!             tmp1 = buf;
+!             if ((tmp2 = index(tmp1, ',')))
+!                  printf("Multiple interface\n");
+!             else if(!strncmp(buf,"inet6",5)) {
+! #if HAVE_AFINET6
+!                  inittab6();
+!                  parsesnmp6(flag_raw, flag_tcp, flag_udp);
+! #else
+!                  printf("Address type not supported for stats\n");
+! #endif
+!             }
+!             else
+!                  printf("Address type not supported for stats\n");
+!         }
+!         exit(1);
+      }
+      
+
+Index: statistics.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/statistics.c,v
+retrieving revision 1.20
+retrieving revision 1.21
+diff -C2 -d -r1.20 -r1.21
+*** statistics.c	1 Dec 2007 18:44:56 -0000	1.20
+--- statistics.c	3 Oct 2008 00:05:20 -0000	1.21
+***************
+*** 85,88 ****
+--- 85,114 ----
+  };
+  
++ struct entry Ip6tab[] =
++ {
++     {"Ip6InReceives", N_("%u total packets received"), number},
++     {"Ip6InHdrErrors", N_("%u with invalid headers"), opt_number},
++     {"Ip6InTooBigErrors", N_("%u with packets too big"), opt_number},
++     {"Ip6InNoRoutes", N_("%u incoming packets with no route"), opt_number},
++     {"Ip6InAddrErrors", N_("%u with invalid addresses"), opt_number},
++     {"Ip6InUnknownProtos", N_("%u with unknown protocol"), opt_number},
++     {"Ip6InTruncatedPkts", N_("%u with truncated packets"), opt_number},
++     {"Ip6InDiscards", N_("%u incoming packets discarded"), number},
++     {"Ip6InDelivers", N_("%u incoming packets delivered"), number},
++     {"Ip6OutForwDatagrams", N_("%u forwarded"), number},
++     {"Ip6OutRequests", N_("%u requests sent out"), number},     /*? */
++     {"Ip6OutDiscards", N_("%u outgoing packets dropped"), opt_number},
++     {"Ip6OutNoRoutes", N_("%u dropped because of missing route"), opt_number},
++     {"Ip6ReasmTimeout", N_("%u fragments dropped after timeout"), opt_number},
++     {"Ip6ReasmReqds", N_("%u reassemblies required"), opt_number}, /* ? */
++     {"Ip6ReasmOKs", N_("%u packets reassembled ok"), opt_number},
++     {"Ip6ReasmFails", N_("%u packet reassembles failed"), opt_number},
++     {"Ip6FragOKs", N_("%u fragments received ok"), opt_number},
++     {"Ip6FragFails", N_("%u fragments failed"), opt_number},
++     {"Ip6FragCreates", N_("%u fragments created"), opt_number},
++     {"Ip6InMcastPkts", N_("%u incoming multicast packets"), opt_number},
++     {"Ip6OutMcastPkts", N_("%u outgoing multicast packets"), opt_number}
++ };
++ 
+  struct entry Icmptab[] =
+  {
+***************
+*** 115,118 ****
+--- 141,179 ----
+  };
+  
++ struct entry Icmp6tab[] =
++ {
++     {"Icmp6InMsgs", N_("%u ICMP messages received"), number},
++     {"Icmp6InErrors", N_("%u input ICMP message failed."), number},
++     {"Icmp6InDestUnreachs", N_("destination unreachable: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InPktTooBigs", N_("packets too big: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InTimeExcds", N_("received ICMPv6 time exceeded: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InParmProblems", N_("parameter problem: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InEchos", N_("echo requests: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InEchoReplies", N_("echo replies: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InGroupMembQueries", N_("group member queries: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InGroupMembResponses", N_("group member responses: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InGroupMembReductions", N_("group member reductions: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InRouterSolicits", N_("router solicits: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InRouterAdvertisements", N_("router advertisement: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InNeighborSolicits", N_("neighbour solicits: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InNeighborAdvertisements", N_("neighbour advertisement: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6InRedirects", N_("redirects: %u"), i_inp_icmp | I_TITLE},
++     {"Icmp6OutMsgs", N_("%u ICMP messages sent"), number},
++     {"Icmp6OutDestUnreachs", N_("destination unreachable: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutPktTooBigs", N_("packets too big: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutTimeExcds", N_("sent ICMPv6 time exceeded: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutParmProblems", N_("parameter problem: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutEchos", N_("echo requests: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutEchoReplies", N_("echo replies: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutGroupMembQueries", N_("group member queries: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutGroupMembResponses", N_("group member responses: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutGroupMembReductions", N_("group member reductions: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutRouterSolicits", N_("router solicits: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutRouterAdvertisements ", N_("router advertisement: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutNeighborSolicits", N_("neighbor solicits: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutNeighborAdvertisements", N_("neighbor advertisements: %u"), i_outp_icmp | I_TITLE},
++     {"Icmp6OutRedirects", N_("redirects: %u"), i_outp_icmp | I_TITLE},
++ };
++ 
+  struct entry Tcptab[] =
+  {
+***************
+*** 141,144 ****
+--- 202,213 ----
+  };
+  
++ struct entry Udp6tab[] =
++ {
++     {"Udp6InDatagrams", N_("%u packets received"), number},
++     {"Udp6NoPorts", N_("%u packets to unknown port received."), number},
++     {"Udp6InErrors", N_("%u packet receive errors"), number},
++     {"Udp6OutDatagrams", N_("%u packets sent"), number},
++ };
++ 
+  struct entry Tcpexttab[] =
+  {
+***************
+*** 246,249 ****
+--- 315,327 ----
+  };
+  
++ struct tabtab snmp6tabs[] =
++ {
++     {"Ip6", Ip6tab, sizeof(Ip6tab), &f_raw},
++     {"Icmp6", Icmp6tab, sizeof(Icmp6tab), &f_raw},
++     {"Udp6", Udp6tab, sizeof(Udp6tab), &f_udp},
++     {"Tcp6", Tcptab, sizeof(Tcptab), &f_tcp},
++     {NULL}
++ };
++ 
+  /* XXX IGMP */
+  
+***************
+*** 332,336 ****
+  }
+  
+! int process_fd(FILE *f)
+  {
+      char buf1[2048], buf2[2048];
+--- 410,414 ----
+  }
+  
+! int process_fd(FILE *f, int all, char *filter)
+  {
+      char buf1[2048], buf2[2048];
+***************
+*** 351,354 ****
+--- 429,436 ----
+  	*sp = '\0';
+  
++         if (!all)
++            if (strncmp(buf1, filter, strlen(filter)))
++                continue;
++ 
+  	tab = newtable(snmptabs, buf1);
+  	if (tab == NULL) {
+***************
+*** 382,385 ****
+--- 464,502 ----
+  }
+  
++ void cpytitle(char *original, char *new)
++ {
++      char *ptr = original;
++      while(*ptr != '6' && *ptr != '\0') {
++            *new = *ptr;
++             new++;
++             ptr++;
++      }
++     *new = *ptr;
++     new++;
++     *new = '\0';
++ }
++ 
++ void process6_fd(FILE *f)
++ {
++    char buf1[1024],buf2[50],buf3[1024];
++    unsigned long val;
++    struct tabtab *tab = NULL;
++    int cpflg = 0;
++ 
++    while (fgets(buf1, sizeof buf1, f)) {
++           sscanf(buf1, "%s %lu", buf2, &val);
++           if(!cpflg) {
++              cpytitle(buf2, buf3);
++              tab = newtable(snmp6tabs, buf3);
++              cpflg = 1;
++           }
++           if(!strstr(buf2, buf3)) {
++              cpytitle(buf2, buf3);
++              tab = newtable(snmp6tabs, buf3);
++           }
++           printval(tab, buf2, val);
++    }
++ 
++ }
+  
+  void parsesnmp(int flag_raw, int flag_tcp, int flag_udp)
+***************
+*** 395,399 ****
+      }
+  
+!     if (process_fd(f) < 0)
+        fprintf(stderr, _("Problem while parsing /proc/net/snmp\n"));
+  
+--- 512,516 ----
+      }
+  
+!     if (process_fd(f, 1, NULL) < 0)
+        fprintf(stderr, _("Problem while parsing /proc/net/snmp\n"));
+  
+***************
+*** 406,410 ****
+  
+      if (f) {
+!     	if (process_fd(f) <0)
+            fprintf(stderr, _("Problem while parsing /proc/net/netstat\n"));
+  
+--- 523,527 ----
+  
+      if (f) {
+!     	if (process_fd(f, 1, NULL) <0)
+            fprintf(stderr, _("Problem while parsing /proc/net/netstat\n"));
+  
+***************
+*** 417,420 ****
+--- 534,564 ----
+  }
+      
++ void parsesnmp6(int flag_raw, int flag_tcp, int flag_udp)
++ {
++     FILE *f;
++ 
++     f_raw = flag_raw; f_tcp = flag_tcp; f_udp = flag_udp;
++ 
++     f = fopen("/proc/net/snmp6", "r");
++     if (!f) {
++         perror(_("cannot open /proc/net/snmp6"));
++         return;
++     }
++     process6_fd(f);
++     if (ferror(f))
++         perror("/proc/net/snmp6");
++ 
++     fclose(f);
++     f = fopen("/proc/net/snmp", "r");
++     if (!f) {
++         perror(_("cannot open /proc/net/snmp"));
++         return;
++     }
++     process_fd(f, 0, "Tcp");
++     if (ferror(f))
++         perror("/proc/net/snmp");
++ 
++     fclose(f);
++ }
+  
+  void inittab(void)
+***************
+*** 427,428 ****
+--- 571,582 ----
+  	      sizeof(struct entry), cmpentries);
+  }
++ 
++ void inittab6(void)
++ {
++     struct tabtab *t;
++ 
++     for (t = snmp6tabs; t->title; t++)
++         qsort(t->tab, t->size / sizeof(struct entry),
++               sizeof(struct entry), cmpentries);
++ }
++ 
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 03:06:36 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 03:06:36 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.57,1.58
+Message-ID: <20081003010636.89258154448@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv30378
+
+Modified Files:
+	netstat.c 
+Log Message:
+Support netstat -s with -6tuw options (incl. usage())
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.57
+retrieving revision 1.58
+diff -C2 -d -r1.57 -r1.58
+*** netstat.c	3 Oct 2008 00:05:20 -0000	1.57
+--- netstat.c	3 Oct 2008 01:06:33 -0000	1.58
+***************
+*** 1508,1512 ****
+      fprintf(stderr, _("usage: netstat [-veenNcCF] [<Af>] -r         netstat {-V|--version|-h|--help}\n"));
+      fprintf(stderr, _("       netstat [-vnNcaeol] [<Socket> ...]\n"));
+!     fprintf(stderr, _("       netstat { [-veenNac] -i | [-cnNe] -M | -s }\n\n"));
+  
+      fprintf(stderr, _("        -r, --route              display routing table\n"));
+--- 1508,1512 ----
+      fprintf(stderr, _("usage: netstat [-veenNcCF] [<Af>] -r         netstat {-V|--version|-h|--help}\n"));
+      fprintf(stderr, _("       netstat [-vnNcaeol] [<Socket> ...]\n"));
+!     fprintf(stderr, _("       netstat { [-veenNac] -i | [-cnNe] -M | -s [-6tuw] }\n\n"));
+  
+      fprintf(stderr, _("        -r, --route              display routing table\n"));
+***************
+*** 1719,1723 ****
+  	}
+  #else
+! 	ENOSUPP("netstat.c", "FW_MASQUERADE");
+  	i = -1;
+  #endif
+--- 1719,1723 ----
+  	}
+  #else
+! 	ENOSUPP("netstat", "FW_MASQUERADE");
+  	i = -1;
+  #endif
+***************
+*** 1726,1751 ****
+  
+      if (flag_sta) {
+!         char *tmp1, *tmp2;
+!         char buf[256];
+!         if (!afname[0]) {
+              inittab();
+              parsesnmp(flag_raw, flag_tcp, flag_udp);
+!         } else {
+!             safe_strncpy(buf, afname, sizeof(buf));
+!             tmp1 = buf;
+!             if ((tmp2 = index(tmp1, ',')))
+!                  printf("Multiple interface\n");
+!             else if(!strncmp(buf,"inet6",5)) {
+  #if HAVE_AFINET6
+!                  inittab6();
+!                  parsesnmp6(flag_raw, flag_tcp, flag_udp);
+  #else
+!                  printf("Address type not supported for stats\n");
+  #endif
+!             }
+!             else
+!                  printf("Address type not supported for stats\n");
+          }
+!         exit(1);
+      }
+      
+--- 1726,1751 ----
+  
+      if (flag_sta) {
+!         if (!afname[0])
+!             strcpy(afname, DFLT_AF);
+!             
+!         if (!strcmp(afname, "inet")) {
+! #if HAVE_AFINET
+              inittab();
+              parsesnmp(flag_raw, flag_tcp, flag_udp);
+! #else
+!             ENOSUPP("netstat", "AF INET");
+! #endif
+!         } else if(!strcmp(afname, "inet6")) {
+  #if HAVE_AFINET6
+!             inittab6();
+!             parsesnmp6(flag_raw, flag_tcp, flag_udp);
+  #else
+!             ENOSUPP("netstat", "AF INET6");
+  #endif
+!         } else {
+!           printf(_("netstat: No statistics support for specified address family: %s\n"), afname);
+!           exit(1);
+          }
+!         exit(0);
+      }
+      
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 03:07:49 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 03:07:49 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools statistics.c,1.21,1.22
+Message-ID: <20081003010749.69F6C154448@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv32189
+
+Modified Files:
+	statistics.c 
+Log Message:
+conditional printing of values (to support -tuw options for netstat -s)
+
+
+Index: statistics.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/statistics.c,v
+retrieving revision 1.21
+retrieving revision 1.22
+diff -C2 -d -r1.21 -r1.22
+*** statistics.c	3 Oct 2008 00:05:20 -0000	1.21
+--- statistics.c	3 Oct 2008 01:07:47 -0000	1.22
+***************
+*** 495,499 ****
+               tab = newtable(snmp6tabs, buf3);
+            }
+!           printval(tab, buf2, val);
+     }
+  
+--- 495,500 ----
+               tab = newtable(snmp6tabs, buf3);
+            }
+!           if (*(tab->flag))
+!              printval(tab, buf2, val);
+     }
+  
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 03:39:08 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 03:39:08 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.58,1.59
+Message-ID: <20081003013908.EED8F14857C@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv2429
+
+Modified Files:
+	netstat.c 
+Log Message:
+avoid unused filetype, fix formatting of -p headers
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.58
+retrieving revision 1.59
+diff -C2 -d -r1.58 -r1.59
+*** netstat.c	3 Oct 2008 01:06:33 -0000	1.58
+--- netstat.c	3 Oct 2008 01:39:06 -0000	1.59
+***************
+*** 230,234 ****
+  #define PROGNAME_BANNER "PID/Program name"
+  
+! #define print_progname_banner() do { if (flag_prg) printf("%-" PROGNAME_WIDTHs "s"," " PROGNAME_BANNER); } while (0)
+  
+  #define PRG_LOCAL_ADDRESS "local_address"
+--- 230,234 ----
+  #define PROGNAME_BANNER "PID/Program name"
+  
+! #define print_progname_banner() do { if (flag_prg) printf(" %-" PROGNAME_WIDTHs "s",PROGNAME_BANNER); } while (0)
+  
+  #define PRG_LOCAL_ADDRESS "local_address"
+***************
+*** 250,255 ****
+  #define PATH_CMDLINE	"cmdline"
+  #define PATH_CMDLINEl       strlen(PATH_CMDLINE)
+- /* NOT working as of glibc-2.0.7: */
+- #undef  DIRENT_HAVE_D_TYPE_WORKS
+  
+  static void prg_cache_add(unsigned long inode, char *name)
+--- 250,253 ----
+***************
+*** 363,369 ****
+      if (!(dirproc=opendir(PATH_PROC))) goto fail;
+      while (errno=0,direproc=readdir(dirproc)) {
+- #ifdef DIRENT_HAVE_D_TYPE_WORKS
+- 	if (direproc->d_type!=DT_DIR) continue;
+- #endif
+  	for (cs=direproc->d_name;*cs;cs++)
+  	    if (!isdigit(*cs)) 
+--- 361,364 ----
+***************
+*** 384,391 ****
+  	cmdlp = NULL;
+  	while ((direfd = readdir(dirfd))) {
+! #ifdef DIRENT_HAVE_D_TYPE_WORKS
+! 	    if (direfd->d_type!=DT_LNK) 
+! 		continue;
+! #endif
+  	    if (procfdlen+1+strlen(direfd->d_name)+1>sizeof(line)) 
+  		continue;
+--- 379,385 ----
+  	cmdlp = NULL;
+  	while ((direfd = readdir(dirfd))) {
+!            /* Skip . and .. */
+!            if (!isdigit(direfd->d_name[0]))
+!                continue;
+  	    if (procfdlen+1+strlen(direfd->d_name)+1>sizeof(line)) 
+  		continue;
+***************
+*** 538,547 ****
+  	else
+  	    printf(" %-10d ", uid);
+! 	printf("%-10lu ",inode);
+      }
+      if (flag_prg)
+! 	printf("%-" PROGNAME_WIDTHs "s",prg_cache_get(inode));
+      if (flag_opt)
+! 	printf("%s", timers);
+      putchar('\n');
+  }
+--- 532,541 ----
+  	else
+  	    printf(" %-10d ", uid);
+! 	printf("%-10lu",inode);
+      }
+      if (flag_prg)
+! 	printf(" %-" PROGNAME_WIDTHs "s",prg_cache_get(inode));
+      if (flag_opt)
+! 	printf(" %s", timers);
+      putchar('\n');
+  }
+***************
+*** 1219,1228 ****
+  	   ss_proto, refcnt, ss_flags, ss_type, ss_state);
+      if (has & HAS_INODE)
+! 	printf("%-8lu ",inode);
+      else
+! 	printf("-        ");
+      if (flag_prg)
+! 	printf("%-" PROGNAME_WIDTHs "s",(has & HAS_INODE?prg_cache_get(inode):"-"));
+!     puts(path);
+  }
+  
+--- 1213,1223 ----
+  	   ss_proto, refcnt, ss_flags, ss_type, ss_state);
+      if (has & HAS_INODE)
+! 	printf("%-8lu",inode);
+      else
+! 	printf("-       ");
+      if (flag_prg)
+! 	printf(" %-" PROGNAME_WIDTHs "s",(has & HAS_INODE?prg_cache_get(inode):"-"));
+! 	
+!     printf(" %s\n", path);
+  }
+  
+***************
+*** 1240,1244 ****
+      }
+  
+!     printf(_("\nProto RefCnt Flags       Type       State         I-Node"));
+      print_progname_banner();
+      printf(_(" Path\n"));	/* xxx */
+--- 1235,1239 ----
+      }
+  
+!     printf(_("\nProto RefCnt Flags       Type       State         I-Node  "));
+      print_progname_banner();
+      printf(_(" Path\n"));	/* xxx */
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 03:52:13 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 03:52:13 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/lib ib.c, NONE, 1.1 Makefile, 1.24,
+	1.25 hw.c, 1.18, 1.19
+Message-ID: <20081003015213.1BAC5B7A1E@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv3117
+
+Modified Files:
+	Makefile hw.c 
+Added Files:
+	ib.c 
+Log Message:
+Add hardware support for InfiniBand (Debian Bug #294252 Tom Duffy from Sun).
+
+
+--- NEW FILE: ib.c ---
+/*
+ * lib/ib.c        This file contains an implementation of the "Infiniband"
+ *              support functions.
+ *
+ * Version:     $Id: ib.c,v 1.1 2008/10/03 01:52:03 ecki Exp $
+ *
+ * Author:      Fred N. van Kempen, <waltje at uwalt.nl.mugnet.org>
+ *              Copyright 1993 MicroWalt Corporation
+ *		Tom Duffy <tduffy at sun.com>
+ *
+ *              This program is free software; you can redistribute it
+ *              and/or  modify it under  the terms of  the GNU General
+ *              Public  License as  published  by  the  Free  Software
+ *              Foundation;  either  version 2 of the License, or  (at
+ *              your option) any later version.
+ */
+#include "config.h"
+
+#if HAVE_HWIB
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <net/if_arp.h>
+#include <linux/if_infiniband.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
+#include <ctype.h>
+#include <string.h>
+#include <unistd.h>
+#include "net-support.h"
+#include "pathnames.h"
+#include "intl.h"
+#include "util.h"
+
+extern struct hwtype ib_hwtype;
+
+
+/* Display an InfiniBand address in readable format. */
+static char *pr_ib(unsigned char *ptr)
+{
+    static char buff[128];
+    char *pos;
+    unsigned int i;
+
+    pos = buff;
+    for (i = 0; i < INFINIBAND_ALEN; i++) {
+	pos += sprintf(pos, "%02X:", (*ptr++ & 0377));
+    }
+    buff[strlen(buff) - 1] = '\0';
+
+    /* snprintf(buff, sizeof(buff), "%02X:%02X:%02X:%02X:%02X:%02X",
+	     (ptr[0] & 0377), (ptr[1] & 0377), (ptr[2] & 0377),
+	     (ptr[3] & 0377), (ptr[4] & 0377), (ptr[5] & 0377)
+	);
+    */
+    return (buff);
+}
+
+
+/* Input an Infiniband address and convert to binary. */
+static int in_ib(char *bufp, struct sockaddr *sap)
+{
+    unsigned char *ptr;
+    char c, *orig;
+    int i;
+    unsigned val;
+
+    sap->sa_family = ib_hwtype.type;
+    ptr = sap->sa_data;
+
+    i = 0;
+    orig = bufp;
+    while ((*bufp != '\0') && (i < INFINIBAND_ALEN)) {
+	val = 0;
+	c = *bufp++;
+	if (isdigit(c))
+	    val = c - '0';
+	else if (c >= 'a' && c <= 'f')
+	    val = c - 'a' + 10;
+	else if (c >= 'A' && c <= 'F')
+	    val = c - 'A' + 10;
+	else {
+#ifdef DEBUG
+	    fprintf(stderr, _("in_ib(%s): invalid infiniband address!\n"), orig);
+#endif
+	    errno = EINVAL;
+	    return (-1);
+	}
+	val <<= 4;
+	c = *bufp;
+	if (isdigit(c))
+	    val |= c - '0';
+	else if (c >= 'a' && c <= 'f')
+	    val |= c - 'a' + 10;
+	else if (c >= 'A' && c <= 'F')
+	    val |= c - 'A' + 10;
+	else if (c == ':' || c == 0)
+	    val >>= 4;
+	else {
+#ifdef DEBUG
+	    fprintf(stderr, _("in_ib(%s): invalid infiniband address!\n"), orig);
+#endif
+	    errno = EINVAL;
+	    return (-1);
+	}
+	if (c != 0)
+	    bufp++;
+	*ptr++ = (unsigned char) (val & 0377);
+	i++;
+
+	/* We might get a semicolon here - not required. */
+	if (*bufp == ':') {
+	    if (i == INFINIBAND_ALEN) {
+#ifdef DEBUG
+		fprintf(stderr, _("in_ib(%s): trailing : ignored!\n"),
+			orig)
+#endif
+		    ;		/* nothing */
+	    }
+	    bufp++;
+	}
+    }
+
+    /* That's it.  Any trailing junk? */
+    if ((i == INFINIBAND_ALEN) && (*bufp != '\0')) {
+#ifdef DEBUG
+	fprintf(stderr, _("in_ib(%s): trailing junk!\n"), orig);
+	errno = EINVAL;
+	return (-1);
+#endif
+    }
+#ifdef DEBUG
+    fprintf(stderr, "in_ib(%s): %s\n", orig, pr_ib(sap->sa_data));
+#endif
+
+    return (0);
+}
+
+
+struct hwtype ib_hwtype =
+{
+    "infiniband", NULL, ARPHRD_INFINIBAND, INFINIBAND_ALEN,
+    pr_ib, in_ib, NULL
+};
+
+
+#endif				/* HAVE_HWIB */
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/Makefile,v
+retrieving revision 1.24
+retrieving revision 1.25
+diff -C2 -d -r1.24 -r1.25
+*** Makefile	12 Nov 2001 02:12:05 -0000	1.24
+--- Makefile	3 Oct 2008 01:52:04 -0000	1.25
+***************
+*** 17,21 ****
+  
+  
+! HWOBJS	 = hw.o loopback.o slip.o ether.o ax25.o ppp.o arcnet.o tr.o tunnel.o frame.o sit.o rose.o ash.o fddi.o hippi.o hdlclapb.o strip.o irda.o ec_hw.o x25.o eui64.o
+  AFOBJS	 = unix.o inet.o inet6.o ax25.o ipx.o ddp.o ipx.o netrom.o af.o rose.o econet.o x25.o
+  AFGROBJS = inet_gr.o inet6_gr.o ipx_gr.o ddp_gr.o netrom_gr.o ax25_gr.o rose_gr.o getroute.o x25_gr.o
+--- 17,21 ----
+  
+  
+! HWOBJS	 = hw.o loopback.o slip.o ether.o ax25.o ppp.o arcnet.o tr.o tunnel.o frame.o sit.o rose.o ash.o fddi.o hippi.o hdlclapb.o strip.o irda.o ec_hw.o x25.o eui64.o ib.o
+  AFOBJS	 = unix.o inet.o inet6.o ax25.o ipx.o ddp.o ipx.o netrom.o af.o rose.o econet.o x25.o
+  AFGROBJS = inet_gr.o inet6_gr.o ipx_gr.o ddp_gr.o netrom_gr.o ax25_gr.o rose_gr.o getroute.o x25_gr.o
+
+Index: hw.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/hw.c,v
+retrieving revision 1.18
+retrieving revision 1.19
+diff -C2 -d -r1.18 -r1.19
+*** hw.c	12 Nov 2001 02:12:05 -0000	1.18
+--- hw.c	3 Oct 2008 01:52:04 -0000	1.19
+***************
+*** 74,77 ****
+--- 74,79 ----
+  extern struct hwtype ec_hwtype;
+  
++ extern struct hwtype ib_hwtype;
++ 
+  extern struct hwtype eui64_hwtype;
+  
+***************
+*** 147,150 ****
+--- 149,155 ----
+      &x25_hwtype,
+  #endif
++ #if HAVE_HWIB
++     &ib_hwtype,
++ #endif
+  #if HAVE_HWEUI64
+      &eui64_hwtype,
+***************
+*** 222,225 ****
+--- 227,233 ----
+  #if HAVE_HWEC
+      ec_hwtype.title = _("Econet");
++ #endif
++ #if HAVE_HWIB
++     ib_hwtype.title = _("InfiniBand");
+  #endif
+  #if HAVE_HWEUI64
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 03:55:09 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 03:55:09 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools config.in,1.22,1.23
+Message-ID: <20081003015509.C129DF2E60@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv3422
+
+Modified Files:
+	config.in 
+Log Message:
+Add hardware support for InfiniBand (Debian Bug #294252 Tom Duffy from Sun).
+
+
+Index: config.in
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/config.in,v
+retrieving revision 1.22
+retrieving revision 1.23
+diff -C2 -d -r1.22 -r1.23
+*** config.in	4 Jun 2004 00:06:50 -0000	1.22
+--- config.in	3 Oct 2008 01:55:07 -0000	1.23
+***************
+*** 60,63 ****
+--- 60,64 ----
+  bool 'DECnet protocol family' HAVE_AFDECnet n
+  bool 'Ash protocol family' HAVE_AFASH y
++ bool 'InfiniBand hardware support' HAVE_HWIB y
+  *
+  *
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Oct  3 04:10:01 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  3 Oct 2008 04:10:01 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools config.in,1.23,1.24
+Message-ID: <20081003021001.24F0B53381@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv5458
+
+Modified Files:
+	config.in 
+Log Message:
+moved H suport for Infiniband to the right section
+
+
+Index: config.in
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/config.in,v
+retrieving revision 1.23
+retrieving revision 1.24
+diff -C2 -d -r1.23 -r1.24
+*** config.in	3 Oct 2008 01:55:07 -0000	1.23
+--- config.in	3 Oct 2008 02:09:57 -0000	1.24
+***************
+*** 60,64 ****
+  bool 'DECnet protocol family' HAVE_AFDECnet n
+  bool 'Ash protocol family' HAVE_AFASH y
+- bool 'InfiniBand hardware support' HAVE_HWIB y
+  *
+  *
+--- 60,63 ----
+***************
+*** 85,89 ****
+  bool 'Econet hardware support' HAVE_HWEC y
+  bool 'Generic EUI-64 hardware support' HAVE_HWEUI64 y
+! 
+  *
+  *
+--- 84,88 ----
+  bool 'Econet hardware support' HAVE_HWEC y
+  bool 'Generic EUI-64 hardware support' HAVE_HWEUI64 y
+! bool 'InfiniBand hardware support' HAVE_HWIB y
+  *
+  *
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sun Nov 16 17:45:11 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sun, 16 Nov 2008 17:45:11 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/en_US netstat.8,1.21,1.22
+Message-ID: <20081116164511.E5006159924@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv26633/man/en_US
+
+Modified Files:
+	netstat.8 
+Log Message:
+Add wide option to prevent truncating IPv6 addresses
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.21
+retrieving revision 1.22
+diff -C2 -d -r1.21 -r1.22
+*** netstat.8	2 Oct 2008 23:16:59 -0000	1.21
+--- netstat.8	16 Nov 2008 16:45:08 -0000	1.22
+***************
+*** 9,13 ****
+  .\"
+  .\"
+! .TH NETSTAT 8 "2008\-10\-03" "net\-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+--- 9,13 ----
+  .\"
+  .\"
+! .TH NETSTAT 8 "2008\-11\-16" "net\-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+***************
+*** 119,122 ****
+--- 119,125 ----
+  Tell the user what is going on by being verbose. Especially print some
+  useful information about unconfigured address families.
++ .SS "\-\-wide , \-W"
++ Do not truncate IP addresses by using output as wide as needed. This is
++ optional for now to not break existing scripts.
+  .SS "\-\-numeric , \-n"
+  Show numerical addresses instead of trying to determine symbolic host, port
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sun Nov 16 17:45:11 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sun, 16 Nov 2008 17:45:11 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.59,1.60
+Message-ID: <20081116164511.C611E15C21E@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv26633
+
+Modified Files:
+	netstat.c 
+Log Message:
+Add wide option to prevent truncating IPv6 addresses
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.59
+retrieving revision 1.60
+diff -C2 -d -r1.59 -r1.60
+*** netstat.c	3 Oct 2008 01:39:06 -0000	1.59
+--- netstat.c	16 Nov 2008 16:45:08 -0000	1.60
+***************
+*** 150,153 ****
+--- 150,154 ----
+  int flag_rom = 0;
+  int flag_exp = 1;
++ int flag_wide= 0;
+  int flag_prg = 0;
+  int flag_arg = 0;
+***************
+*** 771,776 ****
+  			   flag_not & FLAG_NUM_PORT));
+  
+! 	if ((strlen(local_addr) + strlen(buffer)) > 22)
+! 	    local_addr[22 - strlen(buffer)] = '\0';
+  
+  	strcat(local_addr, ":");
+--- 772,779 ----
+  			   flag_not & FLAG_NUM_PORT));
+  
+! 	if (!flag_wide) {
+! 	    if ((strlen(local_addr) + strlen(buffer)) > 22)
+! 		local_addr[22 - strlen(buffer)] = '\0';
+! 	}
+  
+  	strcat(local_addr, ":");
+***************
+*** 779,784 ****
+  		 get_sname(htons(rem_port), "tcp", flag_not & FLAG_NUM_PORT));
+  
+! 	if ((strlen(rem_addr) + strlen(buffer)) > 22)
+! 	    rem_addr[22 - strlen(buffer)] = '\0';
+  
+  	strcat(rem_addr, ":");
+--- 782,789 ----
+  		 get_sname(htons(rem_port), "tcp", flag_not & FLAG_NUM_PORT));
+  
+! 	if (!flag_wide) {
+! 	    if ((strlen(rem_addr) + strlen(buffer)) > 22)
+! 		rem_addr[22 - strlen(buffer)] = '\0';
+! 	}
+  
+  	strcat(rem_addr, ":");
+***************
+*** 1501,1507 ****
+  static void usage(void)
+  {
+!     fprintf(stderr, _("usage: netstat [-veenNcCF] [<Af>] -r         netstat {-V|--version|-h|--help}\n"));
+!     fprintf(stderr, _("       netstat [-vnNcaeol] [<Socket> ...]\n"));
+!     fprintf(stderr, _("       netstat { [-veenNac] -i | [-cnNe] -M | -s [-6tuw] }\n\n"));
+  
+      fprintf(stderr, _("        -r, --route              display routing table\n"));
+--- 1506,1512 ----
+  static void usage(void)
+  {
+!     fprintf(stderr, _("usage: netstat [-vWeenNcCF] [<Af>] -r         netstat {-V|--version|-h|--help}\n"));
+!     fprintf(stderr, _("       netstat [-vWnNcaeol] [<Socket> ...]\n"));
+!     fprintf(stderr, _("       netstat { [-vWeenNac] -i | [-cnNe] -M | -s [-6tuw] }\n\n"));
+  
+      fprintf(stderr, _("        -r, --route              display routing table\n"));
+***************
+*** 1513,1516 ****
+--- 1518,1522 ----
+  #endif
+      fprintf(stderr, _("        -v, --verbose            be verbose\n"));
++     fprintf(stderr, _("        -W, --wide               don't truncate IP addresses\n"));
+      fprintf(stderr, _("        -n, --numeric            don't resolve names\n"));
+      fprintf(stderr, _("        --numeric-hosts          don't resolve host names\n"));
+***************
+*** 1562,1565 ****
+--- 1568,1572 ----
+  	{"verbose", 0, 0, 'v'},
+  	{"statistics", 0, 0, 's'},
++ 	{"wide", 0, 0, 'W'},
+  	{"numeric", 0, 0, 'n'},
+  	{"numeric-hosts", 0, 0, '!'},
+***************
+*** 1581,1585 ****
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, "MCFA:acdegphinNorstuVv?wxl64", longopts, &lop)) != EOF)
+  	switch (i) {
+  	case -1:
+--- 1588,1592 ----
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, "MCFA:acdegphinNorstuWVv?wxl64", longopts, &lop)) != EOF)
+  	switch (i) {
+  	case -1:
+***************
+*** 1624,1627 ****
+--- 1631,1637 ----
+  	case 'i':
+  	    flag_int++;
++ 	    break;
++ 	case 'W':
++ 	    flag_wide++;
+  	    break;
+  	case 'n':
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Tue Dec  2 00:15:38 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Tue,  2 Dec 2008 00:15:38 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/lib pathnames.h,1.8,1.9
+Message-ID: <20081201231538.913CB168584@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv23298/lib
+
+Modified Files:
+	pathnames.h 
+Log Message:
+UDPlite Support for net-stat by Brian Micek <bmicek at gmail.com>
+
+
+Index: pathnames.h
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/pathnames.h,v
+retrieving revision 1.8
+retrieving revision 1.9
+diff -C2 -d -r1.8 -r1.9
+*** pathnames.h	2 Aug 2005 22:28:10 -0000	1.8
+--- pathnames.h	1 Dec 2008 23:15:36 -0000	1.9
+***************
+*** 17,20 ****
+--- 17,22 ----
+  #define _PATH_PROCNET_UDP		"/proc/net/udp"
+  #define _PATH_PROCNET_UDP6		"/proc/net/udp6"
++ #define _PATH_PROCNET_UDPLITE           "/proc/net/udplite"
++ #define _PATH_PROCNET_UDPLITE6          "/proc/net/udplite6"
+  #define _PATH_PROCNET_RAW		"/proc/net/raw"
+  #define _PATH_PROCNET_RAW6		"/proc/net/raw6"
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Tue Dec  2 00:15:38 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Tue,  2 Dec 2008 00:15:38 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/en_US netstat.8,1.22,1.23
+Message-ID: <20081201231538.BEB8E168643@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv23298/man/en_US
+
+Modified Files:
+	netstat.8 
+Log Message:
+UDPlite Support for net-stat by Brian Micek <bmicek at gmail.com>
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.22
+retrieving revision 1.23
+diff -C2 -d -r1.22 -r1.23
+*** netstat.8	16 Nov 2008 16:45:08 -0000	1.22
+--- netstat.8	1 Dec 2008 23:15:36 -0000	1.23
+***************
+*** 20,23 ****
+--- 20,24 ----
+  .RB [ \-\-tcp | \-t ]
+  .RB [ \-\-udp | \-u ]
++ .RB [ \-\-udplite | \-U ]
+  .RB [ \-\-raw | \-w ]
+  .RB [ \-\-listening | \-l ]
+***************
+*** 68,71 ****
+--- 69,73 ----
+  .RB [ \-\-tcp | \-t ]
+  .RB [ \-\-udp | \-u ]
++ .RB [ \-\-udplite | \-U ]
+  .RB [ \-\-raw | \-w ]
+  .P
+***************
+*** 159,163 ****
+  The address family
+  .B inet
+! includes raw, udp and tcp protocol sockets.
+  .SS "\-c, \-\-continuous"
+  This will cause
+--- 161,165 ----
+  The address family
+  .B inet
+! includes raw, udp, udplite and tcp protocol sockets.
+  .SS "\-c, \-\-continuous"
+  This will cause
+***************
+*** 183,189 ****
+  .SH OUTPUT
+  .P
+! .SS Active Internet connections \fR(TCP, UDP, raw)\fR
+  .SS "Proto" 
+! The protocol (tcp, udp, raw) used by the socket. 
+  .SS "Recv\-Q"
+  Established: The count of bytes not copied by the user program connected to this socket.
+--- 185,191 ----
+  .SH OUTPUT
+  .P
+! .SS Active Internet connections \fR(TCP, UDP, UDPLite, raw)\fR
+  .SS "Proto" 
+! The protocol (tcp, udp, udpl, raw) used by the socket. 
+  .SS "Recv\-Q"
+  Established: The count of bytes not copied by the user program connected to this socket.
+***************
+*** 203,207 ****
+  .SS "State"
+  The state of the socket. Since there are no states in raw mode and usually no
+! states used in UDP, this column may be left blank. Normally this can be one
+  of several values:
+  .TP
+--- 205,209 ----
+  .SS "State"
+  The state of the socket. Since there are no states in raw mode and usually no
+! states used in UDP and UDPLite, this column may be left blank. Normally this can be one
+  of several values:
+  .TP
+***************
+*** 396,399 ****
+--- 398,404 ----
+  -- UDP socket information
+  
++ .I /proc/net/udplite
++ -- UDPLite socket information
++ 
+  .I /proc/net/igmp
+  -- IGMP multicast information
+***************
+*** 457,459 ****
+  The man page and the command included in the net\-tools
+  package is totally rewritten by Bernd Eckenfels 
+! <ecki at linux.de>.
+--- 462,465 ----
+  The man page and the command included in the net\-tools
+  package is totally rewritten by Bernd Eckenfels 
+! <ecki at linux.de>.  UDPLite options were added by Brian Micek
+! <bmicek at gmail.com>
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Tue Dec  2 00:15:38 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Tue,  2 Dec 2008 00:15:38 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.60,1.61
+Message-ID: <20081201231538.6BC2F168495@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv23298
+
+Modified Files:
+	netstat.c 
+Log Message:
+UDPlite Support for net-stat by Brian Micek <bmicek at gmail.com>
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.60
+retrieving revision 1.61
+diff -C2 -d -r1.60 -r1.61
+*** netstat.c	16 Nov 2008 16:45:08 -0000	1.60
+--- netstat.c	1 Dec 2008 23:15:35 -0000	1.61
+***************
+*** 59,62 ****
+--- 59,63 ----
+   *990420 {1.38} Tuan Hoang              removed a useless assignment from igmp_do_one()
+   *20010404 {1.39} Arnaldo Carvalho de Melo - use setlocale
++  *20081201 {1.42} Brian Micek           added -L|--udplite options for RFC 3828 
+   *
+   *              This program is free software; you can redistribute it
+***************
+*** 126,130 ****
+  #include "lib/net-features.h"
+  
+! char *Release = RELEASE, *Version = "netstat 1.42 (2001-04-15)", *Signature = "Fred Baumgarten, Alan Cox, Bernd Eckenfels, Phil Blundell, Tuan Hoang and others";
+  
+  
+--- 127,131 ----
+  #include "lib/net-features.h"
+  
+! char *Release = RELEASE, *Version = "netstat 1.42 (2001-04-15)", *Signature = "Fred Baumgarten, Alan Cox, Bernd Eckenfels, Phil Blundell, Tuan Hoang, Brian Micek and others";
+  
+  
+***************
+*** 147,150 ****
+--- 148,152 ----
+  int flag_tcp = 0;
+  int flag_udp = 0;
++ int flag_udplite = 0;
+  int flag_igmp= 0;
+  int flag_rom = 0;
+***************
+*** 157,161 ****
+  FILE *procinfo;
+  
+! #define INFO_GUTS1(file,name,proc)			\
+    procinfo = proc_fopen((file));			\
+    if (procinfo == NULL) {				\
+--- 159,163 ----
+  FILE *procinfo;
+  
+! #define INFO_GUTS1(file,name,proc,prot)			\
+    procinfo = proc_fopen((file));			\
+    if (procinfo == NULL) {				\
+***************
+*** 171,175 ****
+      do {						\
+        if (fgets(buffer, sizeof(buffer), procinfo))	\
+!         (proc)(lnr++, buffer);				\
+      } while (!feof(procinfo));				\
+      fclose(procinfo);					\
+--- 173,177 ----
+      do {						\
+        if (fgets(buffer, sizeof(buffer), procinfo))	\
+!         (proc)(lnr++, buffer,prot);			\
+      } while (!feof(procinfo));				\
+      fclose(procinfo);					\
+***************
+*** 177,181 ****
+  
+  #if HAVE_AFINET6
+! #define INFO_GUTS2(file,proc)				\
+    lnr = 0;						\
+    procinfo = proc_fopen((file));		       	\
+--- 179,183 ----
+  
+  #if HAVE_AFINET6
+! #define INFO_GUTS2(file,proc,prot)			\
+    lnr = 0;						\
+    procinfo = proc_fopen((file));		       	\
+***************
+*** 183,192 ****
+      do {						\
+        if (fgets(buffer, sizeof(buffer), procinfo))	\
+! 	(proc)(lnr++, buffer);				\
+      } while (!feof(procinfo));				\
+      fclose(procinfo);					\
+    }
+  #else
+! #define INFO_GUTS2(file,proc)
+  #endif
+  
+--- 185,194 ----
+      do {						\
+        if (fgets(buffer, sizeof(buffer), procinfo))	\
+! 	(proc)(lnr++, buffer,prot);			\
+      } while (!feof(procinfo));				\
+      fclose(procinfo);					\
+    }
+  #else
+! #define INFO_GUTS2(file,proc,prot)
+  #endif
+  
+***************
+*** 194,214 ****
+   return rc;
+  
+! #define INFO_GUTS6(file,file6,name,proc)		\
+   char buffer[8192];					\
+   int rc = 0;						\
+   int lnr = 0;						\
+   if (!flag_arg || flag_inet) {				\
+!     INFO_GUTS1(file,name,proc)				\
+   }							\
+   if (!flag_arg || flag_inet6) {				\
+!     INFO_GUTS2(file6,proc)				\
+   }							\
+   INFO_GUTS3
+  
+! #define INFO_GUTS(file,name,proc)			\
+   char buffer[8192];					\
+   int rc = 0;						\
+   int lnr = 0;						\
+!  INFO_GUTS1(file,name,proc)				\
+   INFO_GUTS3
+  
+--- 196,216 ----
+   return rc;
+  
+! #define INFO_GUTS6(file,file6,name,proc,prot4,prot6)	\
+   char buffer[8192];					\
+   int rc = 0;						\
+   int lnr = 0;						\
+   if (!flag_arg || flag_inet) {				\
+!     INFO_GUTS1(file,name,proc,prot4)			\
+   }							\
+   if (!flag_arg || flag_inet6) {				\
+!     INFO_GUTS2(file6,proc,prot6)			\
+   }							\
+   INFO_GUTS3
+  
+! #define INFO_GUTS(file,name,proc,prot)			\
+   char buffer[8192];					\
+   int rc = 0;						\
+   int lnr = 0;						\
+!  INFO_GUTS1(file,name,proc,prot)			\
+   INFO_GUTS3
+  
+***************
+*** 542,546 ****
+  }
+  
+! static void igmp_do_one(int lnr, const char *line)
+  {
+      char mcast_addr[128];
+--- 544,548 ----
+  }
+  
+! static void igmp_do_one(int lnr, const char *line,const char *prot)
+  {
+      char mcast_addr[128];
+***************
+*** 700,712 ****
+  {
+      INFO_GUTS6(_PATH_PROCNET_IGMP, _PATH_PROCNET_IGMP6, "AF INET (igmp)",
+! 	       igmp_do_one);
+  }
+  
+! static void tcp_do_one(int lnr, const char *line)
+  {
+      unsigned long rxq, txq, time_len, retr, inode;
+      int num, local_port, rem_port, d, state, uid, timer_run, timeout;
+      char rem_addr[128], local_addr[128], timers[64], buffer[1024], more[512];
+-     char *protname;
+      struct aftype *ap;
+  #if HAVE_AFINET6
+--- 702,713 ----
+  {
+      INFO_GUTS6(_PATH_PROCNET_IGMP, _PATH_PROCNET_IGMP6, "AF INET (igmp)",
+! 	       igmp_do_one, "igmp", "igmp6");
+  }
+  
+! static void tcp_do_one(int lnr, const char *line, const char *prot)
+  {
+      unsigned long rxq, txq, time_len, retr, inode;
+      int num, local_port, rem_port, d, state, uid, timer_run, timeout;
+      char rem_addr[128], local_addr[128], timers[64], buffer[1024], more[512];
+      struct aftype *ap;
+  #if HAVE_AFINET6
+***************
+*** 729,733 ****
+      if (strlen(local_addr) > 8) {
+  #if HAVE_AFINET6
+- 	protname = "tcp6";
+  	/* Demangle what the kernel gives us */
+  	sscanf(local_addr, "%08X%08X%08X%08X",
+--- 730,733 ----
+***************
+*** 745,749 ****
+  #endif
+      } else {
+- 	protname = "tcp";
+  	sscanf(local_addr, "%X",
+  	       &((struct sockaddr_in *) &localaddr)->sin_addr.s_addr);
+--- 745,748 ----
+***************
+*** 818,822 ****
+  	    }
+  	printf("%-4s  %6ld %6ld %-*s %-*s %-11s",
+! 	       protname, rxq, txq, netmax(23,strlen(local_addr)), local_addr, netmax(23,strlen(rem_addr)), rem_addr, _(tcp_state[state]));
+  
+  	finish_this_one(uid,inode,timers);
+--- 817,821 ----
+  	    }
+  	printf("%-4s  %6ld %6ld %-*s %-*s %-11s",
+! 	       prot, rxq, txq, netmax(23,strlen(local_addr)), local_addr, netmax(23,strlen(rem_addr)), rem_addr, _(tcp_state[state]));
+  
+  	finish_this_one(uid,inode,timers);
+***************
+*** 827,839 ****
+  {
+      INFO_GUTS6(_PATH_PROCNET_TCP, _PATH_PROCNET_TCP6, "AF INET (tcp)",
+! 	       tcp_do_one);
+  }
+  
+! static void udp_do_one(int lnr, const char *line)
+  {
+      char buffer[8192], local_addr[64], rem_addr[64];
+      char *udp_state, timers[64], more[512];
+      int num, local_port, rem_port, d, state, timer_run, uid, timeout;
+-     char *protname;
+  #if HAVE_AFINET6
+      struct sockaddr_in6 localaddr, remaddr;
+--- 826,837 ----
+  {
+      INFO_GUTS6(_PATH_PROCNET_TCP, _PATH_PROCNET_TCP6, "AF INET (tcp)",
+! 	       tcp_do_one, "tcp", "tcp6");
+  }
+  
+! static void udp_do_one(int lnr, const char *line,const char *prot)
+  {
+      char buffer[8192], local_addr[64], rem_addr[64];
+      char *udp_state, timers[64], more[512];
+      int num, local_port, rem_port, d, state, timer_run, uid, timeout;
+  #if HAVE_AFINET6
+      struct sockaddr_in6 localaddr, remaddr;
+***************
+*** 859,863 ****
+      if (strlen(local_addr) > 8) {
+  #if HAVE_AFINET6
+- 	protname="udp6";
+  	sscanf(local_addr, "%08X%08X%08X%08X",
+  	       &in6.s6_addr32[0], &in6.s6_addr32[1],
+--- 857,860 ----
+***************
+*** 874,878 ****
+  #endif
+      } else {
+-         protname="udp";
+  	sscanf(local_addr, "%X",
+  	       &((struct sockaddr_in *) &localaddr)->sin_addr.s_addr);
+--- 871,874 ----
+***************
+*** 960,965 ****
+  		break;
+  	    }
+! 	printf("%-4s  %6ld %6ld %-23s %-23s %-11s",
+! 	       protname, rxq, txq, local_addr, rem_addr, udp_state);
+  
+  	finish_this_one(uid,inode,timers);
+--- 956,961 ----
+  		break;
+  	    }
+! 	printf("%-5s %6ld %6ld %-23s %-23s %-11s",
+! 	       prot, rxq, txq, local_addr, rem_addr, udp_state);
+  
+  	finish_this_one(uid,inode,timers);
+***************
+*** 970,982 ****
+  {
+      INFO_GUTS6(_PATH_PROCNET_UDP, _PATH_PROCNET_UDP6, "AF INET (udp)",
+! 	       udp_do_one);
+  }
+  
+! static void raw_do_one(int lnr, const char *line)
+  {
+      char buffer[8192], local_addr[64], rem_addr[64];
+      char timers[64], more[512];
+      int num, local_port, rem_port, d, state, timer_run, uid, timeout;
+-     char *protname;
+  #if HAVE_AFINET6
+      struct sockaddr_in6 localaddr, remaddr;
+--- 966,983 ----
+  {
+      INFO_GUTS6(_PATH_PROCNET_UDP, _PATH_PROCNET_UDP6, "AF INET (udp)",
+! 	       udp_do_one, "upd", "udp6");
+  }
+  
+! static int udplite_info(void)
+! {
+!     INFO_GUTS6(_PATH_PROCNET_UDPLITE, _PATH_PROCNET_UDPLITE6, 
+!                "AF INET (udplite)", udp_do_one, "udpl", "udpl6" );
+! }
+! 
+! static void raw_do_one(int lnr, const char *line,const char *prot)
+  {
+      char buffer[8192], local_addr[64], rem_addr[64];
+      char timers[64], more[512];
+      int num, local_port, rem_port, d, state, timer_run, uid, timeout;
+  #if HAVE_AFINET6
+      struct sockaddr_in6 localaddr, remaddr;
+***************
+*** 1001,1005 ****
+      if (strlen(local_addr) > 8) {
+  #if HAVE_AFINET6
+- 	protname = "raw6";
+  	sscanf(local_addr, "%08X%08X%08X%08X",
+  	       &in6.s6_addr32[0], &in6.s6_addr32[1],
+--- 1002,1005 ----
+***************
+*** 1016,1020 ****
+  #endif
+      } else {
+-         protname = "raw";
+  	sscanf(local_addr, "%X",
+  	       &((struct sockaddr_in *) &localaddr)->sin_addr.s_addr);
+--- 1016,1019 ----
+***************
+*** 1085,1089 ****
+  	    }
+  	printf("%-4s  %6ld %6ld %-23s %-23s %-11d",
+! 	       protname, rxq, txq, local_addr, rem_addr, state);
+  
+  	finish_this_one(uid,inode,timers);
+--- 1084,1088 ----
+  	    }
+  	printf("%-4s  %6ld %6ld %-23s %-23s %-11d",
+! 	       prot, rxq, txq, local_addr, rem_addr, state);
+  
+  	finish_this_one(uid,inode,timers);
+***************
+*** 1094,1098 ****
+  {
+      INFO_GUTS6(_PATH_PROCNET_RAW, _PATH_PROCNET_RAW6, "AF INET (raw)",
+! 	       raw_do_one);
+  }
+  
+--- 1093,1097 ----
+  {
+      INFO_GUTS6(_PATH_PROCNET_RAW, _PATH_PROCNET_RAW6, "AF INET (raw)",
+! 	       raw_do_one, "raw", "raw6");
+  }
+  
+***************
+*** 1104,1108 ****
+  #define HAS_INODE 1
+  
+! static void unix_do_one(int nr, const char *line)
+  {
+      static int has = 0;
+--- 1103,1107 ----
+  #define HAS_INODE 1
+  
+! static void unix_do_one(int nr, const char *line, const char *prot)
+  {
+      static int has = 0;
+***************
+*** 1245,1249 ****
+  
+      {
+! 	INFO_GUTS(_PATH_PROCNET_UNIX, "AF UNIX", unix_do_one);
+      }
+  }
+--- 1244,1248 ----
+  
+      {
+! 	INFO_GUTS(_PATH_PROCNET_UNIX, "AF UNIX", unix_do_one, "unix");
+      }
+  }
+***************
+*** 1533,1537 ****
+      fprintf(stderr, _("        -C, --cache              display routing cache instead of FIB\n\n"));
+  
+!     fprintf(stderr, _("  <Socket>={-t|--tcp} {-u|--udp} {-w|--raw} {-x|--unix} --ax25 --ipx --netrom\n"));
+      fprintf(stderr, _("  <AF>=Use '-6|-4' or '-A <af>' or '--<af>'; default: %s\n"), DFLT_AF);
+      fprintf(stderr, _("  List of possible address families (which support routing):\n"));
+--- 1532,1536 ----
+      fprintf(stderr, _("        -C, --cache              display routing cache instead of FIB\n\n"));
+  
+!     fprintf(stderr, _("  <Socket>={-t|--tcp} {-u|--udp} {-U|--udplite} {-w|--raw} {-x|--unix} --ax25 --ipx --netrom\n"));
+      fprintf(stderr, _("  <AF>=Use '-6|-4' or '-A <af>' or '--<af>'; default: %s\n"), DFLT_AF);
+      fprintf(stderr, _("  List of possible address families (which support routing):\n"));
+***************
+*** 1558,1561 ****
+--- 1557,1561 ----
+  	{"tcp", 0, 0, 't'},
+  	{"udp", 0, 0, 'u'},
++         {"udplite", 0, 0, 'U'},
+  	{"raw", 0, 0, 'w'},
+  	{"unix", 0, 0, 'x'},
+***************
+*** 1588,1592 ****
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, "MCFA:acdegphinNorstuWVv?wxl64", longopts, &lop)) != EOF)
+  	switch (i) {
+  	case -1:
+--- 1588,1592 ----
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, "MCFA:acdegphinNorstuWVv?wxl64U", longopts, &lop)) != EOF)
+  	switch (i) {
+  	case -1:
+***************
+*** 1684,1687 ****
+--- 1684,1690 ----
+  	    flag_udp++;
+  	    break;
++         case 'U':
++ 	    flag_udplite++;
++ 	    break;
+  	case 'w':
+  	    flag_raw++;
+***************
+*** 1701,1712 ****
+  	usage();
+  
+!     if ((flag_inet || flag_inet6 || flag_sta) && !(flag_tcp || flag_udp || flag_raw))
+! 	flag_tcp = flag_udp = flag_raw = 1;
+  
+!     if ((flag_tcp || flag_udp || flag_raw || flag_igmp) && !(flag_inet || flag_inet6))
+          flag_inet = flag_inet6 = 1;
+  
+!     flag_arg = flag_tcp + flag_udp + flag_raw + flag_unx + flag_ipx
+! 	+ flag_ax25 + flag_netrom + flag_igmp + flag_x25 + flag_rose;
+  
+      if (flag_mas) {
+--- 1704,1717 ----
+  	usage();
+  
+!     if ((flag_inet || flag_inet6 || flag_sta) && 
+!         !(flag_tcp || flag_udp || flag_udplite || flag_raw))
+! 	   flag_tcp = flag_udp = flag_udplite = flag_raw = 1;
+  
+!     if ((flag_tcp || flag_udp || flag_udplite || flag_raw || flag_igmp) && 
+!         !(flag_inet || flag_inet6))
+          flag_inet = flag_inet6 = 1;
+  
+!     flag_arg = flag_tcp + flag_udplite + flag_udp + flag_raw + flag_unx 
+!         + flag_ipx + flag_ax25 + flag_netrom + flag_igmp + flag_x25 + flag_rose;
+  
+      if (flag_mas) {
+***************
+*** 1788,1792 ****
+      }
+      for (;;) {
+! 	if (!flag_arg || flag_tcp || flag_udp || flag_raw) {
+  #if HAVE_AFINET
+  	    prg_cache_load();
+--- 1793,1797 ----
+      }
+      for (;;) {
+! 	if (!flag_arg || flag_tcp || flag_udp || flag_udplite || flag_raw) {
+  #if HAVE_AFINET
+  	    prg_cache_load();
+***************
+*** 1821,1824 ****
+--- 1826,1830 ----
+  		return (i);
+  	}
++ 
+  	if (!flag_arg || flag_udp) {
+  	    i = udp_info();
+***************
+*** 1826,1829 ****
+--- 1832,1842 ----
+  		return (i);
+  	}
++ 
++ 	if (!flag_arg || flag_udplite) {
++ 	    i = udplite_info();
++ 	    if (i)
++ 		return (i);
++ 	}
++ 
+  	if (!flag_arg || flag_raw) {
+  	    i = raw_info();
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Tue Dec  2 02:53:51 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Tue,  2 Dec 2008 02:53:51 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.61,1.62
+Message-ID: <20081202015351.8D74F27BA1@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv23395
+
+Modified Files:
+	netstat.c 
+Log Message:
+sorted options
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.61
+retrieving revision 1.62
+diff -C2 -d -r1.61 -r1.62
+*** netstat.c	1 Dec 2008 23:15:35 -0000	1.61
+--- netstat.c	2 Dec 2008 01:53:48 -0000	1.62
+***************
+*** 1588,1592 ****
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, "MCFA:acdegphinNorstuWVv?wxl64U", longopts, &lop)) != EOF)
+  	switch (i) {
+  	case -1:
+--- 1588,1592 ----
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, "A:CFMacdeghilnNoprstuUvVWwx64?", longopts, &lop)) != EOF)
+  	switch (i) {
+  	case -1:
+***************
+*** 1676,1684 ****
+  	    flag_rou++;
+  	    break;
+- 
+  	case 't':
+  	    flag_tcp++;
+  	    break;
+- 
+  	case 'u':
+  	    flag_udp++;
+--- 1676,1682 ----
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Tue Dec  2 02:58:03 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Tue,  2 Dec 2008 02:58:03 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/en_US netstat.8,1.23,1.24
+Message-ID: <20081202015803.4F6A5AAB01@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv23538/man/en_US
+
+Modified Files:
+	netstat.8 
+Log Message:
+new date, reformatted authors section (shorter)
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.23
+retrieving revision 1.24
+diff -C2 -d -r1.23 -r1.24
+*** netstat.8	1 Dec 2008 23:15:36 -0000	1.23
+--- netstat.8	2 Dec 2008 01:58:01 -0000	1.24
+***************
+*** 7,13 ****
+  .\" Modified: Andi Kleen ak at muc.de 
+  .\" Modified: Tuan Hoang tqhoang at bigfoot.com 
+  .\"
+  .\"
+! .TH NETSTAT 8 "2008\-11\-16" "net\-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+--- 7,14 ----
+  .\" Modified: Andi Kleen ak at muc.de 
+  .\" Modified: Tuan Hoang tqhoang at bigfoot.com 
++ .\" Modified: Brian Micek bmicek at gmail.com
+  .\"
+  .\"
+! .TH NETSTAT 8 "2008\-12\-02" "net\-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+***************
+*** 456,465 ****
+  <dc6iq at insu1.etec.uni\-karlsruhe.de>, the man page basically
+  by Matt Welsh <mdw at tc.cornell.edu>. It was updated by
+! Alan Cox <Alan.Cox at linux.org> but could do with a bit more
+! work.  It was updated again by Tuan Hoang
+! <tqhoang at bigfoot.com>.
+! .br
+! The man page and the command included in the net\-tools
+! package is totally rewritten by Bernd Eckenfels 
+  <ecki at linux.de>.  UDPLite options were added by Brian Micek
+  <bmicek at gmail.com>
+--- 457,463 ----
+  <dc6iq at insu1.etec.uni\-karlsruhe.de>, the man page basically
+  by Matt Welsh <mdw at tc.cornell.edu>. It was updated by
+! Alan Cox <Alan.Cox at linux.org>, updated again by Tuan Hoang
+! <tqhoang at bigfoot.com>. The man page and the command included 
+! in the net\-tools package is totally rewritten by Bernd Eckenfels 
+  <ecki at linux.de>.  UDPLite options were added by Brian Micek
+  <bmicek at gmail.com>
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Tue Dec  2 03:00:26 2008
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Tue,  2 Dec 2008 03:00:26 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/en_US netstat.8,1.24,1.25
+Message-ID: <20081202020026.E686315D49C@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv23716/man/en_US
+
+Modified Files:
+	netstat.8 
+Log Message:
+-W option
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.24
+retrieving revision 1.25
+diff -C2 -d -r1.24 -r1.25
+*** netstat.8	2 Dec 2008 01:58:01 -0000	1.24
+--- netstat.8	2 Dec 2008 02:00:24 -0000	1.25
+***************
+*** 33,36 ****
+--- 33,37 ----
+  .RB [ \-\-verbose | \-v ]
+  .RB [ \-\-continuous | \-c]
++ .RB [ \-\-wide | \-W]
+  .P
+  .B netstat 
+
+
+

@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/man/en_US arp.8,1.7,1.8
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2007q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/man/en_US%20arp.8%2C1.7%2C1.8&In-Reply-To=%3C20071201182036.9D40D1200D7%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000017.html">
+   <LINK REL="Next"  HREF="000019.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/man/en_US arp.8,1.7,1.8</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/man/en_US%20arp.8%2C1.7%2C1.8&In-Reply-To=%3C20071201182036.9D40D1200D7%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/man/en_US arp.8,1.7,1.8">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Sat Dec  1 19:20:36 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000017.html">[net-tools-cvscommit] net-tools netstat.c,1.53,1.54
+</A></li>
+        <LI>Next message: <A HREF="000019.html">[net-tools-cvscommit] net-tools statistics.c,1.18,1.19
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#18">[ date ]</a>
+              <a href="thread.html#18">[ thread ]</a>
+              <a href="subject.html#18">[ subject ]</a>
+              <a href="author.html#18">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv24427/man/en_US
+
+Modified Files:
+	arp.8 
+Log Message:
+cleanup man page (arp.8 2007-12-01)
+
+
+Index: arp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/arp.8,v
+retrieving revision 1.7
+retrieving revision 1.8
+diff -C2 -d -r1.7 -r1.8
+*** arp.8	16 May 2005 04:30:18 -0000	1.7
+--- arp.8	1 Dec 2007 18:19:32 -0000	1.8
+***************
+*** 1,3 ****
+! .TH ARP 8 &quot;2005-05-16&quot; &quot;net-tools&quot; &quot;Linux Programmer's Manual&quot;
+  .SH NAME
+  arp \- manipulate the system ARP cache
+--- 1,3 ----
+! .TH ARP 8 &quot;2007-12-01&quot; &quot;net-tools&quot; &quot;Linux Programmer's Manual&quot;
+  .SH NAME
+  arp \- manipulate the system ARP cache
+***************
+*** 5,55 ****
+  .B arp 
+  .RB [ \-vn ] 
+! .RB [ &quot;\-H type&quot; ] 
+! .RB [ &quot;-i if&quot; ] 
+! .B -a 
+! .RB [ hostname ]
+  .PP
+  .B arp 
+  .RB [ \-v ]
+! .RB [ &quot;\-i if&quot; ] 
+! .B &quot;\-d hostname&quot;
+  .RB [ pub ]
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ &quot;\-H type&quot; ] 
+! .RB [ &quot;\-i if&quot; ] 
+! .B -s hostname hw_addr
+  .RB [ temp ] 
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ &quot;\-H type&quot; ] 
+! .RB [ &quot;\-i if&quot; ] 
+! .B -s hostname hw_addr
+! .RB [ &quot;netmask nm&quot; ] 
+  .B pub
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ &quot;\-H type&quot; ] 
+! .RB [ &quot;\-i if&quot; ] 
+! .B -Ds hostname ifa
+! .RB [ &quot;netmask nm&quot; ] 
+  .B pub
+  .PP
+  .B arp 
+  .RB [ \-vnD ]
+! .RB [ &quot;\-H type&quot; ] 
+! .RB [ &quot;-i if&quot; ]
+! .B -f [filename]
+  
+  .SH DESCRIPTION
+  .B Arp
+! manipulates the kernel's ARP cache in various ways.  The primary options
+! are clearing an address mapping entry and manually setting up one.  For
+! debugging purposes, the
+  .B arp
+! program also allows a complete dump of the ARP cache.
+  .SH OPTIONS
+  .TP
+--- 5,110 ----
+  .B arp 
+  .RB [ \-vn ] 
+! .RB [ \-H 
+! .IR type ] 
+! .RB [ \-i
+! .IR if ] 
+! .RB [ \-a ] 
+! .RI [ hostname ]
+  .PP
+  .B arp 
+  .RB [ \-v ]
+! .RB [ \-i
+! .IR if ] 
+! .B \-d 
+! .I hostname
+  .RB [ pub ]
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ \-H
+! .IR type ] 
+! .RB [ \-i
+! .IR if ] 
+! .B \-s
+! .I hostname hw_addr
+  .RB [ temp ] 
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ \-H
+! .IR type ] 
+! .RB [ \-i
+! .IR if ] 
+! .B \-s
+! .I hostname hw_addr
+! .RB [ netmask
+! .IR nm ] 
+  .B pub
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ \-H
+! .IR type ] 
+! .RB [ \-i
+! .IR if ] 
+! .B \-Ds 
+! .I hostname
+! .I ifname
+! .RB [ netmask
+! .IR nm ] 
+  .B pub
+  .PP
+  .B arp 
+  .RB [ \-vnD ]
+! .RB [ \-H 
+! .IR type ] 
+! .RB [ \-i
+! .IR if ]
+! .B \-f 
+! .RI [ filename ]
+  
+  .SH DESCRIPTION
+  .B Arp
+! manipulates or displays the kernel's IPv4 network neighbour cache. It can add
+! entries to the table, delete one or display the current content.
+! 
+! .B ARP
+! stands for Address Resolution Protocol, which is used to find the media
+! access control address of a network neighbour for a given IPv4 Address.
+! .SH MODES
+  .B arp
+! with no mode specifier will print the current content of the table. It is
+! possible to limit the number of entries printed, by specifying an hardware
+! address type, interface name or host address.
+! 
+! .B arp -d
+! .I address
+! will delete a ARP table entry. Root or netadmin priveledge is required to do
+! this. The entry is found by IP address. If a hostname is given, it will be
+! resolved before looking up the entry in the ARP table.
+! 
+! .B arp -s
+! .I address hw_addr
+! is used to set up a new table entry. The format of the 
+! .I hw_addr
+! parameter is dependent on the hardware class, but for most classes one can
+! assume that the usual presentation can be used.  For the Ethernet class,
+! this is 6 bytes in hexadecimal, separated by colons. When adding proxy arp
+! entries (that is those with the
+! .BR pub lish 
+! flag set a 
+! .B netmask 
+! may be specified to proxy arp for entire subnets. This is not good
+! practice, but is supported by older kernels because it can be
+! useful. If the
+! .B temp
+! flag is not supplied entries will be permanent stored into the ARP
+! cache. To simplyfy setting up entries for one of your own network interfaces, you can use the
+! .B &quot;arp \-Ds&quot;
+! .I address ifname
+! form. In that case the hardware address is taken from the interface with the
+! specified name.
+! 
+! .br
+  .SH OPTIONS
+  .TP
+***************
+*** 77,95 ****
+  .RB &quot;NET/ROM (&quot; netrom &quot;).&quot;
+  .TP
+! .B &quot;\-a [hostname], \-\-display [hostname]&quot;
+! Shows the entries of the specified hosts.  If the
+! .B hostname
+! parameter is not used,
+! .B all
+! entries will be displayed.
+! .TP
+! .B &quot;\-d hostname, \-\-delete hostname&quot;
+! Remove any entry for the specified host.  This can be used if the
+! indicated host is brought down, for example.
+  .TP
+  .B &quot;\-D, \-\-use-device&quot;
+! Use the interface
+! .BR ifa &quot;'s&quot;
+! hardware address.
+  .TP
+  .B &quot;\-i If, \-\-device If&quot;
+--- 132,142 ----
+  .RB &quot;NET/ROM (&quot; netrom &quot;).&quot;
+  .TP
+! .B \-a
+! Use alternate BSD style output format (with no fixed columns).
+  .TP
+  .B &quot;\-D, \-\-use-device&quot;
+! Instead of a hw_addr, the given argument is the name of an interface. 
+! .B arp
+! will use the MAC address of that interface for the table entry. This is usually the best option to set up a proxy ARP entry to yourself.
+  .TP
+  .B &quot;\-i If, \-\-device If&quot;
+***************
+*** 107,131 ****
+  This has to be different from the interface to which the IP
+  datagrams will be routed.
+- .TP
+- .B &quot;\-s hostname hw_addr, \-\-set hostname&quot;
+- Manually create an ARP address mapping entry for host
+- .B hostname
+- with hardware address set to
+- .B hw_addr
+- .  The format of the hardware address is dependent on the hardware
+- class, but for most classes one can assume that the usual presentation
+- can be used.  For the Ethernet class, this is 6 bytes in hexadecimal,
+- separated by colons. When adding proxy arp entries (that is those with
+- the 
+- .BR pub lish 
+- flag set a 
+- .B netmask 
+- may be specified to proxy arp for entire subnets. This is not good
+- practice, but is supported by older kernels because it can be
+- useful. If the
+- .B temp
+- flag is not supplied entries will be permanent stored into the ARP
+- cache.
+- .br
+  .B NOTE:
+  As of kernel 2.2.0 it is no longer possible to set an ARP entry for an 
+--- 154,157 ----
+***************
+*** 171,176 ****
+  .B P
+  flag.
+  .SH FILES
+! .I /proc/net/arp,
+  .br
+  .I /etc/networks
+--- 197,212 ----
+  .B P
+  flag.
++ .SH EXSAMPLES
++ .B /usr/sbin/arp -i eth0 -Ds 10.0.0.2 eth1 pub
++ 
++ This will answer ARP requests for 10.0.0.2 on eth0 with the MAC address for
++ eth1.
++ 
++ .B /usr/sbin/arp -i eth1 -d 10.0.0.1
++ 
++ Delete the ARP table entry for 10.0.0.1 on interface eth1. This will match
++ published proxy ARP entries and permanent entries.
+  .SH FILES
+! .I /proc/net/arp
+  .br
+  .I /etc/networks
+***************
+*** 182,185 ****
+  rarp(8), route(8), ifconfig(8), netstat(8)
+  .SH AUTHORS
+! Fred N. van Kempen, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">waltje at uwalt.nl.mugnet.org</A>&gt; with a lot of improvements
+! from net-tools Maintainer Bernd Eckenfels &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">net-tools at lina.inka.de</A>&gt;.
+--- 218,220 ----
+  rarp(8), route(8), ifconfig(8), netstat(8)
+  .SH AUTHORS
+! Fred N. van Kempen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">waltje at uwalt.nl.mugnet.org</A>&gt;, Bernd Eckenfels &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">net-tools at lina.inka.de</A>&gt;.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000017.html">[net-tools-cvscommit] net-tools netstat.c,1.53,1.54
+</A></li>
+	<LI>Next message: <A HREF="000019.html">[net-tools-cvscommit] net-tools statistics.c,1.18,1.19
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#18">[ date ]</a>
+              <a href="thread.html#18">[ thread ]</a>
+              <a href="subject.html#18">[ subject ]</a>
+              <a href="author.html#18">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

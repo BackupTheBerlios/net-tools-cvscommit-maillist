@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/man/en_US netstat.8,1.22,1.23
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/man/en_US%20netstat.8%2C1.22%2C1.23&In-Reply-To=%3C20081201231538.BEB8E168643%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000045.html">
+   <LINK REL="Next"  HREF="000047.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/man/en_US netstat.8,1.22,1.23</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/man/en_US%20netstat.8%2C1.22%2C1.23&In-Reply-To=%3C20081201231538.BEB8E168643%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/man/en_US netstat.8,1.22,1.23">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Tue Dec  2 00:15:38 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000045.html">[net-tools-cvscommit] net-tools/lib pathnames.h,1.8,1.9
+</A></li>
+        <LI>Next message: <A HREF="000047.html">[net-tools-cvscommit] net-tools netstat.c,1.60,1.61
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#46">[ date ]</a>
+              <a href="thread.html#46">[ thread ]</a>
+              <a href="subject.html#46">[ subject ]</a>
+              <a href="author.html#46">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv23298/man/en_US
+
+Modified Files:
+	netstat.8 
+Log Message:
+UDPlite Support for net-stat by Brian Micek &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">bmicek at gmail.com</A>&gt;
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.22
+retrieving revision 1.23
+diff -C2 -d -r1.22 -r1.23
+*** netstat.8	16 Nov 2008 16:45:08 -0000	1.22
+--- netstat.8	1 Dec 2008 23:15:36 -0000	1.23
+***************
+*** 20,23 ****
+--- 20,24 ----
+  .RB [ \-\-tcp | \-t ]
+  .RB [ \-\-udp | \-u ]
++ .RB [ \-\-udplite | \-U ]
+  .RB [ \-\-raw | \-w ]
+  .RB [ \-\-listening | \-l ]
+***************
+*** 68,71 ****
+--- 69,73 ----
+  .RB [ \-\-tcp | \-t ]
+  .RB [ \-\-udp | \-u ]
++ .RB [ \-\-udplite | \-U ]
+  .RB [ \-\-raw | \-w ]
+  .P
+***************
+*** 159,163 ****
+  The address family
+  .B inet
+! includes raw, udp and tcp protocol sockets.
+  .SS &quot;\-c, \-\-continuous&quot;
+  This will cause
+--- 161,165 ----
+  The address family
+  .B inet
+! includes raw, udp, udplite and tcp protocol sockets.
+  .SS &quot;\-c, \-\-continuous&quot;
+  This will cause
+***************
+*** 183,189 ****
+  .SH OUTPUT
+  .P
+! .SS Active Internet connections \fR(TCP, UDP, raw)\fR
+  .SS &quot;Proto&quot; 
+! The protocol (tcp, udp, raw) used by the socket. 
+  .SS &quot;Recv\-Q&quot;
+  Established: The count of bytes not copied by the user program connected to this socket.
+--- 185,191 ----
+  .SH OUTPUT
+  .P
+! .SS Active Internet connections \fR(TCP, UDP, UDPLite, raw)\fR
+  .SS &quot;Proto&quot; 
+! The protocol (tcp, udp, udpl, raw) used by the socket. 
+  .SS &quot;Recv\-Q&quot;
+  Established: The count of bytes not copied by the user program connected to this socket.
+***************
+*** 203,207 ****
+  .SS &quot;State&quot;
+  The state of the socket. Since there are no states in raw mode and usually no
+! states used in UDP, this column may be left blank. Normally this can be one
+  of several values:
+  .TP
+--- 205,209 ----
+  .SS &quot;State&quot;
+  The state of the socket. Since there are no states in raw mode and usually no
+! states used in UDP and UDPLite, this column may be left blank. Normally this can be one
+  of several values:
+  .TP
+***************
+*** 396,399 ****
+--- 398,404 ----
+  -- UDP socket information
+  
++ .I /proc/net/udplite
++ -- UDPLite socket information
++ 
+  .I /proc/net/igmp
+  -- IGMP multicast information
+***************
+*** 457,459 ****
+  The man page and the command included in the net\-tools
+  package is totally rewritten by Bernd Eckenfels 
+! &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">ecki at linux.de</A>&gt;.
+--- 462,465 ----
+  The man page and the command included in the net\-tools
+  package is totally rewritten by Bernd Eckenfels 
+! &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">ecki at linux.de</A>&gt;.  UDPLite options were added by Brian Micek
+! &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">bmicek at gmail.com</A>&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000045.html">[net-tools-cvscommit] net-tools/lib pathnames.h,1.8,1.9
+</A></li>
+	<LI>Next message: <A HREF="000047.html">[net-tools-cvscommit] net-tools netstat.c,1.60,1.61
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#46">[ date ]</a>
+              <a href="thread.html#46">[ thread ]</a>
+              <a href="subject.html#46">[ subject ]</a>
+              <a href="author.html#46">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

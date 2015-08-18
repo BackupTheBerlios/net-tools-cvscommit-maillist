@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools statistics.c,1.19,1.20
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2007q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20statistics.c%2C1.19%2C1.20&In-Reply-To=%3C20071201184559.C4BD3118016%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000019.html">
+   <LINK REL="Next"  HREF="000020.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools statistics.c,1.19,1.20</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20statistics.c%2C1.19%2C1.20&In-Reply-To=%3C20071201184559.C4BD3118016%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools statistics.c,1.19,1.20">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Sat Dec  1 19:45:59 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000019.html">[net-tools-cvscommit] net-tools statistics.c,1.18,1.19
+</A></li>
+        <LI>Next message: <A HREF="000020.html">[net-tools-cvscommit] net-tools/lib proc.c,1.4,1.5 proc.h,1.4,1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#21">[ date ]</a>
+              <a href="thread.html#21">[ thread ]</a>
+              <a href="subject.html#21">[ subject ]</a>
+              <a href="author.html#21">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv5348
+
+Modified Files:
+	statistics.c 
+Log Message:
+Faster pagesize aligned fopen for netstat -s (Eric Dumazet)
+
+
+Index: statistics.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/statistics.c,v
+retrieving revision 1.19
+retrieving revision 1.20
+diff -C2 -d -r1.19 -r1.20
+*** statistics.c	1 Dec 2007 18:29:05 -0000	1.19
+--- statistics.c	1 Dec 2007 18:44:56 -0000	1.20
+***************
+*** 12,15 ****
+--- 12,16 ----
+  #include &quot;config.h&quot;
+  #include &quot;intl.h&quot;
++ #include &quot;proc.h&quot;
+  
+  /* #define WARN 1 */
+***************
+*** 388,392 ****
+      f_raw = flag_raw; f_tcp = flag_tcp; f_udp = flag_udp;
+      
+!     f = fopen(&quot;/proc/net/snmp&quot;, &quot;r&quot;);
+      if (!f) {
+  	perror(_(&quot;cannot open /proc/net/snmp&quot;));
+--- 389,393 ----
+      f_raw = flag_raw; f_tcp = flag_tcp; f_udp = flag_udp;
+      
+!     f = proc_fopen(&quot;/proc/net/snmp&quot;);
+      if (!f) {
+  	perror(_(&quot;cannot open /proc/net/snmp&quot;));
+***************
+*** 402,406 ****
+      fclose(f);
+  
+!     f = fopen(&quot;/proc/net/netstat&quot;, &quot;r&quot;);
+  
+      if (f) {
+--- 403,407 ----
+      fclose(f);
+  
+!     f = proc_fopen(&quot;/proc/net/netstat&quot;);
+  
+      if (f) {
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000019.html">[net-tools-cvscommit] net-tools statistics.c,1.18,1.19
+</A></li>
+	<LI>Next message: <A HREF="000020.html">[net-tools-cvscommit] net-tools/lib proc.c,1.4,1.5 proc.h,1.4,1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#21">[ date ]</a>
+              <a href="thread.html#21">[ thread ]</a>
+              <a href="subject.html#21">[ subject ]</a>
+              <a href="author.html#21">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

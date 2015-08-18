@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools netstat.c,1.55,1.56
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.55%2C1.56&In-Reply-To=%3C20081002220557.6E7BC53371%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000032.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools netstat.c,1.55,1.56</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.55%2C1.56&In-Reply-To=%3C20081002220557.6E7BC53371%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools netstat.c,1.55,1.56">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Fri Oct  3 00:05:57 CEST 2008</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000032.html">[net-tools-cvscommit] net-tools/man/en_US netstat.8,1.19,1.20
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#31">[ date ]</a>
+              <a href="thread.html#31">[ thread ]</a>
+              <a href="subject.html#31">[ subject ]</a>
+              <a href="author.html#31">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv20183
+
+Modified Files:
+	netstat.c 
+Log Message:
+allow netstat to print Rcv/Snd-Q for TCP_LISTEN (containing accept
+backlog)
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.55
+retrieving revision 1.56
+diff -C2 -d -r1.55 -r1.56
+*** netstat.c	1 Dec 2007 19:00:40 -0000	1.55
+--- netstat.c	2 Oct 2008 22:05:54 -0000	1.56
+***************
+*** 766,775 ****
+  	return;
+      }
+-     if (state == TCP_LISTEN) {
+- 	time_len = 0;
+- 	retr = 0L;
+- 	rxq = 0L;
+- 	txq = 0L;
+-     }
+      safe_strncpy(local_addr, ap-&gt;sprint((struct sockaddr *) &amp;localaddr, 
+  					flag_not), sizeof(local_addr));
+--- 766,769 ----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000032.html">[net-tools-cvscommit] net-tools/man/en_US netstat.8,1.19,1.20
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#31">[ date ]</a>
+              <a href="thread.html#31">[ thread ]</a>
+              <a href="subject.html#31">[ subject ]</a>
+              <a href="author.html#31">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools netstat.c,1.72,1.73
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.72%2C1.73&In-Reply-To=%3C20110420013524.965B94800F7%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools netstat.c,1.72,1.73</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.72%2C1.73&In-Reply-To=%3C20110420013524.965B94800F7%40sheep.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools netstat.c,1.72,1.73">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Wed Apr 20 03:35:24 CEST 2011</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#91">[ date ]</a>
+              <a href="thread.html#91">[ thread ]</a>
+              <a href="subject.html#91">[ subject ]</a>
+              <a href="author.html#91">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv28611
+
+Modified Files:
+	netstat.c 
+Log Message:
+patch from Bert Wesarg to separate basename of -p only if it is absulote
+path (in order to make argv[0]=&quot;sshd pty/0&quot; display as sshd, and not as /0.
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.72
+retrieving revision 1.73
+diff -C 2 -d -r1.72 -r1.73
+*** netstat.c	9 Apr 2011 13:57:28 -0000	1.72
+--- netstat.c	20 Apr 2011 01:35:22 -0000	1.73
+***************
+*** 421,425 ****
+  		if (cmdllen &lt; sizeof(cmdlbuf) - 1) 
+  		    cmdlbuf[cmdllen]='\0';
+! 		if ((cmdlp = strrchr(cmdlbuf, '/'))) 
+  		    cmdlp++;
+  		else 
+--- 421,425 ----
+  		if (cmdllen &lt; sizeof(cmdlbuf) - 1) 
+  		    cmdlbuf[cmdllen]='\0';
+! 		if (cmdlbuf[0] == '/' &amp;&amp; (cmdlp = strrchr(cmdlbuf, '/'))) 
+  		    cmdlp++;
+  		else 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#91">[ date ]</a>
+              <a href="thread.html#91">[ thread ]</a>
+              <a href="subject.html#91">[ subject ]</a>
+              <a href="author.html#91">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

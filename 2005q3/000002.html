@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/lib x25_sr.c,1.3,1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2005q3/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20x25_sr.c%2C1.3%2C1.4&In-Reply-To=%3C200509040423.j844NI127340%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000001.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/lib x25_sr.c,1.3,1.4</H1>
+    <B>net-tools-cvscommit-admin at lists.berlios.de</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20x25_sr.c%2C1.3%2C1.4&In-Reply-To=%3C200509040423.j844NI127340%40bat.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/lib x25_sr.c,1.3,1.4">net-tools-cvscommit-admin at lists.berlios.de
+       </A><BR>
+    <I>Sun Sep  4 06:23:18 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000001.html">[net-tools-cvscommit] net-tools/man/en_US slattach.8,1.1,1.2
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2">[ date ]</a>
+              <a href="thread.html#2">[ thread ]</a>
+              <a href="subject.html#2">[ subject ]</a>
+              <a href="author.html#2">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv17128/net-tools-HEAD/lib
+
+Modified Files:
+	x25_sr.c 
+Log Message:
+X25 code compiles with 2.4 and 2.6 kernel headers (Debian Bug#271678)
+
+
+Index: x25_sr.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/x25_sr.c,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -C2 -d -r1.3 -r1.4
+*** x25_sr.c	16 May 2005 10:07:48 -0000	1.3
+--- x25_sr.c	4 Sep 2005 04:23:13 -0000	1.4
+***************
+*** 68,72 ****
+  
+    /* Clean out the x25_route_struct structure. */
+!   memset((char *) &amp;rt, 0, sizeof(struct x25_route_struct));
+  
+  
+--- 68,72 ----
+  
+    /* Clean out the x25_route_struct structure. */
+!   memset((char *) &amp;rt, 0, sizeof(rt));
+  
+  
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000001.html">[net-tools-cvscommit] net-tools/man/en_US slattach.8,1.1,1.2
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2">[ date ]</a>
+              <a href="thread.html#2">[ thread ]</a>
+              <a href="subject.html#2">[ subject ]</a>
+              <a href="author.html#2">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

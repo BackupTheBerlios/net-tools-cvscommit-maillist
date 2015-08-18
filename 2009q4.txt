@@ -1,0 +1,328 @@
+From net-tools-cvscommit at lists.berlios.de  Thu Dec 31 20:05:37 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 31 Dec 2009 20:05:37 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools .gitignore,1.1,1.2
+Message-ID: <20091231190537.26C674F304@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv1444
+
+Modified Files:
+	.gitignore 
+Log Message:
+ignore patch related files
+
+Index: .gitignore
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/.gitignore,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -C2 -d -r1.1 -r1.2
+*** .gitignore	6 Sep 2009 22:40:33 -0000	1.1
+--- .gitignore	31 Dec 2009 19:05:34 -0000	1.2
+***************
+*** 1,4 ****
+--- 1,9 ----
+  *.o
+  
++ *.diff
++ *.patch
++ *.rej
++ *.orig
++ 
+  /config.h
+  /config.make
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Dec 31 20:51:33 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 31 Dec 2009 20:51:33 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/lib interface.c,1.32,1.33
+Message-ID: <20091231195133.B8D431A0930@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv4074/lib
+
+Modified Files:
+	interface.c 
+Log Message:
+interface slip: cast keepalive/outfill to unsigned long to fix warnings on 64bit hosts -- no functional changes since these only have an 8bit range anyways
+
+Index: interface.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/interface.c,v
+retrieving revision 1.32
+retrieving revision 1.33
+diff -C2 -d -r1.32 -r1.33
+*** interface.c	6 Sep 2009 23:01:16 -0000	1.32
+--- interface.c	31 Dec 2009 19:51:31 -0000	1.33
+***************
+*** 447,451 ****
+  	    ife->outfill = 0;
+  	else
+! 	    ife->outfill = (unsigned int) ifr.ifr_data;
+  #endif
+  #ifdef SIOCGKEEPALIVE
+--- 447,451 ----
+  	    ife->outfill = 0;
+  	else
+! 	    ife->outfill = (unsigned long) ifr.ifr_data;
+  #endif
+  #ifdef SIOCGKEEPALIVE
+***************
+*** 454,458 ****
+  	    ife->keepalive = 0;
+  	else
+! 	    ife->keepalive = (unsigned int) ifr.ifr_data;
+  #endif
+      }
+--- 454,458 ----
+  	    ife->keepalive = 0;
+  	else
+! 	    ife->keepalive = (unsigned long) ifr.ifr_data;
+  #endif
+      }
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Dec 31 20:54:18 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 31 Dec 2009 20:54:18 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.67,1.68
+Message-ID: <20091231195418.B77A31A7644@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv4225
+
+Modified Files:
+	netstat.c 
+Log Message:
+netstat: fix %*s handling -- the field takes an int, not a size_t
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.67
+retrieving revision 1.68
+diff -C2 -d -r1.67 -r1.68
+*** netstat.c	6 Sep 2009 23:05:28 -0000	1.67
+--- netstat.c	31 Dec 2009 19:54:16 -0000	1.68
+***************
+*** 985,989 ****
+  	    }
+  	printf("%-4s  %6ld %6ld %-*s %-*s %-11s",
+! 	       prot, rxq, txq, netmax(23,strlen(local_addr)), local_addr, netmax(23,strlen(rem_addr)), rem_addr, _(tcp_state[state]));
+  
+  	finish_this_one(uid,inode,timers);
+--- 985,989 ----
+  	    }
+  	printf("%-4s  %6ld %6ld %-*s %-*s %-11s",
+! 	       prot, rxq, txq, (int)netmax(23,strlen(local_addr)), local_addr, (int)netmax(23,strlen(rem_addr)), rem_addr, _(tcp_state[state]));
+  
+  	finish_this_one(uid,inode,timers);
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Dec 31 21:06:55 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 31 Dec 2009 21:06:55 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools Makefile,1.42,1.43
+Message-ID: <20091231200655.9382C15482C@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv4958
+
+Modified Files:
+	Makefile 
+Log Message:
+fix parallel build problems with the lib/ subdir and multiple targets that descend into it
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.42
+retrieving revision 1.43
+diff -C2 -d -r1.42 -r1.43
+*** Makefile	6 Sep 2009 22:58:40 -0000	1.42
+--- Makefile	31 Dec 2009 20:06:53 -0000	1.43
+***************
+*** 180,185 ****
+  		@$(MAKE) -C po
+  
+! subdirs:
+! 		@for i in $(SUBDIRS); do $(MAKE) -C $$i || exit $$? ; done
+  
+  ifconfig:	$(NET_LIB) ifconfig.o
+--- 180,186 ----
+  		@$(MAKE) -C po
+  
+! # use libdir target for lib/ to avoid parallel build issues
+! subdirs:	libdir
+! 		@for i in $(SUBDIRS:$(NET_LIB_PATH)/=); do $(MAKE) -C $$i || exit $$? ; done
+  
+  ifconfig:	$(NET_LIB) ifconfig.o
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Dec 31 21:14:57 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 31 Dec 2009 21:14:57 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools Makefile,1.43,1.44
+Message-ID: <20091231201457.177A51A6E85@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv5539
+
+Modified Files:
+	Makefile 
+Log Message:
+set BASEDIR to DESTDIR by default so the default install matches most packages
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.43
+retrieving revision 1.44
+diff -C2 -d -r1.43 -r1.44
+*** Makefile	31 Dec 2009 20:06:53 -0000	1.43
+--- Makefile	31 Dec 2009 20:14:55 -0000	1.44
+***************
+*** 72,75 ****
+--- 72,76 ----
+  # set the base of the Installation 
+  # BASEDIR = /mnt
++ BASEDIR ?= $(DESTDIR)
+  
+  # path to the net-lib support library. Default: lib
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Dec 31 21:32:22 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 31 Dec 2009 21:32:22 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools .gitignore,1.2,1.3
+Message-ID: <20091231203222.7348A1A70AC@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv6726
+
+Modified Files:
+	.gitignore 
+Log Message:
+ignore generated gettext files
+
+Index: .gitignore
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/.gitignore,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** .gitignore	31 Dec 2009 19:05:34 -0000	1.2
+--- .gitignore	31 Dec 2009 20:32:20 -0000	1.3
+***************
+*** 12,15 ****
+--- 12,17 ----
+  /lib/libnet-tools.a
+  
++ /po/*.mo
++ 
+  /version.h
+  
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Dec 31 21:38:04 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 31 Dec 2009 21:38:04 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools Makefile,1.44,1.45
+Message-ID: <20091231203804.DCA811A7B2F@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv7077
+
+Modified Files:
+	Makefile 
+Log Message:
+improve dist target: include compiled gettext files, exclude scm files, and always prefix the paths in the tarball with the full versioned name
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.44
+retrieving revision 1.45
+diff -C2 -d -r1.44 -r1.45
+*** Makefile	31 Dec 2009 20:14:55 -0000	1.44
+--- Makefile	31 Dec 2009 20:38:02 -0000	1.45
+***************
+*** 155,160 ****
+  
+  dist: 		clobber
+  		@echo Creating net-tools-$(RELEASE) in ..
+! 		@tar -cvz -f ../net-tools-$(RELEASE).tar.gz -C .. net-tools
+  
+  
+--- 155,164 ----
+  
+  dist: 		clobber
++ 		@$(MAKE) -C po $@
+  		@echo Creating net-tools-$(RELEASE) in ..
+! 		@tar -cvz -f ../net-tools-$(RELEASE).tar.gz . \
+! 			--transform='s,^[.],net-tools-$(RELEASE),' \
+! 			--exclude=CVS --exclude=.cvsignore \
+! 			--exclude='.git*'
+  
+  
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Dec 31 21:38:05 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 31 Dec 2009 21:38:05 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/po Makefile,1.11,1.12
+Message-ID: <20091231203805.154361A7B30@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/po
+In directory sheep:/tmp/cvs-serv7077/po
+
+Modified Files:
+	Makefile 
+Log Message:
+improve dist target: include compiled gettext files, exclude scm files, and always prefix the paths in the tarball with the full versioned name
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/po/Makefile,v
+retrieving revision 1.11
+retrieving revision 1.12
+diff -C2 -d -r1.11 -r1.12
+*** Makefile	16 May 2005 03:21:58 -0000	1.11
+--- Makefile	31 Dec 2009 20:38:02 -0000	1.12
+***************
+*** 9,14 ****
+  
+  -include ../config.make
+  ifeq ($(I18N),1)
+! CATALOGS = de.mo fr.mo pt_BR.mo et_EE.mo cs.mo
+  else
+  CATALOGS =
+--- 9,15 ----
+  
+  -include ../config.make
++ ALL_CATALOGS = de.mo fr.mo pt_BR.mo et_EE.mo cs.mo
+  ifeq ($(I18N),1)
+! CATALOGS = $(ALL_CATALOGS)
+  else
+  CATALOGS =
+***************
+*** 61,64 ****
+--- 62,67 ----
+  clean:
+  	rm -f *mo
++ 
++ dist: $(ALL_CATALOGS)
+  
+  distclean: clean
+
+
+

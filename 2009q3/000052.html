@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools netstat.c, 1.62, 1.63 arp.c, 1.25,	1.26
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C%201.62%2C%201.63%20arp.c%2C%201.25%2C%0A%091.26&In-Reply-To=%3C20090708002406.4990C1033D%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000051.html">
+   <LINK REL="Next"  HREF="000053.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools netstat.c, 1.62, 1.63 arp.c, 1.25,	1.26</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C%201.62%2C%201.63%20arp.c%2C%201.25%2C%0A%091.26&In-Reply-To=%3C20090708002406.4990C1033D%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools netstat.c, 1.62, 1.63 arp.c, 1.25,	1.26">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Wed Jul  8 02:24:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000051.html">[net-tools-cvscommit] net-tools/lib inet_gr.c, 1.13,	1.14 interface.c, 1.30, 1.31
+</A></li>
+        <LI>Next message: <A HREF="000053.html">[net-tools-cvscommit] net-tools netstat.c,1.63,1.64
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#52">[ date ]</a>
+              <a href="thread.html#52">[ thread ]</a>
+              <a href="subject.html#52">[ subject ]</a>
+              <a href="author.html#52">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv10587
+
+Modified Files:
+	netstat.c arp.c 
+Log Message:
+scanf format length fix (non exploitable?) from 
+Fabian Hugelshofer &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">hugelshofer2006 at gmx.ch</A>&gt;
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.62
+retrieving revision 1.63
+diff -C2 -d -r1.62 -r1.63
+*** netstat.c	2 Dec 2008 01:53:48 -0000	1.62
+--- netstat.c	8 Jul 2009 00:24:03 -0000	1.63
+***************
+*** 850,854 ****
+      more[0] = '\0';
+      num = sscanf(line,
+! 		 &quot;%d: %64[0-9A-Fa-f]:%X %64[0-9A-Fa-f]:%X %X %lX:%lX %X:%lX %lX %d %d %lu %512s\n&quot;,
+  		 &amp;d, local_addr, &amp;local_port,
+  		 rem_addr, &amp;rem_port, &amp;state,
+--- 850,854 ----
+      more[0] = '\0';
+      num = sscanf(line,
+! 		 &quot;%d: %64[0-9A-Fa-f]:%X %64[0-9A-Fa-f]:%X %X %lX:%lX %X:%lX %lX %d %d %lu %511s\n&quot;,
+  		 &amp;d, local_addr, &amp;local_port,
+  		 rem_addr, &amp;rem_port, &amp;state,
+***************
+*** 996,1000 ****
+      more[0] = '\0';
+      num = sscanf(line,
+! 		 &quot;%d: %64[0-9A-Fa-f]:%X %64[0-9A-Fa-f]:%X %X %lX:%lX %X:%lX %lX %d %d %lu %512s\n&quot;,
+  		 &amp;d, local_addr, &amp;local_port, rem_addr, &amp;rem_port, &amp;state,
+  	  &amp;txq, &amp;rxq, &amp;timer_run, &amp;time_len, &amp;retr, &amp;uid, &amp;timeout, &amp;inode, more);
+--- 996,1000 ----
+      more[0] = '\0';
+      num = sscanf(line,
+! 		 &quot;%d: %64[0-9A-Fa-f]:%X %64[0-9A-Fa-f]:%X %X %lX:%lX %X:%lX %lX %d %d %lu %511s\n&quot;,
+  		 &amp;d, local_addr, &amp;local_port, rem_addr, &amp;rem_port, &amp;state,
+  	  &amp;txq, &amp;rxq, &amp;timer_run, &amp;time_len, &amp;retr, &amp;uid, &amp;timeout, &amp;inode, more);
+
+Index: arp.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/arp.c,v
+retrieving revision 1.25
+retrieving revision 1.26
+diff -C2 -d -r1.25 -r1.26
+*** arp.c	4 Dec 2005 02:57:15 -0000	1.25
+--- arp.c	8 Jul 2009 00:24:03 -0000	1.26
+***************
+*** 565,569 ****
+  	/* Read the ARP cache entries. */
+  	for (; fgets(line, sizeof(line), fp);) {
+! 	    num = sscanf(line, &quot;%s 0x%x 0x%x %100s %100s %100s\n&quot;,
+  			 ip, &amp;type, &amp;flags, hwa, mask, dev);
+  	    if (num &lt; 4)
+--- 565,569 ----
+  	/* Read the ARP cache entries. */
+  	for (; fgets(line, sizeof(line), fp);) {
+! 	    num = sscanf(line, &quot;%s 0x%x 0x%x %99s %99s %99s\n&quot;,
+  			 ip, &amp;type, &amp;flags, hwa, mask, dev);
+  	    if (num &lt; 4)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000051.html">[net-tools-cvscommit] net-tools/lib inet_gr.c, 1.13,	1.14 interface.c, 1.30, 1.31
+</A></li>
+	<LI>Next message: <A HREF="000053.html">[net-tools-cvscommit] net-tools netstat.c,1.63,1.64
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#52">[ date ]</a>
+              <a href="thread.html#52">[ thread ]</a>
+              <a href="subject.html#52">[ subject ]</a>
+              <a href="author.html#52">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

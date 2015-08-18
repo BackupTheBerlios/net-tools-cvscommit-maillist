@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/lib inet6.c,1.12,1.13
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20inet6.c%2C1.12%2C1.13&In-Reply-To=%3C20100705225203.84627480964%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/lib inet6.c,1.12,1.13</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20inet6.c%2C1.12%2C1.13&In-Reply-To=%3C20100705225203.84627480964%40sheep.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/lib inet6.c,1.12,1.13">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Tue Jul  6 00:52:03 CEST 2010</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#85">[ date ]</a>
+              <a href="thread.html#85">[ thread ]</a>
+              <a href="subject.html#85">[ subject ]</a>
+              <a href="author.html#85">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv18261/lib
+
+Modified Files:
+	inet6.c 
+Log Message:
+Remove garbage ipv6 scopes in netstat output (Debian Bug #508110)
+Thanks Marco Steinacher for reporting.
+
+
+Index: inet6.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/inet6.c,v
+retrieving revision 1.12
+retrieving revision 1.13
+diff -C 2 -d -r1.12 -r1.13
+*** inet6.c	10 Dec 2002 01:03:09 -0000	1.12
+--- inet6.c	5 Jul 2010 22:52:00 -0000	1.13
+***************
+*** 158,167 ****
+      sin6-&gt;sin6_family = AF_INET6;
+      sin6-&gt;sin6_port = 0;
+  
+      if (inet_pton(AF_INET6, bufp, sin6-&gt;sin6_addr.s6_addr) &lt;= 0)
+  	return (-1);
+! 	p = fix_v4_address(bufp, &amp;sin6-&gt;sin6_addr);
+! 	if (p != bufp) 
+! 		memcpy(bufp, p, strlen(p)+1); 
+      return 16;			/* ?;) */
+  }
+--- 158,169 ----
+      sin6-&gt;sin6_family = AF_INET6;
+      sin6-&gt;sin6_port = 0;
++     sin6-&gt;sin6_scope_id = 0;
++     sin6-&gt;sin6_flowinfo = 0;
+  
+      if (inet_pton(AF_INET6, bufp, sin6-&gt;sin6_addr.s6_addr) &lt;= 0)
+  	return (-1);
+!     p = fix_v4_address(bufp, &amp;sin6-&gt;sin6_addr);
+!     if (p != bufp) 
+!         memcpy(bufp, p, strlen(p)+1); 
+      return 16;			/* ?;) */
+  }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#85">[ date ]</a>
+              <a href="thread.html#85">[ thread ]</a>
+              <a href="subject.html#85">[ subject ]</a>
+              <a href="author.html#85">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

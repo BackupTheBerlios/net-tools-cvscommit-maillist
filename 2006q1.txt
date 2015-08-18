@@ -1,0 +1,46 @@
+From net-tools-cvscommit-admin at lists.berlios.de  Thu Mar 16 10:58:23 2006
+From: net-tools-cvscommit-admin at lists.berlios.de (net-tools-cvscommit-admin at lists.berlios.de)
+Date: Thu, 16 Mar 2006 10:58:23 +0100
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.52,1.53
+Message-ID: <200603160958.k2G9wNb31968@bat.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv12112
+
+Modified Files:
+	netstat.c 
+Log Message:
+Debian Bug #260587 fixed, make sure the Columns state and user in netstat -t -e 
+are separated by blanks. This may cause scripts to fail parsing by column width. 
+Better wait for the script compatible output. Problems exists for ESTABLIHED
+state only.
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.52
+retrieving revision 1.53
+diff -C2 -d -r1.52 -r1.53
+*** netstat.c	2 Aug 2005 22:28:10 -0000	1.52
+--- netstat.c	16 Mar 2006 08:59:42 -0000	1.53
+***************
+*** 532,538 ****
+      if (flag_exp > 1) {
+  	if (!(flag_not & FLAG_NUM_USER) && ((pw = getpwuid(uid)) != NULL))
+! 	    printf("%-10s ", pw->pw_name);
+  	else
+! 	    printf("%-10d ", uid);
+  	printf("%-10lu ",inode);
+      }
+--- 532,538 ----
+      if (flag_exp > 1) {
+  	if (!(flag_not & FLAG_NUM_USER) && ((pw = getpwuid(uid)) != NULL))
+! 	    printf(" %-10s ", pw->pw_name);
+  	else
+! 	    printf(" %-10d ", uid);
+  	printf("%-10lu ",inode);
+      }
+
+
+

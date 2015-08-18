@@ -1,0 +1,140 @@
+From net-tools-cvscommit-admin at lists.berlios.de  Fri Aug 26 18:01:33 2005
+From: net-tools-cvscommit-admin at lists.berlios.de (net-tools-cvscommit-admin at lists.berlios.de)
+Date: Fri, 26 Aug 2005 18:01:33 +0200
+Subject: [net-tools-cvscommit] net-tools README,1.31,1.32
+Message-ID: <200508261601.j7QG1X625621@bat.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv26537
+
+Modified Files:
+	README 
+Log Message:
+added link to berliOS
+
+
+Index: README
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/README,v
+retrieving revision 1.31
+retrieving revision 1.32
+diff -C2 -d -r1.31 -r1.32
+*** README	28 May 2003 21:14:40 -0000	1.31
+--- README	26 Aug 2005 16:01:31 -0000	1.32
+***************
+*** 29,37 ****
+     TODO			Some things that need to be done.
+  
+  
+                            Notes
+                            -----
+  
+! This is net-tools 1.60.
+  
+  You need kernel 2.0 or later to use these programs.  These programs
+--- 29,43 ----
+     TODO			Some things that need to be done.
+  
++ The  Homepage (including CVS repository, release downloads and a form to
++ request enhancements) is hosted by BerliOS Developer. Please consider to
++ join the project if you want to contribute:
++ 
++                   http://net-tools.berlios.de/
++ 
+  
+                            Notes
+                            -----
+  
+! This is net-tools 1.6x.
+  
+  You need kernel 2.0 or later to use these programs.  These programs
+
+
+
+From net-tools-cvscommit-admin at lists.berlios.de  Sun Sep  4 05:51:51 2005
+From: net-tools-cvscommit-admin at lists.berlios.de (net-tools-cvscommit-admin at lists.berlios.de)
+Date: Sun, 4 Sep 2005 05:51:51 +0200
+Subject: [net-tools-cvscommit] net-tools/man/en_US slattach.8,1.1,1.2
+Message-ID: <200509040351.j843pp126796@bat.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv14471/man/en_US
+
+Modified Files:
+	slattach.8 
+Log Message:
+Spelling fix for Debian Bug#326124 reported by A. Costa.
+
+
+Index: slattach.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/slattach.8,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -C2 -d -r1.1 -r1.2
+*** slattach.8	9 Jan 1999 14:36:48 -0000	1.1
+--- slattach.8	4 Sep 2005 03:51:39 -0000	1.2
+***************
+*** 1,3 ****
+! .TH SLATTACH 8 "12 Feb 1994" "" ""
+  .SH NAME
+  slattach \- attach a network interface to a serial line
+--- 1,3 ----
+! .TH SLATTACH 8 "4 Sep 2005" "" ""
+  .SH NAME
+  slattach \- attach a network interface to a serial line
+***************
+*** 42,46 ****
+  .B "[-e]"
+  Exit right after initializing device, instead of waiting for the
+! line to hangup.
+  .TP
+  .B "[-L]"
+--- 42,46 ----
+  .B "[-e]"
+  Exit right after initializing device, instead of waiting for the
+! line to hang up.
+  .TP
+  .B "[-L]"
+
+
+
+From net-tools-cvscommit-admin at lists.berlios.de  Sun Sep  4 06:23:18 2005
+From: net-tools-cvscommit-admin at lists.berlios.de (net-tools-cvscommit-admin at lists.berlios.de)
+Date: Sun, 4 Sep 2005 06:23:18 +0200
+Subject: [net-tools-cvscommit] net-tools/lib x25_sr.c,1.3,1.4
+Message-ID: <200509040423.j844NI127340@bat.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv17128/net-tools-HEAD/lib
+
+Modified Files:
+	x25_sr.c 
+Log Message:
+X25 code compiles with 2.4 and 2.6 kernel headers (Debian Bug#271678)
+
+
+Index: x25_sr.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/x25_sr.c,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -C2 -d -r1.3 -r1.4
+*** x25_sr.c	16 May 2005 10:07:48 -0000	1.3
+--- x25_sr.c	4 Sep 2005 04:23:13 -0000	1.4
+***************
+*** 68,72 ****
+  
+    /* Clean out the x25_route_struct structure. */
+!   memset((char *) &rt, 0, sizeof(struct x25_route_struct));
+  
+  
+--- 68,72 ----
+  
+    /* Clean out the x25_route_struct structure. */
+!   memset((char *) &rt, 0, sizeof(rt));
+  
+  
+
+
+

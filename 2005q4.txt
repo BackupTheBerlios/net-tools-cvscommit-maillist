@@ -1,0 +1,305 @@
+From net-tools-cvscommit-admin at lists.berlios.de  Sun Dec  4 03:57:21 2005
+From: net-tools-cvscommit-admin at lists.berlios.de (net-tools-cvscommit-admin at lists.berlios.de)
+Date: Sun, 4 Dec 2005 03:57:21 +0100
+Subject: [net-tools-cvscommit] net-tools arp.c,1.24,1.25
+Message-ID: <200512040257.jB42vLN24890@bat.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv20291
+
+Modified Files:
+	arp.c 
+Log Message:
+In order to fix alignment bugs with recent GCCs I have to use
+sockaddr_storage instead of sockaddr for allocation.
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=340384
+Thanks to Blars Blarson, Jurij Smakov and Steve Langasek
+
+
+Index: arp.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/arp.c,v
+retrieving revision 1.24
+retrieving revision 1.25
+diff -C2 -d -r1.24 -r1.25
+*** arp.c	16 May 2005 04:30:17 -0000	1.24
+--- arp.c	4 Dec 2005 02:57:15 -0000	1.25
+***************
+*** 101,105 ****
+      char host[128];
+      struct arpreq req;
+!     struct sockaddr sa;
+      int flags = 0;
+      int deleted = 0;
+--- 101,106 ----
+      char host[128];
+      struct arpreq req;
+!     struct sockaddr_storage ss;
+!     struct sockaddr *sa;
+      int flags = 0;
+      int deleted = 0;
+***************
+*** 113,122 ****
+      }
+      safe_strncpy(host, *args, (sizeof host));
+!     if (ap->input(0, host, &sa) < 0) {
+  	ap->herror(host);
+  	return (-1);
+      }
+      /* If a host has more than one address, use the correct one! */
+!     memcpy((char *) &req.arp_pa, (char *) &sa, sizeof(struct sockaddr));
+  
+      if (hw_set)
+--- 114,124 ----
+      }
+      safe_strncpy(host, *args, (sizeof host));
+!     sa = (struct sockaddr *)&ss;
+!     if (ap->input(0, host, sa) < 0) {
+  	ap->herror(host);
+  	return (-1);
+      }
+      /* If a host has more than one address, use the correct one! */
+!     memcpy((char *) &req.arp_pa, (char *) sa, sizeof(struct sockaddr));
+  
+      if (hw_set)
+***************
+*** 178,186 ****
+  	    if (strcmp(*args, "255.255.255.255") != 0) {
+  		strcpy(host, *args);
+! 		if (ap->input(0, host, &sa) < 0) {
+  		    ap->herror(host);
+  		    return (-1);
+  		}
+! 		memcpy((char *) &req.arp_netmask, (char *) &sa,
+  		       sizeof(struct sockaddr));
+  		req.arp_flags |= ATF_NETMASK;
+--- 180,188 ----
+  	    if (strcmp(*args, "255.255.255.255") != 0) {
+  		strcpy(host, *args);
+! 		if (ap->input(0, host, sa) < 0) {
+  		    ap->herror(host);
+  		    return (-1);
+  		}
+! 		memcpy((char *) &req.arp_netmask, (char *) sa,
+  		       sizeof(struct sockaddr));
+  		req.arp_flags |= ATF_NETMASK;
+***************
+*** 267,271 ****
+      char host[128];
+      struct arpreq req;
+!     struct sockaddr sa;
+      int flags;
+  
+--- 269,274 ----
+      char host[128];
+      struct arpreq req;
+!     struct sockaddr_storage ss;
+!     struct sockaddr *sa;
+      int flags;
+  
+***************
+*** 278,287 ****
+      }
+      safe_strncpy(host, *args++, (sizeof host));
+!     if (ap->input(0, host, &sa) < 0) {
+  	ap->herror(host);
+  	return (-1);
+      }
+      /* If a host has more than one address, use the correct one! */
+!     memcpy((char *) &req.arp_pa, (char *) &sa, sizeof(struct sockaddr));
+  
+      /* Fetch the hardware address. */
+--- 281,291 ----
+      }
+      safe_strncpy(host, *args++, (sizeof host));
+!     sa = (struct sockaddr *)&ss;
+!     if (ap->input(0, host, sa) < 0) {
+  	ap->herror(host);
+  	return (-1);
+      }
+      /* If a host has more than one address, use the correct one! */
+!     memcpy((char *) &req.arp_pa, (char *) sa, sizeof(struct sockaddr));
+  
+      /* Fetch the hardware address. */
+***************
+*** 353,361 ****
+  	    if (strcmp(*args, "255.255.255.255") != 0) {
+  		strcpy(host, *args);
+! 		if (ap->input(0, host, &sa) < 0) {
+  		    ap->herror(host);
+  		    return (-1);
+  		}
+! 		memcpy((char *) &req.arp_netmask, (char *) &sa,
+  		       sizeof(struct sockaddr));
+  		flags |= ATF_NETMASK;
+--- 357,365 ----
+  	    if (strcmp(*args, "255.255.255.255") != 0) {
+  		strcpy(host, *args);
+! 		if (ap->input(0, host, sa) < 0) {
+  		    ap->herror(host);
+  		    return (-1);
+  		}
+! 		memcpy((char *) &req.arp_netmask, (char *) sa,
+  		       sizeof(struct sockaddr));
+  		flags |= ATF_NETMASK;
+***************
+*** 526,530 ****
+  {
+      char host[100];
+!     struct sockaddr sa;
+      char ip[100];
+      char hwa[100];
+--- 530,535 ----
+  {
+      char host[100];
+!     struct sockaddr_storage ss;
+!     struct sockaddr *sa;
+      char ip[100];
+      char hwa[100];
+***************
+*** 539,550 ****
+      host[0] = '\0';
+  
+      if (name != NULL) {
+  	/* Resolve the host name. */
+  	safe_strncpy(host, name, (sizeof host));
+! 	if (ap->input(0, host, &sa) < 0) {
+  	    ap->herror(host);
+  	    return (-1);
+  	}
+! 	safe_strncpy(host, ap->sprint(&sa, 1), sizeof(host));
+      }
+      /* Open the PROCps kernel table. */
+--- 544,556 ----
+      host[0] = '\0';
+  
++     sa = (struct sockaddr *)&ss;
+      if (name != NULL) {
+  	/* Resolve the host name. */
+  	safe_strncpy(host, name, (sizeof host));
+! 	if (ap->input(0, host, sa) < 0) {
+  	    ap->herror(host);
+  	    return (-1);
+  	}
+! 	safe_strncpy(host, ap->sprint(sa, 1), sizeof(host));
+      }
+      /* Open the PROCps kernel table. */
+***************
+*** 582,589 ****
+  		hostname = "?";
+  	    else {
+! 		if (ap->input(0, ip, &sa) < 0)
+  		    hostname = ip;
+  		else
+! 		    hostname = ap->sprint(&sa, opt_n | 0x8000);
+  		if (strcmp(hostname, ip) == 0)
+  		    hostname = "?";
+--- 588,595 ----
+  		hostname = "?";
+  	    else {
+! 		if (ap->input(0, ip, sa) < 0)
+  		    hostname = ip;
+  		else
+! 		    hostname = ap->sprint(sa, opt_n | 0x8000);
+  		if (strcmp(hostname, ip) == 0)
+  		    hostname = "?";
+
+
+
+From net-tools-cvscommit-admin at lists.berlios.de  Sun Dec  4 06:14:12 2005
+From: net-tools-cvscommit-admin at lists.berlios.de (net-tools-cvscommit-admin at lists.berlios.de)
+Date: Sun, 4 Dec 2005 06:14:12 +0100
+Subject: [net-tools-cvscommit] net-tools slattach.c,1.9,1.10
+Message-ID: <200512040514.jB45ECN28261@bat.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv17447
+
+Modified Files:
+	slattach.c 
+Log Message:
+make slattach 3-wire -L mode work (no RTSCTS) (Debian Bug #175743)
+
+
+Index: slattach.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/slattach.c,v
+retrieving revision 1.9
+retrieving revision 1.10
+diff -C2 -d -r1.9 -r1.10
+*** slattach.c	14 Aug 2000 02:44:11 -0000	1.9
+--- slattach.c	4 Dec 2005 05:14:08 -0000	1.10
+***************
+*** 116,120 ****
+  #endif
+  int		opt_l = 0;		/* "lock it" flag		*/
+! int		opt_L = 0;		/* clocal flag			*/
+  int		opt_m = 0;		/* "set RAW mode" flag		*/
+  int		opt_n = 0;		/* "set No Mesg" flag		*/
+--- 116,120 ----
+  #endif
+  int		opt_l = 0;		/* "lock it" flag		*/
+! int		opt_L = 0;		/* 3-wire mode flag		*/
+  int		opt_m = 0;		/* "set RAW mode" flag		*/
+  int		opt_n = 0;		/* "set No Mesg" flag		*/
+***************
+*** 343,349 ****
+    tty->c_lflag = (0);				/* local flags		*/
+    speed = (tty->c_cflag & CBAUD);		/* save current speed	*/
+!   tty->c_cflag = (CRTSCTS | HUPCL | CREAD);	/* UART flags		*/
+    if (opt_L) 
+  	tty->c_cflag |= CLOCAL;
+    tty->c_cflag |= speed;			/* restore speed	*/
+    return(0);
+--- 343,351 ----
+    tty->c_lflag = (0);				/* local flags		*/
+    speed = (tty->c_cflag & CBAUD);		/* save current speed	*/
+!   tty->c_cflag = (HUPCL | CREAD);		/* UART flags		*/
+    if (opt_L) 
+  	tty->c_cflag |= CLOCAL;
++   else
++ 	tty->c_cflag |= CRTSCTS;
+    tty->c_cflag |= speed;			/* restore speed	*/
+    return(0);
+
+
+
+From net-tools-cvscommit-admin at lists.berlios.de  Sun Dec  4 06:15:39 2005
+From: net-tools-cvscommit-admin at lists.berlios.de (net-tools-cvscommit-admin at lists.berlios.de)
+Date: Sun, 4 Dec 2005 06:15:39 +0100
+Subject: [net-tools-cvscommit] net-tools slattach.c,1.10,1.11
+Message-ID: <200512040515.jB45FdN28326@bat.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv17627
+
+Modified Files:
+	slattach.c 
+Log Message:
+use file version
+
+
+Index: slattach.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/slattach.c,v
+retrieving revision 1.10
+retrieving revision 1.11
+diff -C2 -d -r1.10 -r1.11
+*** slattach.c	4 Dec 2005 05:14:08 -0000	1.10
+--- slattach.c	4 Dec 2005 05:15:36 -0000	1.11
+***************
+*** 74,78 ****
+  
+  const char *Release = RELEASE,
+! 	   *Version = "@(#) slattach 1.21 (1999-11-21)",
+  	   *Signature = "net-tools, Fred N. van Kempen et al.";
+  
+--- 74,78 ----
+  
+  const char *Release = RELEASE,
+! 	   *Version = "$Id$",
+  	   *Signature = "net-tools, Fred N. van Kempen et al.";
+  
+
+
+

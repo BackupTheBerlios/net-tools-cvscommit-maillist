@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/man/en_US slattach.8,1.2,1.3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2006q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/man/en_US%20slattach.8%2C1.2%2C1.3&In-Reply-To=%3C20061010055924.8F86B7DE65%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000010.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/man/en_US slattach.8,1.2,1.3</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/man/en_US%20slattach.8%2C1.2%2C1.3&In-Reply-To=%3C20061010055924.8F86B7DE65%40bat.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/man/en_US slattach.8,1.2,1.3">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Tue Oct 10 07:59:24 CEST 2006</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000010.html">[net-tools-cvscommit] net-tools ipmaddr.c,1.8,1.9
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#9">[ date ]</a>
+              <a href="thread.html#9">[ thread ]</a>
+              <a href="subject.html#9">[ subject ]</a>
+              <a href="author.html#9">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv24811
+
+Modified Files:
+	slattach.8 
+Log Message:
+formatting fixes from Justin Pryzby in Debian Bug #391495
+
+
+Index: slattach.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/slattach.8,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** slattach.8	4 Sep 2005 03:51:39 -0000	1.2
+--- slattach.8	10 Oct 2006 05:58:46 -0000	1.3
+***************
+*** 1,3 ****
+! .TH SLATTACH 8 &quot;4 Sep 2005&quot; &quot;&quot; &quot;&quot;
+  .SH NAME
+  slattach \- attach a network interface to a serial line
+--- 1,3 ----
+! .TH SLATTACH 8 &quot;10 Oct 2006&quot; &quot;&quot; &quot;&quot;
+  .SH NAME
+  slattach \- attach a network interface to a serial line
+***************
+*** 25,28 ****
+--- 25,29 ----
+  Exit when the carrier is lost. This works on both /dev/tty and /dev/cua
+  devices by directly monitoring the carrier status every 15 seconds.
++ .TP
+  .B &quot;[-v]&quot;
+  Enable verbose output.  Useful in shell scripts.
+***************
+*** 51,56 ****
+  Set a specific kind of protocol to use on the line.  The default
+  is set to
+! .B &quot;cslip&quot;
+! , i.e. compressed SLIP.  Other possible values are
+  .B &quot;slip&quot;
+  (normal SLIP), 
+--- 52,57 ----
+  Set a specific kind of protocol to use on the line.  The default
+  is set to
+! .BR &quot;cslip&quot; ,
+! i.e. compressed SLIP.  Other possible values are
+  .B &quot;slip&quot;
+  (normal SLIP), 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000010.html">[net-tools-cvscommit] net-tools ipmaddr.c,1.8,1.9
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#9">[ date ]</a>
+              <a href="thread.html#9">[ thread ]</a>
+              <a href="subject.html#9">[ subject ]</a>
+              <a href="author.html#9">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

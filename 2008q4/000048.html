@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools netstat.c,1.61,1.62
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.61%2C1.62&In-Reply-To=%3C20081202015351.8D74F27BA1%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000047.html">
+   <LINK REL="Next"  HREF="000049.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools netstat.c,1.61,1.62</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.61%2C1.62&In-Reply-To=%3C20081202015351.8D74F27BA1%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools netstat.c,1.61,1.62">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Tue Dec  2 02:53:51 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000047.html">[net-tools-cvscommit] net-tools netstat.c,1.60,1.61
+</A></li>
+        <LI>Next message: <A HREF="000049.html">[net-tools-cvscommit] net-tools/man/en_US netstat.8,1.23,1.24
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#48">[ date ]</a>
+              <a href="thread.html#48">[ thread ]</a>
+              <a href="subject.html#48">[ subject ]</a>
+              <a href="author.html#48">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv23395
+
+Modified Files:
+	netstat.c 
+Log Message:
+sorted options
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.61
+retrieving revision 1.62
+diff -C2 -d -r1.61 -r1.62
+*** netstat.c	1 Dec 2008 23:15:35 -0000	1.61
+--- netstat.c	2 Dec 2008 01:53:48 -0000	1.62
+***************
+*** 1588,1592 ****
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, &quot;MCFA:acdegphinNorstuWVv?wxl64U&quot;, longopts, &amp;lop)) != EOF)
+  	switch (i) {
+  	case -1:
+--- 1588,1592 ----
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, &quot;A:CFMacdeghilnNoprstuUvVWwx64?&quot;, longopts, &amp;lop)) != EOF)
+  	switch (i) {
+  	case -1:
+***************
+*** 1676,1684 ****
+  	    flag_rou++;
+  	    break;
+- 
+  	case 't':
+  	    flag_tcp++;
+  	    break;
+- 
+  	case 'u':
+  	    flag_udp++;
+--- 1676,1682 ----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000047.html">[net-tools-cvscommit] net-tools netstat.c,1.60,1.61
+</A></li>
+	<LI>Next message: <A HREF="000049.html">[net-tools-cvscommit] net-tools/man/en_US netstat.8,1.23,1.24
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#48">[ date ]</a>
+              <a href="thread.html#48">[ thread ]</a>
+              <a href="subject.html#48">[ subject ]</a>
+              <a href="author.html#48">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

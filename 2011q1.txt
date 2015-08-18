@@ -1,0 +1,276 @@
+From net-tools-cvscommit at lists.berlios.de  Sat Jan  1 04:22:34 2011
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat, 01 Jan 2011 03:22:34 +0000
+Subject: [net-tools-cvscommit] net-tools/lib net-support.h, 1.16,
+	1.17 interface.c, 1.34, 1.35
+Message-ID: <20110101032234.326D548078E@sheep.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv22187/lib
+
+Modified Files:
+	net-support.h interface.c 
+Log Message:
+Bug #17812 Fix the handling of some of the HAVE_* flags ifdef vs if. --jpa468
+
+
+Index: net-support.h
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/net-support.h,v
+retrieving revision 1.16
+retrieving revision 1.17
+diff -C 2 -d -r1.16 -r1.17
+*** net-support.h	1 Dec 2007 17:50:30 -0000	1.16
+--- net-support.h	1 Jan 2011 03:22:31 -0000	1.17
+***************
+*** 238,242 ****
+  #define RTF_NOTCACHED   0x0400          /* this route isn't cached        */
+  
+! #ifdef HAVE_AFECONET
+  #ifndef AF_ECONET
+  #define AF_ECONET       19      /* Acorn Econet */
+--- 238,242 ----
+  #define RTF_NOTCACHED   0x0400          /* this route isn't cached        */
+  
+! #if HAVE_AFECONET
+  #ifndef AF_ECONET
+  #define AF_ECONET       19      /* Acorn Econet */
+
+Index: interface.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/interface.c,v
+retrieving revision 1.34
+retrieving revision 1.35
+diff -C 2 -d -r1.34 -r1.35
+*** interface.c	1 Jan 2010 06:35:30 -0000	1.34
+--- interface.c	1 Jan 2011 03:22:31 -0000	1.35
+***************
+*** 38,42 ****
+  #endif
+  
+! #ifdef HAVE_HWSLIP
+  #include <linux/if_slip.h>
+  #include <net/if_arp.h>
+--- 38,42 ----
+  #endif
+  
+! #if HAVE_HWSLIP
+  #include <linux/if_slip.h>
+  #include <net/if_arp.h>
+***************
+*** 438,442 ****
+  	ife->mtu = ifr.ifr_mtu;
+  
+! #ifdef HAVE_HWSLIP
+      if (ife->type == ARPHRD_SLIP || ife->type == ARPHRD_CSLIP ||
+  	ife->type == ARPHRD_SLIP6 || ife->type == ARPHRD_CSLIP6 ||
+--- 438,442 ----
+  	ife->mtu = ifr.ifr_mtu;
+  
+! #if HAVE_HWSLIP
+      if (ife->type == ARPHRD_SLIP || ife->type == ARPHRD_CSLIP ||
+  	ife->type == ARPHRD_SLIP6 || ife->type == ARPHRD_CSLIP6 ||
+***************
+*** 683,688 ****
+--- 683,690 ----
+      hf = ptr->type;
+  
++ #if HAVE_HWSLIP
+      if (hf == ARPHRD_CSLIP || hf == ARPHRD_CSLIP6)
+  	can_compress = 1;
++ #endif
+  
+      hw = get_hwntype(hf);
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Jan  1 04:22:33 2011
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat, 01 Jan 2011 03:22:33 +0000
+Subject: [net-tools-cvscommit] net-tools ifconfig.c,1.58,1.59
+Message-ID: <20110101032234.3C4EC48079A@sheep.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv22187
+
+Modified Files:
+	ifconfig.c 
+Log Message:
+Bug #17812 Fix the handling of some of the HAVE_* flags ifdef vs if. --jpa468
+
+
+Index: ifconfig.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/ifconfig.c,v
+retrieving revision 1.58
+retrieving revision 1.59
+diff -C 2 -d -r1.58 -r1.59
+*** ifconfig.c	2 Oct 2008 23:31:04 -0000	1.58
+--- ifconfig.c	1 Jan 2011 03:22:31 -0000	1.59
+***************
+*** 50,54 ****
+  
+  
+! #ifdef HAVE_HWSLIP
+  #include <linux/if_slip.h>
+  #endif
+--- 50,54 ----
+  
+  
+! #if HAVE_HWSLIP
+  #include <linux/if_slip.h>
+  #endif
+***************
+*** 779,783 ****
+  	    }
+  #endif
+! #ifdef HAVE_AFINET
+  	    { /* ipv4 address a.b.c.d */
+  		unsigned long ip, nm, bc;
+--- 779,783 ----
+  	    }
+  #endif
+! #if HAVE_AFINET
+  	    { /* ipv4 address a.b.c.d */
+  		unsigned long ip, nm, bc;
+***************
+*** 872,876 ****
+  	    }
+  #endif
+! #ifdef HAVE_AFINET
+  	    {
+  		/* ipv4 address a.b.c.d */
+--- 872,876 ----
+  	    }
+  #endif
+! #if HAVE_AFINET
+  	    {
+  		/* ipv4 address a.b.c.d */
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Jan 27 01:40:33 2011
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 27 Jan 2011 00:40:33 +0000
+Subject: [net-tools-cvscommit] net-tools/man/en_US netstat.8,1.25,1.26
+Message-ID: <20110127004033.BE4D548113A@sheep.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv32022/en_US
+
+Modified Files:
+	netstat.8 
+Log Message:
+added some address family alias (still needs description) Bug#017886 
+Reported by Toralf
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.25
+retrieving revision 1.26
+diff -C 2 -d -r1.25 -r1.26
+*** netstat.8	2 Dec 2008 02:00:24 -0000	1.25
+--- netstat.8	27 Jan 2011 00:40:30 -0000	1.26
+***************
+*** 10,14 ****
+  .\"
+  .\"
+! .TH NETSTAT 8 "2008\-12\-02" "net\-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+--- 10,14 ----
+  .\"
+  .\"
+! .TH NETSTAT 8 "2011\-01\-27" "net\-tools" "Linux System Administrator's Manual"
+  
+  .SH NAME
+***************
+*** 86,94 ****
+  .RB [ \-\-protocol= { inet , unix , ipx , ax25 , netrom , ddp }[, ...] ]
+  .RB [ \-\-unix | \-x ] 
+! .RB [ \-\-inet | \-\-ip ]
+  .RB [ \-\-ax25 ]
+  .RB [ \-\-ipx ] 
+  .RB [ \-\-netrom ]
+! .RB [ \-\-ddp ]
+  
+  .SH DESCRIPTION
+--- 86,98 ----
+  .RB [ \-\-protocol= { inet , unix , ipx , ax25 , netrom , ddp }[, ...] ]
+  .RB [ \-\-unix | \-x ] 
+! .RB [ \-\-inet | \-\-ip | \-\-tcpip ]
+  .RB [ \-\-ax25 ]
++ .RB [ \-\-x25 ]
++ .RB [ \-\-rose ]
++ .RB [ \-\-ash ]
+  .RB [ \-\-ipx ] 
+  .RB [ \-\-netrom ]
+! .RB [ \-\-ddp | \-\-appletalk ]
+! .RB [ \-\-econet | \-\-ec ]
+  
+  .SH DESCRIPTION
+***************
+*** 149,152 ****
+--- 153,157 ----
+  .BR ax25 , 
+  .BR netrom ,
++ .BR econet ,
+  and
+  .BR ddp .
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Jan 27 01:43:16 2011
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 27 Jan 2011 00:43:16 +0000
+Subject: [net-tools-cvscommit] net-tools/lib net-support.h,1.17,1.18
+Message-ID: <20110127004316.791EE48113A@sheep.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv32516/lib
+
+Modified Files:
+	net-support.h 
+Log Message:
+corrected indention
+
+
+Index: net-support.h
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/net-support.h,v
+retrieving revision 1.17
+retrieving revision 1.18
+diff -C 2 -d -r1.17 -r1.18
+*** net-support.h	1 Jan 2011 03:22:31 -0000	1.17
+--- net-support.h	27 Jan 2011 00:43:13 -0000	1.18
+***************
+*** 141,145 ****
+  #define AFTRANS_OPTS \
+  	{"ax25",	0,	0,	1}, \
+!        {"x25",         0,      0,      1}, \
+  	{"ip",		0,	0,	1}, \
+  	{"ipx",         0,	0,	1}, \
+--- 141,145 ----
+  #define AFTRANS_OPTS \
+  	{"ax25",	0,	0,	1}, \
+! 	{"x25",         0,      0,      1}, \
+  	{"ip",		0,	0,	1}, \
+  	{"ipx",         0,	0,	1}, \
+***************
+*** 149,153 ****
+  	{"inet6",	0,	0,	1}, \
+  	{"ddp",		0,	0,	1}, \
+! 	{"rose",		0,	0,	1}, \
+  	{"unix",	0,	0,	1}, \
+  	{"tcpip",	0,	0,	1}
+--- 149,153 ----
+  	{"inet6",	0,	0,	1}, \
+  	{"ddp",		0,	0,	1}, \
+! 	{"rose",	0,	0,	1}, \
+  	{"unix",	0,	0,	1}, \
+  	{"tcpip",	0,	0,	1}
+
+
+

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/lib ec_hw.c,1.2,1.3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20ec_hw.c%2C1.2%2C1.3&In-Reply-To=%3C20090906223924.D59121854C9%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000056.html">
+   <LINK REL="Next"  HREF="000058.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/lib ec_hw.c,1.2,1.3</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20ec_hw.c%2C1.2%2C1.3&In-Reply-To=%3C20090906223924.D59121854C9%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/lib ec_hw.c,1.2,1.3">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Mon Sep  7 00:39:24 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000056.html">[net-tools-cvscommit] net-tools .cvsignore,1.2,1.3
+</A></li>
+        <LI>Next message: <A HREF="000058.html">[net-tools-cvscommit] net-tools .gitignore,NONE,1.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#57">[ date ]</a>
+              <a href="thread.html#57">[ thread ]</a>
+              <a href="subject.html#57">[ subject ]</a>
+              <a href="author.html#57">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv7940/lib
+
+Modified Files:
+	ec_hw.c 
+Log Message:
+Missing include to make compileable with gcc-4.3.2 and glibc-2.9_p20081201
+Patch from Petr Pisar [Berlios Bug#16232].
+
+
+Index: ec_hw.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/ec_hw.c,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** ec_hw.c	27 Sep 1999 11:00:46 -0000	1.2
+--- ec_hw.c	6 Sep 2009 22:39:20 -0000	1.3
+***************
+*** 17,20 ****
+--- 17,21 ----
+  #if HAVE_HWEC
+  
++ #include &lt;stdlib.h&gt;
+  #include &lt;net/if_arp.h&gt;
+  #include &quot;net-support.h&quot;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000056.html">[net-tools-cvscommit] net-tools .cvsignore,1.2,1.3
+</A></li>
+	<LI>Next message: <A HREF="000058.html">[net-tools-cvscommit] net-tools .gitignore,NONE,1.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#57">[ date ]</a>
+              <a href="thread.html#57">[ thread ]</a>
+              <a href="subject.html#57">[ subject ]</a>
+              <a href="author.html#57">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

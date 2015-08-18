@@ -1,0 +1,42 @@
+From net-tools-cvscommit at lists.berlios.de  Fri Oct 29 21:24:39 2010
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri, 29 Oct 2010 19:24:39 +0000
+Subject: [net-tools-cvscommit] net-tools statistics.c,1.22,1.23
+Message-ID: <20101029192440.0DF354803DC@sheep.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv6775
+
+Modified Files:
+	statistics.c 
+Log Message:
+[Bug #17645] Add netstat(8) support for RcvbufErrors, SndbufErrors.
+Thanks jwm
+
+
+Index: statistics.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/statistics.c,v
+retrieving revision 1.22
+retrieving revision 1.23
+diff -C 2 -d -r1.22 -r1.23
+*** statistics.c	3 Oct 2008 01:07:47 -0000	1.22
+--- statistics.c	29 Oct 2010 19:24:36 -0000	1.23
+***************
+*** 200,204 ****
+      {"InErrors", N_("%u packet receive errors"), number},
+      {"OutDatagrams", N_("%u packets sent"), number},
+! };
+  
+  struct entry Udp6tab[] =
+--- 200,206 ----
+      {"InErrors", N_("%u packet receive errors"), number},
+      {"OutDatagrams", N_("%u packets sent"), number},
+!     {"RcvbufErrors", N_("%u receive buffer errors"), number},
+!     {"SndbufErrors", N_("%u send buffer errors"), number},
+!  };
+  
+  struct entry Udp6tab[] =
+
+
+

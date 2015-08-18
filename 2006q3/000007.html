@@ -1,0 +1,423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools mii-tool.c,1.8,1.9
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2006q3/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20mii-tool.c%2C1.8%2C1.9&In-Reply-To=%3C20060927205952.344417DD19%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000008.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools mii-tool.c,1.8,1.9</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20mii-tool.c%2C1.8%2C1.9&In-Reply-To=%3C20060927205952.344417DD19%40bat.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools mii-tool.c,1.8,1.9">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Wed Sep 27 22:59:52 CEST 2006</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000008.html">[net-tools-cvscommit] net-tools/include mii.h,1.2,1.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7">[ date ]</a>
+              <a href="thread.html#7">[ thread ]</a>
+              <a href="subject.html#7">[ subject ]</a>
+              <a href="author.html#7">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv5532
+
+Modified Files:
+	mii-tool.c 
+Log Message:
+GigE Support by Stephen Hemminger from 
+<A HREF="http://developer.osdl.org/shemminger/prototypes/mii-tool.tar.bz2">http://developer.osdl.org/shemminger/prototypes/mii-tool.tar.bz2</A>
+with verbose register patch from Dean Gaudet
+
+
+Index: mii-tool.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/mii-tool.c,v
+retrieving revision 1.8
+retrieving revision 1.9
+diff -C2 -d -r1.8 -r1.9
+*** mii-tool.c	3 Jun 2004 22:18:26 -0000	1.8
+--- mii-tool.c	27 Sep 2006 20:59:18 -0000	1.9
+***************
+*** 30,34 ****
+  */
+  
+! static char version[] = &quot;$Id$\n(Author: David Hinds based on Donald Becker's mii-diag)&quot;;
+  
+  #include &lt;unistd.h&gt;
+--- 30,34 ----
+  */
+  
+! static char Version[] = &quot;$Id$\n(Author: David Hinds based on Donald Becker's mii-diag)&quot;;
+  
+  #include &lt;unistd.h&gt;
+***************
+*** 46,49 ****
+--- 46,51 ----
+  #include &lt;sys/ioctl.h&gt;
+  #include &lt;net/if.h&gt;
++ #include &lt;linux/sockios.h&gt;
++ 
+  #ifndef __GLIBC__
+  #include &lt;linux/if_arp.h&gt;
+***************
+*** 56,60 ****
+  
+  /* Table of known MII's */
+! static struct {
+      u_short	id1, id2;
+      char	*name;
+--- 58,62 ----
+  
+  /* Table of known MII's */
+! static const struct {
+      u_short	id1, id2;
+      char	*name;
+***************
+*** 75,78 ****
+--- 77,83 ----
+      { 0x0282, 0x1c50, &quot;SMSC 83C180&quot; },
+      { 0x0300, 0xe540, &quot;TDK 78Q2120&quot; },
++     { 0x0141, 0x0c20, &quot;Yukon 88E1011&quot; },
++     { 0x0141, 0x0cc0, &quot;Yukon-EC 88E1111&quot; },
++     { 0x0141, 0x0c90, &quot;Yukon-2 88E1112&quot; },
+  };
+  #define NMII (sizeof(mii_id)/sizeof(mii_id[0]))
+***************
+*** 138,156 ****
+  const struct {
+      char	*name;
+!     u_short	value;
+  } media[] = {
+      /* The order through 100baseT4 matches bits in the BMSR */
+!     { &quot;10baseT-HD&quot;,	MII_AN_10BASET_HD },
+!     { &quot;10baseT-FD&quot;,	MII_AN_10BASET_FD },
+!     { &quot;100baseTx-HD&quot;,	MII_AN_100BASETX_HD },
+!     { &quot;100baseTx-FD&quot;,	MII_AN_100BASETX_FD },
+!     { &quot;100baseT4&quot;,	MII_AN_100BASET4 },
+!     { &quot;100baseTx&quot;,	MII_AN_100BASETX_FD | MII_AN_100BASETX_HD },
+!     { &quot;10baseT&quot;,	MII_AN_10BASET_FD | MII_AN_10BASET_HD },
+  };
+  #define NMEDIA (sizeof(media)/sizeof(media[0]))
+  	
+  /* Parse an argument list of media types */
+! static int parse_media(char *arg)
+  {
+      int mask, i;
+--- 143,165 ----
+  const struct {
+      char	*name;
+!     u_short	value[2];
+  } media[] = {
+      /* The order through 100baseT4 matches bits in the BMSR */
+!     { &quot;10baseT-HD&quot;,	{MII_AN_10BASET_HD} },
+!     { &quot;10baseT-FD&quot;,	{MII_AN_10BASET_FD} },
+!     { &quot;100baseTx-HD&quot;,	{MII_AN_100BASETX_HD} },
+!     { &quot;100baseTx-FD&quot;,	{MII_AN_100BASETX_FD} },
+!     { &quot;100baseT4&quot;,	{MII_AN_100BASET4} },
+!     { &quot;100baseTx&quot;,	{MII_AN_100BASETX_FD | MII_AN_100BASETX_HD} },
+!     { &quot;10baseT&quot;,	{MII_AN_10BASET_FD | MII_AN_10BASET_HD} },
+! 
+!     { &quot;1000baseT-HD&quot;,	{0, MII_BMCR2_1000HALF} },
+!     { &quot;1000baseT-FD&quot;,	{0, MII_BMCR2_1000FULL} },
+!     { &quot;1000baseT&quot;,	{0, MII_BMCR2_1000HALF|MII_BMCR2_1000FULL} },
+  };
+  #define NMEDIA (sizeof(media)/sizeof(media[0]))
+  	
+  /* Parse an argument list of media types */
+! static int parse_media(char *arg, unsigned *bmcr2)
+  {
+      int mask, i;
+***************
+*** 159,175 ****
+      if ((*arg != '\0') &amp;&amp; (*s == '\0')) {
+  	if ((mask &amp; MII_AN_ABILITY_MASK) &amp;&amp;
+! 	    !(mask &amp; ~MII_AN_ABILITY_MASK))
+! 	    return mask;
+  	goto failed;
+!     } else {
+! 	mask = 0;
+! 	s = strtok(arg, &quot;, &quot;);
+! 	do {
+  	    for (i = 0; i &lt; NMEDIA; i++)
+  		if (s &amp;&amp; strcasecmp(media[i].name, s) == 0) break;
+  	    if (i == NMEDIA) goto failed;
+! 	    mask |= media[i].value;
+! 	} while ((s = strtok(NULL, &quot;, &quot;)) != NULL);
+!     }
+      return mask;
+  failed:
+--- 168,188 ----
+      if ((*arg != '\0') &amp;&amp; (*s == '\0')) {
+  	if ((mask &amp; MII_AN_ABILITY_MASK) &amp;&amp;
+! 	    !(mask &amp; ~MII_AN_ABILITY_MASK)) {
+! 		*bmcr2 = 0;
+! 		return mask;
+! 	}
+  	goto failed;
+!     }
+!     mask = 0;
+!     *bmcr2 = 0;
+!     s = strtok(arg, &quot;, &quot;);
+!     do {
+  	    for (i = 0; i &lt; NMEDIA; i++)
+  		if (s &amp;&amp; strcasecmp(media[i].name, s) == 0) break;
+  	    if (i == NMEDIA) goto failed;
+! 	    mask |= media[i].value[0];
+! 	    *bmcr2 |= media[i].value[1];
+!     } while ((s = strtok(NULL, &quot;, &quot;)) != NULL);
+! 
+      return mask;
+  failed:
+***************
+*** 180,188 ****
+  /*--------------------------------------------------------------------*/
+  
+! static char *media_list(int mask, int best)
+  {
+      static char buf[100];
+      int i;
+      *buf = '\0';
+      mask &gt;&gt;= 5;
+      for (i = 4; i &gt;= 0; i--) {
+--- 193,214 ----
+  /*--------------------------------------------------------------------*/
+  
+! static const char *media_list(unsigned mask, unsigned mask2, int best)
+  {
+      static char buf[100];
+      int i;
+      *buf = '\0';
++ 
++     if (mask &amp; MII_BMCR_SPEED1000) {
++ 	if (mask2 &amp; MII_BMCR2_1000HALF) {
++ 	    strcat(buf, &quot; &quot;);
++ 	    strcat(buf, &quot;1000baseT-HD&quot;);
++ 	    if (best) goto out;
++ 	}
++ 	if (mask2 &amp; MII_BMCR2_1000FULL) {
++ 	    strcat(buf, &quot; &quot;);
++ 	    strcat(buf, &quot;1000baseT-FD&quot;);
++ 	    if (best) goto out;
++ 	}
++     }
+      mask &gt;&gt;= 5;
+      for (i = 4; i &gt;= 0; i--) {
+***************
+*** 193,196 ****
+--- 219,223 ----
+  	}
+      }
++  out:
+      if (mask &amp; (1&lt;&lt;5))
+  	strcat(buf, &quot; flow-control&quot;);
+***************
+*** 202,213 ****
+      char buf[100];
+      int i, mii_val[32];
+!     int bmcr, bmsr, advert, lkpar;
+  
+      /* Some bits in the BMSR are latched, but we can't rely on being
+         the only reader, so only the current values are meaningful */
+      mdio_read(sock, MII_BMSR);
+!     for (i = 0; i &lt; ((verbose &gt; 1) ? 32 : 8); i++)
+  	mii_val[i] = mdio_read(sock, i);
+!     
+      if (mii_val[MII_BMCR] == 0xffff  || mii_val[MII_BMSR] == 0x0000) {
+  	fprintf(stderr, &quot;  No MII transceiver present!.\n&quot;);
+--- 229,240 ----
+      char buf[100];
+      int i, mii_val[32];
+!     unsigned bmcr, bmsr, advert, lkpar, bmcr2, lpa2;
+  
+      /* Some bits in the BMSR are latched, but we can't rely on being
+         the only reader, so only the current values are meaningful */
+      mdio_read(sock, MII_BMSR);
+!     for (i = 0; i &lt; ((verbose &gt; 1) ? 32 : MII_BASIC_MAX); i++)
+  	mii_val[i] = mdio_read(sock, i);
+! 
+      if (mii_val[MII_BMCR] == 0xffff  || mii_val[MII_BMSR] == 0x0000) {
+  	fprintf(stderr, &quot;  No MII transceiver present!.\n&quot;);
+***************
+*** 218,221 ****
+--- 245,249 ----
+      bmcr = mii_val[MII_BMCR]; bmsr = mii_val[MII_BMSR];
+      advert = mii_val[MII_ANAR]; lkpar = mii_val[MII_ANLPAR];
++     bmcr2 = mii_val[MII_CTRL1000]; lpa2 = mii_val[MII_STAT1000];
+  
+      sprintf(buf, &quot;%s: &quot;, ifr.ifr_name);
+***************
+*** 225,229 ****
+  		strcat(buf, (lkpar &amp; MII_AN_ACK) ?
+  		       &quot;negotiated&quot; : &quot;no autonegotiation,&quot;);
+! 		strcat(buf, media_list(advert &amp; lkpar, 1));
+  		strcat(buf, &quot;, &quot;);
+  	    } else {
+--- 253,257 ----
+  		strcat(buf, (lkpar &amp; MII_AN_ACK) ?
+  		       &quot;negotiated&quot; : &quot;no autonegotiation,&quot;);
+! 		strcat(buf, media_list(advert &amp; lkpar, bmcr2 &amp; lpa2&gt;&gt;2, 1));
+  		strcat(buf, &quot;, &quot;);
+  	    } else {
+***************
+*** 235,240 ****
+      } else {
+  	sprintf(buf+strlen(buf), &quot;%s Mbit, %s duplex, &quot;,
+! 	       (bmcr &amp; MII_BMCR_100MBIT) ? &quot;100&quot; : &quot;10&quot;,
+! 	       (bmcr &amp; MII_BMCR_DUPLEX) ? &quot;full&quot; : &quot;half&quot;);
+      }
+      strcat(buf, (bmsr &amp; MII_BMSR_LINK_VALID) ? &quot;link ok&quot; : &quot;no link&quot;);
+--- 263,270 ----
+      } else {
+  	sprintf(buf+strlen(buf), &quot;%s Mbit, %s duplex, &quot;,
+! 		((bmcr2 &amp; (MII_BMCR2_1000HALF | MII_BMCR2_1000FULL)) &amp; lpa2 &gt;&gt; 2)
+! 		? &quot;1000&quot;
+! 		: (bmcr &amp; MII_BMCR_100MBIT) ? &quot;100&quot; : &quot;10&quot;,
+! 		(bmcr &amp; MII_BMCR_DUPLEX) ? &quot;full&quot; : &quot;half&quot;);
+      }
+      strcat(buf, (bmsr &amp; MII_BMSR_LINK_VALID) ? &quot;link ok&quot; : &quot;no link&quot;);
+***************
+*** 297,304 ****
+  	    printf(&quot;remote fault, &quot;);
+  	printf((bmsr &amp; MII_BMSR_LINK_VALID) ? &quot;link ok&quot; : &quot;no link&quot;);
+! 	printf(&quot;\n  capabilities:%s&quot;, media_list(bmsr &gt;&gt; 6, 0));
+! 	printf(&quot;\n  advertising: %s&quot;, media_list(advert, 0));
+  	if (lkpar &amp; MII_AN_ABILITY_MASK)
+! 	    printf(&quot;\n  link partner:%s&quot;, media_list(lkpar, 0));
+  	printf(&quot;\n&quot;);
+      }
+--- 327,334 ----
+  	    printf(&quot;remote fault, &quot;);
+  	printf((bmsr &amp; MII_BMSR_LINK_VALID) ? &quot;link ok&quot; : &quot;no link&quot;);
+! 	printf(&quot;\n  capabilities:%s&quot;, media_list(bmsr &gt;&gt; 6, bmcr2, 0));
+! 	printf(&quot;\n  advertising: %s&quot;, media_list(advert, lpa2 &gt;&gt; 2, 0));
+  	if (lkpar &amp; MII_AN_ABILITY_MASK)
+! 	    printf(&quot;\n  link partner:%s&quot;, media_list(lkpar, bmcr2, 0));
+  	printf(&quot;\n&quot;);
+      }
+***************
+*** 380,384 ****
+  /*--------------------------------------------------------------------*/
+  
+! const char *usage = &quot;usage: %s [-VvRrwl] [-A media,... | -F media] [interface ...]\n&quot;
+  &quot;       -V, --version               display version information\n&quot;
+  &quot;       -v, --verbose               more verbose output\n&quot;
+--- 410,415 ----
+  /*--------------------------------------------------------------------*/
+  
+! const char *usage =
+! &quot;usage: %s [-VvRrwl] [-A media,... | -F media] [interface ...]\n&quot;
+  &quot;       -V, --version               display version information\n&quot;
+  &quot;       -v, --verbose               more verbose output\n&quot;
+***************
+*** 389,394 ****
+  &quot;       -A, --advertise=media,...   advertise only specified media\n&quot;
+  &quot;       -F, --force=media           force specified media technology\n&quot;
+! &quot;media: 100baseT4, 100baseTx-FD, 100baseTx-HD, 10baseT-FD, 10baseT-HD,\n&quot;
+! &quot;       (to advertise both HD and FD) 100baseTx, 10baseT\n&quot;;
+  
+  int main(int argc, char **argv)
+--- 420,435 ----
+  &quot;       -A, --advertise=media,...   advertise only specified media\n&quot;
+  &quot;       -F, --force=media           force specified media technology\n&quot;
+! &quot;media: 1000baseTx-HD, 1000baseTx-FD,\n&quot;
+! &quot;       100baseT4, 100baseTx-FD, 100baseTx-HD,\n&quot;
+! &quot;       10baseT-FD, 10baseT-HD,\n&quot;
+! &quot;       (to advertise both HD and FD) 1000baseTx, 100baseTx, 10baseT\n&quot;;
+! 
+! 
+! static void version(void)
+! {
+!     fprintf(stderr, &quot;%s\n%s\n&quot;, Version, RELEASE);
+!     exit(5); /* E_VERSION */
+! }
+! 
+  
+  int main(int argc, char **argv)
+***************
+*** 396,404 ****
+      int i, c, ret, errflag = 0;
+      char s[6];
+      
+      while ((c = getopt_long(argc, argv, &quot;A:F:p:lrRvVw?&quot;, longopts, 0)) != EOF)
+  	switch (c) {
+! 	case 'A': nway_advertise = parse_media(optarg); break;
+! 	case 'F': fixed_speed = parse_media(optarg); break;
+  	case 'p': override_phy = atoi(optarg); break;
+  	case 'r': opt_restart++;	break;
+--- 437,446 ----
+      int i, c, ret, errflag = 0;
+      char s[6];
++     unsigned ctrl1000 = 0;
+      
+      while ((c = getopt_long(argc, argv, &quot;A:F:p:lrRvVw?&quot;, longopts, 0)) != EOF)
+  	switch (c) {
+! 	case 'A': nway_advertise = parse_media(optarg, &amp;ctrl1000); break;
+! 	case 'F': fixed_speed = parse_media(optarg, &amp;ctrl1000); break;
+  	case 'p': override_phy = atoi(optarg); break;
+  	case 'r': opt_restart++;	break;
+***************
+*** 423,427 ****
+  
+      if (opt_version)
+! 	printf(&quot;%s\n%s\n&quot;, version, RELEASE);
+  
+      /* Open a basic socket. */
+--- 465,469 ----
+  
+      if (opt_version)
+! 	version();
+  
+      /* Open a basic socket. */
+***************
+*** 430,434 ****
+  	exit(-1);
+      }
+!     
+      if (verbose &gt; 1)
+      	printf(&quot;Using SIOCGMIIPHY=0x%x\n&quot;, SIOCGMIIPHY);	
+--- 472,476 ----
+  	exit(-1);
+      }
+! 
+      if (verbose &gt; 1)
+      	printf(&quot;Using SIOCGMIIPHY=0x%x\n&quot;, SIOCGMIIPHY);	
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000008.html">[net-tools-cvscommit] net-tools/include mii.h,1.2,1.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7">[ date ]</a>
+              <a href="thread.html#7">[ thread ]</a>
+              <a href="subject.html#7">[ subject ]</a>
+              <a href="author.html#7">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

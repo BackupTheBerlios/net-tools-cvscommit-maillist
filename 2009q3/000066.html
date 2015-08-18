@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools Makefile,1.40,1.41
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20Makefile%2C1.40%2C1.41&In-Reply-To=%3C20090906225653.4F66818F8CF%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000065.html">
+   <LINK REL="Next"  HREF="000067.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools Makefile,1.40,1.41</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20Makefile%2C1.40%2C1.41&In-Reply-To=%3C20090906225653.4F66818F8CF%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools Makefile,1.40,1.41">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Mon Sep  7 00:56:53 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000065.html">[net-tools-cvscommit] net-tools Makefile,1.39,1.40
+</A></li>
+        <LI>Next message: <A HREF="000067.html">[net-tools-cvscommit] net-tools/lib Makefile,1.25,1.26
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv22937
+
+Modified Files:
+	Makefile 
+Log Message:
+convert -idirafter to -I
+
+The local include trees no longer need -idirafter semantics, so use the
+normal -I flags to avoid random cruft on users' systems.  This fixes Gentoo
+#283759 where user had local headers named the same as the net-tools local
+headers, but the toolchain defaulted to the system paths due to -idirafter.
+
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.40
+retrieving revision 1.41
+diff -C2 -d -r1.40 -r1.41
+*** Makefile	6 Sep 2009 22:55:13 -0000	1.40
+--- Makefile	6 Sep 2009 22:56:50 -0000	1.41
+***************
+*** 113,117 ****
+  NET_LIB = $(NET_LIB_PATH)/lib$(NET_LIB_NAME).a
+  
+! CPPFLAGS += -I. -idirafter ./include/ -I$(NET_LIB_PATH)
+  LDFLAGS  += -L$(NET_LIB_PATH)
+  
+--- 113,117 ----
+  NET_LIB = $(NET_LIB_PATH)/lib$(NET_LIB_NAME).a
+  
+! CPPFLAGS += -I. -I$(TOPDIR)/include -I$(NET_LIB_PATH)
+  LDFLAGS  += -L$(NET_LIB_PATH)
+  
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000065.html">[net-tools-cvscommit] net-tools Makefile,1.39,1.40
+</A></li>
+	<LI>Next message: <A HREF="000067.html">[net-tools-cvscommit] net-tools/lib Makefile,1.25,1.26
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

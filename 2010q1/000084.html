@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools netstat.c,1.68,1.69
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.68%2C1.69&In-Reply-To=%3Cmailman.0.1331735413.6627.net-tools-cvscommit%40lists.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000083.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools netstat.c,1.68,1.69</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.68%2C1.69&In-Reply-To=%3Cmailman.0.1331735413.6627.net-tools-cvscommit%40lists.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools netstat.c,1.68,1.69">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Fri Mar  5 16:35:05 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000083.html">[net-tools-cvscommit] net-tools/lib interface.c,1.33,1.34
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#84">[ date ]</a>
+              <a href="thread.html#84">[ thread ]</a>
+              <a href="subject.html#84">[ subject ]</a>
+              <a href="author.html#84">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv25855
+
+Modified Files:
+	netstat.c 
+Log Message:
+netstat: PIDs can be long, Bug #199702 of Ubuntu Launchpad, Bug #16913 of Berlios
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.68
+retrieving revision 1.69
+diff -C2 -d -r1.68 -r1.69
+*** netstat.c	31 Dec 2009 19:54:16 -0000	1.68
+--- netstat.c	5 Mar 2010 15:35:02 -0000	1.69
+***************
+*** 327,331 ****
+          inode_str[inode_str_len] = '\0';
+          *inode_p = strtol(inode_str,&amp;serr,0);
+!         if (!serr || *serr || *inode_p &lt; 0 || *inode_p &gt;= INT_MAX) 
+              return(-1);
+      }
+--- 327,331 ----
+          inode_str[inode_str_len] = '\0';
+          *inode_p = strtol(inode_str,&amp;serr,0);
+!         if (!serr || *serr || *inode_p &lt; 0 || *inode_p &gt;= LONG_MAX) 
+              return(-1);
+      }
+***************
+*** 348,352 ****
+  
+          *inode_p=strtol(lname + PRG_SOCKET_PFX2l,&amp;serr,0);
+!         if (!serr || *serr || *inode_p &lt; 0 || *inode_p &gt;= INT_MAX) 
+              return(-1);
+      }
+--- 348,352 ----
+  
+          *inode_p=strtol(lname + PRG_SOCKET_PFX2l,&amp;serr,0);
+!         if (!serr || *serr || *inode_p &lt; 0 || *inode_p &gt;= LONG_MAX) 
+              return(-1);
+      }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000083.html">[net-tools-cvscommit] net-tools/lib interface.c,1.33,1.34
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#84">[ date ]</a>
+              <a href="thread.html#84">[ thread ]</a>
+              <a href="subject.html#84">[ subject ]</a>
+              <a href="author.html#84">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools netstat.c,1.54,1.55
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2007q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.54%2C1.55&In-Reply-To=%3C20071201190143.19881114F42%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000022.html">
+   <LINK REL="Next"  HREF="000024.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools netstat.c,1.54,1.55</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.54%2C1.55&In-Reply-To=%3C20071201190143.19881114F42%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools netstat.c,1.54,1.55">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Sat Dec  1 20:01:43 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000022.html">[net-tools-cvscommit] net-tools rarp.c,1.6,1.7
+</A></li>
+        <LI>Next message: <A HREF="000024.html">[net-tools-cvscommit] net-tools rarp.c,1.7,1.8
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#23">[ date ]</a>
+              <a href="thread.html#23">[ thread ]</a>
+              <a href="subject.html#23">[ subject ]</a>
+              <a href="author.html#23">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv6422
+
+Modified Files:
+	netstat.c 
+Log Message:
+use new page aliged proc_fopen for address families
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.54
+retrieving revision 1.55
+diff -C2 -d -r1.54 -r1.55
+*** netstat.c	1 Dec 2007 18:12:34 -0000	1.54
+--- netstat.c	1 Dec 2007 19:00:40 -0000	1.55
+***************
+*** 95,98 ****
+--- 95,99 ----
+  #include &quot;interface.h&quot;
+  #include &quot;util.h&quot;
++ #include &quot;proc.h&quot;
+  
+  #define PROGNAME_WIDTH 20
+***************
+*** 154,158 ****
+  
+  #define INFO_GUTS1(file,name,proc)			\
+!   procinfo = fopen((file), &quot;r&quot;);			\
+    if (procinfo == NULL) {				\
+      if (errno != ENOENT) {				\
+--- 155,159 ----
+  
+  #define INFO_GUTS1(file,name,proc)			\
+!   procinfo = proc_fopen((file));			\
+    if (procinfo == NULL) {				\
+      if (errno != ENOENT) {				\
+***************
+*** 175,179 ****
+  #define INFO_GUTS2(file,proc)				\
+    lnr = 0;						\
+!   procinfo = fopen((file), &quot;r&quot;);		       	\
+    if (procinfo != NULL) {				\
+      do {						\
+--- 176,180 ----
+  #define INFO_GUTS2(file,proc)				\
+    lnr = 0;						\
+!   procinfo = proc_fopen((file));		       	\
+    if (procinfo != NULL) {				\
+      do {						\
+***************
+*** 455,459 ****
+      int st, vs, vr, sendq, recvq, ret;
+  
+!     f = fopen(_PATH_PROCNET_NR, &quot;r&quot;);
+      if (f == NULL) {
+  	if (errno != ENOENT) {
+--- 456,460 ----
+      int st, vs, vr, sendq, recvq, ret;
+  
+!     f = proc_fopen(_PATH_PROCNET_NR);
+      if (f == NULL) {
+  	if (errno != ENOENT) {
+***************
+*** 651,655 ****
+  static int x25_info(void)
+  {
+!        FILE *f=fopen(_PATH_PROCNET_X25, &quot;r&quot;);
+         char buffer[256],dev[16];
+         int st,vs,vr,sendq,recvq,lci;
+--- 652,656 ----
+  static int x25_info(void)
+  {
+!        FILE *f=proc_fopen(_PATH_PROCNET_X25);
+         char buffer[256],dev[16];
+         int st,vs,vr,sendq,recvq,lci;
+***************
+*** 662,666 ****
+                 &quot;RECOVERY&quot;
+         };
+!        if(!(f=fopen(_PATH_PROCNET_X25, &quot;r&quot;)))
+         {
+                 if (errno != ENOENT) {
+--- 663,667 ----
+                 &quot;RECOVERY&quot;
+         };
+!        if(!(f=proc_fopen(_PATH_PROCNET_X25)))
+         {
+                 if (errno != ENOENT) {
+***************
+*** 1270,1274 ****
+  	N_(&quot;RECOVERY&quot;)
+      };
+!     if (!(f = fopen(_PATH_PROCNET_AX25, &quot;r&quot;))) {
+  	if (errno != ENOENT) {
+  	    perror(_PATH_PROCNET_AX25);
+--- 1271,1275 ----
+  	N_(&quot;RECOVERY&quot;)
+      };
+!     if (!(f = proc_fopen(_PATH_PROCNET_AX25))) {
+  	if (errno != ENOENT) {
+  	    perror(_PATH_PROCNET_AX25);
+***************
+*** 1366,1370 ****
+      struct stat s;
+      
+!     f = fopen(_PATH_PROCNET_IPX_SOCKET1, &quot;r&quot;);
+      if (!f) {
+          if (errno != ENOENT) {
+--- 1367,1371 ----
+      struct stat s;
+      
+!     f = proc_fopen(_PATH_PROCNET_IPX_SOCKET1);
+      if (!f) {
+          if (errno != ENOENT) {
+***************
+*** 1372,1376 ****
+              return (-1);
+          }
+!         f = fopen(_PATH_PROCNET_IPX_SOCKET2, &quot;r&quot;);
+  
+          /* We need to check for directory */
+--- 1373,1377 ----
+              return (-1);
+          }
+!         f = proc_fopen(_PATH_PROCNET_IPX_SOCKET2);
+  
+          /* We need to check for directory */
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000022.html">[net-tools-cvscommit] net-tools rarp.c,1.6,1.7
+</A></li>
+	<LI>Next message: <A HREF="000024.html">[net-tools-cvscommit] net-tools rarp.c,1.7,1.8
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#23">[ date ]</a>
+              <a href="thread.html#23">[ thread ]</a>
+              <a href="subject.html#23">[ subject ]</a>
+              <a href="author.html#23">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

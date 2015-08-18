@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools Makefile,1.42,1.43
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20Makefile%2C1.42%2C1.43&In-Reply-To=%3C20091231200655.9382C15482C%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000075.html">
+   <LINK REL="Next"  HREF="000077.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools Makefile,1.42,1.43</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20Makefile%2C1.42%2C1.43&In-Reply-To=%3C20091231200655.9382C15482C%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools Makefile,1.42,1.43">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Thu Dec 31 21:06:55 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000075.html">[net-tools-cvscommit] net-tools netstat.c,1.67,1.68
+</A></li>
+        <LI>Next message: <A HREF="000077.html">[net-tools-cvscommit] net-tools Makefile,1.43,1.44
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#76">[ date ]</a>
+              <a href="thread.html#76">[ thread ]</a>
+              <a href="subject.html#76">[ subject ]</a>
+              <a href="author.html#76">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv4958
+
+Modified Files:
+	Makefile 
+Log Message:
+fix parallel build problems with the lib/ subdir and multiple targets that descend into it
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.42
+retrieving revision 1.43
+diff -C2 -d -r1.42 -r1.43
+*** Makefile	6 Sep 2009 22:58:40 -0000	1.42
+--- Makefile	31 Dec 2009 20:06:53 -0000	1.43
+***************
+*** 180,185 ****
+  		@$(MAKE) -C po
+  
+! subdirs:
+! 		@for i in $(SUBDIRS); do $(MAKE) -C $$i || exit $$? ; done
+  
+  ifconfig:	$(NET_LIB) ifconfig.o
+--- 180,186 ----
+  		@$(MAKE) -C po
+  
+! # use libdir target for lib/ to avoid parallel build issues
+! subdirs:	libdir
+! 		@for i in $(SUBDIRS:$(NET_LIB_PATH)/=); do $(MAKE) -C $$i || exit $$? ; done
+  
+  ifconfig:	$(NET_LIB) ifconfig.o
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000075.html">[net-tools-cvscommit] net-tools netstat.c,1.67,1.68
+</A></li>
+	<LI>Next message: <A HREF="000077.html">[net-tools-cvscommit] net-tools Makefile,1.43,1.44
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#76">[ date ]</a>
+              <a href="thread.html#76">[ thread ]</a>
+              <a href="subject.html#76">[ subject ]</a>
+              <a href="author.html#76">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

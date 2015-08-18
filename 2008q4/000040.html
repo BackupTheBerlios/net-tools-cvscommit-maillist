@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/lib ib.c, NONE, 1.1 Makefile, 1.24,	1.25 hw.c, 1.18, 1.19
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20ib.c%2C%20NONE%2C%201.1%20Makefile%2C%201.24%2C%0A%091.25%20hw.c%2C%201.18%2C%201.19&In-Reply-To=%3C20081003015213.1BAC5B7A1E%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000039.html">
+   <LINK REL="Next"  HREF="000041.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/lib ib.c, NONE, 1.1 Makefile, 1.24,	1.25 hw.c, 1.18, 1.19</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20ib.c%2C%20NONE%2C%201.1%20Makefile%2C%201.24%2C%0A%091.25%20hw.c%2C%201.18%2C%201.19&In-Reply-To=%3C20081003015213.1BAC5B7A1E%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/lib ib.c, NONE, 1.1 Makefile, 1.24,	1.25 hw.c, 1.18, 1.19">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Fri Oct  3 03:52:13 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000039.html">[net-tools-cvscommit] net-tools netstat.c,1.58,1.59
+</A></li>
+        <LI>Next message: <A HREF="000041.html">[net-tools-cvscommit] net-tools config.in,1.22,1.23
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#40">[ date ]</a>
+              <a href="thread.html#40">[ thread ]</a>
+              <a href="subject.html#40">[ subject ]</a>
+              <a href="author.html#40">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv3117
+
+Modified Files:
+	Makefile hw.c 
+Added Files:
+	ib.c 
+Log Message:
+Add hardware support for InfiniBand (Debian Bug #294252 Tom Duffy from Sun).
+
+
+--- NEW FILE: ib.c ---
+/*
+ * lib/ib.c        This file contains an implementation of the &quot;Infiniband&quot;
+ *              support functions.
+ *
+ * Version:     $Id: ib.c,v 1.1 2008/10/03 01:52:03 ecki Exp $
+ *
+ * Author:      Fred N. van Kempen, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">waltje at uwalt.nl.mugnet.org</A>&gt;
+ *              Copyright 1993 MicroWalt Corporation
+ *		Tom Duffy &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">tduffy at sun.com</A>&gt;
+ *
+ *              This program is free software; you can redistribute it
+ *              and/or  modify it under  the terms of  the GNU General
+ *              Public  License as  published  by  the  Free  Software
+ *              Foundation;  either  version 2 of the License, or  (at
+ *              your option) any later version.
+ */
+#include &quot;config.h&quot;
+
+#if HAVE_HWIB
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;net/if_arp.h&gt;
+#include &lt;linux/if_infiniband.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &quot;net-support.h&quot;
+#include &quot;pathnames.h&quot;
+#include &quot;intl.h&quot;
+#include &quot;util.h&quot;
+
+extern struct hwtype ib_hwtype;
+
+
+/* Display an InfiniBand address in readable format. */
+static char *pr_ib(unsigned char *ptr)
+{
+    static char buff[128];
+    char *pos;
+    unsigned int i;
+
+    pos = buff;
+    for (i = 0; i &lt; INFINIBAND_ALEN; i++) {
+	pos += sprintf(pos, &quot;%02X:&quot;, (*ptr++ &amp; 0377));
+    }
+    buff[strlen(buff) - 1] = '\0';
+
+    /* snprintf(buff, sizeof(buff), &quot;%02X:%02X:%02X:%02X:%02X:%02X&quot;,
+	     (ptr[0] &amp; 0377), (ptr[1] &amp; 0377), (ptr[2] &amp; 0377),
+	     (ptr[3] &amp; 0377), (ptr[4] &amp; 0377), (ptr[5] &amp; 0377)
+	);
+    */
+    return (buff);
+}
+
+
+/* Input an Infiniband address and convert to binary. */
+static int in_ib(char *bufp, struct sockaddr *sap)
+{
+    unsigned char *ptr;
+    char c, *orig;
+    int i;
+    unsigned val;
+
+    sap-&gt;sa_family = ib_hwtype.type;
+    ptr = sap-&gt;sa_data;
+
+    i = 0;
+    orig = bufp;
+    while ((*bufp != '\0') &amp;&amp; (i &lt; INFINIBAND_ALEN)) {
+	val = 0;
+	c = *bufp++;
+	if (isdigit(c))
+	    val = c - '0';
+	else if (c &gt;= 'a' &amp;&amp; c &lt;= 'f')
+	    val = c - 'a' + 10;
+	else if (c &gt;= 'A' &amp;&amp; c &lt;= 'F')
+	    val = c - 'A' + 10;
+	else {
+#ifdef DEBUG
+	    fprintf(stderr, _(&quot;in_ib(%s): invalid infiniband address!\n&quot;), orig);
+#endif
+	    errno = EINVAL;
+	    return (-1);
+	}
+	val &lt;&lt;= 4;
+	c = *bufp;
+	if (isdigit(c))
+	    val |= c - '0';
+	else if (c &gt;= 'a' &amp;&amp; c &lt;= 'f')
+	    val |= c - 'a' + 10;
+	else if (c &gt;= 'A' &amp;&amp; c &lt;= 'F')
+	    val |= c - 'A' + 10;
+	else if (c == ':' || c == 0)
+	    val &gt;&gt;= 4;
+	else {
+#ifdef DEBUG
+	    fprintf(stderr, _(&quot;in_ib(%s): invalid infiniband address!\n&quot;), orig);
+#endif
+	    errno = EINVAL;
+	    return (-1);
+	}
+	if (c != 0)
+	    bufp++;
+	*ptr++ = (unsigned char) (val &amp; 0377);
+	i++;
+
+	/* We might get a semicolon here - not required. */
+	if (*bufp == ':') {
+	    if (i == INFINIBAND_ALEN) {
+#ifdef DEBUG
+		fprintf(stderr, _(&quot;in_ib(%s): trailing : ignored!\n&quot;),
+			orig)
+#endif
+		    ;		/* nothing */
+	    }
+	    bufp++;
+	}
+    }
+
+    /* That's it.  Any trailing junk? */
+    if ((i == INFINIBAND_ALEN) &amp;&amp; (*bufp != '\0')) {
+#ifdef DEBUG
+	fprintf(stderr, _(&quot;in_ib(%s): trailing junk!\n&quot;), orig);
+	errno = EINVAL;
+	return (-1);
+#endif
+    }
+#ifdef DEBUG
+    fprintf(stderr, &quot;in_ib(%s): %s\n&quot;, orig, pr_ib(sap-&gt;sa_data));
+#endif
+
+    return (0);
+}
+
+
+struct hwtype ib_hwtype =
+{
+    &quot;infiniband&quot;, NULL, ARPHRD_INFINIBAND, INFINIBAND_ALEN,
+    pr_ib, in_ib, NULL
+};
+
+
+#endif				/* HAVE_HWIB */
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/Makefile,v
+retrieving revision 1.24
+retrieving revision 1.25
+diff -C2 -d -r1.24 -r1.25
+*** Makefile	12 Nov 2001 02:12:05 -0000	1.24
+--- Makefile	3 Oct 2008 01:52:04 -0000	1.25
+***************
+*** 17,21 ****
+  
+  
+! HWOBJS	 = hw.o loopback.o slip.o ether.o ax25.o ppp.o arcnet.o tr.o tunnel.o frame.o sit.o rose.o ash.o fddi.o hippi.o hdlclapb.o strip.o irda.o ec_hw.o x25.o eui64.o
+  AFOBJS	 = unix.o inet.o inet6.o ax25.o ipx.o ddp.o ipx.o netrom.o af.o rose.o econet.o x25.o
+  AFGROBJS = inet_gr.o inet6_gr.o ipx_gr.o ddp_gr.o netrom_gr.o ax25_gr.o rose_gr.o getroute.o x25_gr.o
+--- 17,21 ----
+  
+  
+! HWOBJS	 = hw.o loopback.o slip.o ether.o ax25.o ppp.o arcnet.o tr.o tunnel.o frame.o sit.o rose.o ash.o fddi.o hippi.o hdlclapb.o strip.o irda.o ec_hw.o x25.o eui64.o ib.o
+  AFOBJS	 = unix.o inet.o inet6.o ax25.o ipx.o ddp.o ipx.o netrom.o af.o rose.o econet.o x25.o
+  AFGROBJS = inet_gr.o inet6_gr.o ipx_gr.o ddp_gr.o netrom_gr.o ax25_gr.o rose_gr.o getroute.o x25_gr.o
+
+Index: hw.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/hw.c,v
+retrieving revision 1.18
+retrieving revision 1.19
+diff -C2 -d -r1.18 -r1.19
+*** hw.c	12 Nov 2001 02:12:05 -0000	1.18
+--- hw.c	3 Oct 2008 01:52:04 -0000	1.19
+***************
+*** 74,77 ****
+--- 74,79 ----
+  extern struct hwtype ec_hwtype;
+  
++ extern struct hwtype ib_hwtype;
++ 
+  extern struct hwtype eui64_hwtype;
+  
+***************
+*** 147,150 ****
+--- 149,155 ----
+      &amp;x25_hwtype,
+  #endif
++ #if HAVE_HWIB
++     &amp;ib_hwtype,
++ #endif
+  #if HAVE_HWEUI64
+      &amp;eui64_hwtype,
+***************
+*** 222,225 ****
+--- 227,233 ----
+  #if HAVE_HWEC
+      ec_hwtype.title = _(&quot;Econet&quot;);
++ #endif
++ #if HAVE_HWIB
++     ib_hwtype.title = _(&quot;InfiniBand&quot;);
+  #endif
+  #if HAVE_HWEUI64
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000039.html">[net-tools-cvscommit] net-tools netstat.c,1.58,1.59
+</A></li>
+	<LI>Next message: <A HREF="000041.html">[net-tools-cvscommit] net-tools config.in,1.22,1.23
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#40">[ date ]</a>
+              <a href="thread.html#40">[ thread ]</a>
+              <a href="subject.html#40">[ subject ]</a>
+              <a href="author.html#40">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

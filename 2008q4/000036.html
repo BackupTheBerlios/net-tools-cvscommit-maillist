@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools netstat.c, 1.56, 1.57 statistics.c,	1.20, 1.21
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C%201.56%2C%201.57%20statistics.c%2C%0A%091.20%2C%201.21&In-Reply-To=%3C20081003000524.976B071FCF%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000035.html">
+   <LINK REL="Next"  HREF="000037.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools netstat.c, 1.56, 1.57 statistics.c,	1.20, 1.21</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C%201.56%2C%201.57%20statistics.c%2C%0A%091.20%2C%201.21&In-Reply-To=%3C20081003000524.976B071FCF%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools netstat.c, 1.56, 1.57 statistics.c,	1.20, 1.21">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Fri Oct  3 02:05:24 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000035.html">[net-tools-cvscommit] net-tools ifconfig.c,1.57,1.58
+</A></li>
+        <LI>Next message: <A HREF="000037.html">[net-tools-cvscommit] net-tools netstat.c,1.57,1.58
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#36">[ date ]</a>
+              <a href="thread.html#36">[ thread ]</a>
+              <a href="subject.html#36">[ subject ]</a>
+              <a href="author.html#36">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv21692
+
+Modified Files:
+	netstat.c statistics.c 
+Log Message:
+Enable netstat -s for IPv6 (Debian Bug #453859 from Varun Chandramohan)
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.56
+retrieving revision 1.57
+diff -C2 -d -r1.56 -r1.57
+*** netstat.c	2 Oct 2008 22:05:54 -0000	1.56
+--- netstat.c	3 Oct 2008 00:05:20 -0000	1.57
+***************
+*** 106,109 ****
+--- 106,111 ----
+  void parsesnmp(int, int, int);
+  void inittab(void);
++ void parsesnmp6(int, int, int);
++ void inittab6(void);
+  
+  typedef enum {
+***************
+*** 1724,1730 ****
+  
+      if (flag_sta) {
+!         inittab();
+! 	parsesnmp(flag_raw, flag_tcp, flag_udp);
+! 	exit(0);
+      }
+      
+--- 1726,1751 ----
+  
+      if (flag_sta) {
+!         char *tmp1, *tmp2;
+!         char buf[256];
+!         if (!afname[0]) {
+!             inittab();
+!             parsesnmp(flag_raw, flag_tcp, flag_udp);
+!         } else {
+!             safe_strncpy(buf, afname, sizeof(buf));
+!             tmp1 = buf;
+!             if ((tmp2 = index(tmp1, ',')))
+!                  printf(&quot;Multiple interface\n&quot;);
+!             else if(!strncmp(buf,&quot;inet6&quot;,5)) {
+! #if HAVE_AFINET6
+!                  inittab6();
+!                  parsesnmp6(flag_raw, flag_tcp, flag_udp);
+! #else
+!                  printf(&quot;Address type not supported for stats\n&quot;);
+! #endif
+!             }
+!             else
+!                  printf(&quot;Address type not supported for stats\n&quot;);
+!         }
+!         exit(1);
+      }
+      
+
+Index: statistics.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/statistics.c,v
+retrieving revision 1.20
+retrieving revision 1.21
+diff -C2 -d -r1.20 -r1.21
+*** statistics.c	1 Dec 2007 18:44:56 -0000	1.20
+--- statistics.c	3 Oct 2008 00:05:20 -0000	1.21
+***************
+*** 85,88 ****
+--- 85,114 ----
+  };
+  
++ struct entry Ip6tab[] =
++ {
++     {&quot;Ip6InReceives&quot;, N_(&quot;%u total packets received&quot;), number},
++     {&quot;Ip6InHdrErrors&quot;, N_(&quot;%u with invalid headers&quot;), opt_number},
++     {&quot;Ip6InTooBigErrors&quot;, N_(&quot;%u with packets too big&quot;), opt_number},
++     {&quot;Ip6InNoRoutes&quot;, N_(&quot;%u incoming packets with no route&quot;), opt_number},
++     {&quot;Ip6InAddrErrors&quot;, N_(&quot;%u with invalid addresses&quot;), opt_number},
++     {&quot;Ip6InUnknownProtos&quot;, N_(&quot;%u with unknown protocol&quot;), opt_number},
++     {&quot;Ip6InTruncatedPkts&quot;, N_(&quot;%u with truncated packets&quot;), opt_number},
++     {&quot;Ip6InDiscards&quot;, N_(&quot;%u incoming packets discarded&quot;), number},
++     {&quot;Ip6InDelivers&quot;, N_(&quot;%u incoming packets delivered&quot;), number},
++     {&quot;Ip6OutForwDatagrams&quot;, N_(&quot;%u forwarded&quot;), number},
++     {&quot;Ip6OutRequests&quot;, N_(&quot;%u requests sent out&quot;), number},     /*? */
++     {&quot;Ip6OutDiscards&quot;, N_(&quot;%u outgoing packets dropped&quot;), opt_number},
++     {&quot;Ip6OutNoRoutes&quot;, N_(&quot;%u dropped because of missing route&quot;), opt_number},
++     {&quot;Ip6ReasmTimeout&quot;, N_(&quot;%u fragments dropped after timeout&quot;), opt_number},
++     {&quot;Ip6ReasmReqds&quot;, N_(&quot;%u reassemblies required&quot;), opt_number}, /* ? */
++     {&quot;Ip6ReasmOKs&quot;, N_(&quot;%u packets reassembled ok&quot;), opt_number},
++     {&quot;Ip6ReasmFails&quot;, N_(&quot;%u packet reassembles failed&quot;), opt_number},
++     {&quot;Ip6FragOKs&quot;, N_(&quot;%u fragments received ok&quot;), opt_number},
++     {&quot;Ip6FragFails&quot;, N_(&quot;%u fragments failed&quot;), opt_number},
++     {&quot;Ip6FragCreates&quot;, N_(&quot;%u fragments created&quot;), opt_number},
++     {&quot;Ip6InMcastPkts&quot;, N_(&quot;%u incoming multicast packets&quot;), opt_number},
++     {&quot;Ip6OutMcastPkts&quot;, N_(&quot;%u outgoing multicast packets&quot;), opt_number}
++ };
++ 
+  struct entry Icmptab[] =
+  {
+***************
+*** 115,118 ****
+--- 141,179 ----
+  };
+  
++ struct entry Icmp6tab[] =
++ {
++     {&quot;Icmp6InMsgs&quot;, N_(&quot;%u ICMP messages received&quot;), number},
++     {&quot;Icmp6InErrors&quot;, N_(&quot;%u input ICMP message failed.&quot;), number},
++     {&quot;Icmp6InDestUnreachs&quot;, N_(&quot;destination unreachable: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InPktTooBigs&quot;, N_(&quot;packets too big: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InTimeExcds&quot;, N_(&quot;received ICMPv6 time exceeded: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InParmProblems&quot;, N_(&quot;parameter problem: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InEchos&quot;, N_(&quot;echo requests: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InEchoReplies&quot;, N_(&quot;echo replies: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InGroupMembQueries&quot;, N_(&quot;group member queries: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InGroupMembResponses&quot;, N_(&quot;group member responses: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InGroupMembReductions&quot;, N_(&quot;group member reductions: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InRouterSolicits&quot;, N_(&quot;router solicits: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InRouterAdvertisements&quot;, N_(&quot;router advertisement: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InNeighborSolicits&quot;, N_(&quot;neighbour solicits: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InNeighborAdvertisements&quot;, N_(&quot;neighbour advertisement: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6InRedirects&quot;, N_(&quot;redirects: %u&quot;), i_inp_icmp | I_TITLE},
++     {&quot;Icmp6OutMsgs&quot;, N_(&quot;%u ICMP messages sent&quot;), number},
++     {&quot;Icmp6OutDestUnreachs&quot;, N_(&quot;destination unreachable: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutPktTooBigs&quot;, N_(&quot;packets too big: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutTimeExcds&quot;, N_(&quot;sent ICMPv6 time exceeded: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutParmProblems&quot;, N_(&quot;parameter problem: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutEchos&quot;, N_(&quot;echo requests: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutEchoReplies&quot;, N_(&quot;echo replies: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutGroupMembQueries&quot;, N_(&quot;group member queries: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutGroupMembResponses&quot;, N_(&quot;group member responses: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutGroupMembReductions&quot;, N_(&quot;group member reductions: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutRouterSolicits&quot;, N_(&quot;router solicits: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutRouterAdvertisements &quot;, N_(&quot;router advertisement: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutNeighborSolicits&quot;, N_(&quot;neighbor solicits: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutNeighborAdvertisements&quot;, N_(&quot;neighbor advertisements: %u&quot;), i_outp_icmp | I_TITLE},
++     {&quot;Icmp6OutRedirects&quot;, N_(&quot;redirects: %u&quot;), i_outp_icmp | I_TITLE},
++ };
++ 
+  struct entry Tcptab[] =
+  {
+***************
+*** 141,144 ****
+--- 202,213 ----
+  };
+  
++ struct entry Udp6tab[] =
++ {
++     {&quot;Udp6InDatagrams&quot;, N_(&quot;%u packets received&quot;), number},
++     {&quot;Udp6NoPorts&quot;, N_(&quot;%u packets to unknown port received.&quot;), number},
++     {&quot;Udp6InErrors&quot;, N_(&quot;%u packet receive errors&quot;), number},
++     {&quot;Udp6OutDatagrams&quot;, N_(&quot;%u packets sent&quot;), number},
++ };
++ 
+  struct entry Tcpexttab[] =
+  {
+***************
+*** 246,249 ****
+--- 315,327 ----
+  };
+  
++ struct tabtab snmp6tabs[] =
++ {
++     {&quot;Ip6&quot;, Ip6tab, sizeof(Ip6tab), &amp;f_raw},
++     {&quot;Icmp6&quot;, Icmp6tab, sizeof(Icmp6tab), &amp;f_raw},
++     {&quot;Udp6&quot;, Udp6tab, sizeof(Udp6tab), &amp;f_udp},
++     {&quot;Tcp6&quot;, Tcptab, sizeof(Tcptab), &amp;f_tcp},
++     {NULL}
++ };
++ 
+  /* XXX IGMP */
+  
+***************
+*** 332,336 ****
+  }
+  
+! int process_fd(FILE *f)
+  {
+      char buf1[2048], buf2[2048];
+--- 410,414 ----
+  }
+  
+! int process_fd(FILE *f, int all, char *filter)
+  {
+      char buf1[2048], buf2[2048];
+***************
+*** 351,354 ****
+--- 429,436 ----
+  	*sp = '\0';
+  
++         if (!all)
++            if (strncmp(buf1, filter, strlen(filter)))
++                continue;
++ 
+  	tab = newtable(snmptabs, buf1);
+  	if (tab == NULL) {
+***************
+*** 382,385 ****
+--- 464,502 ----
+  }
+  
++ void cpytitle(char *original, char *new)
++ {
++      char *ptr = original;
++      while(*ptr != '6' &amp;&amp; *ptr != '\0') {
++            *new = *ptr;
++             new++;
++             ptr++;
++      }
++     *new = *ptr;
++     new++;
++     *new = '\0';
++ }
++ 
++ void process6_fd(FILE *f)
++ {
++    char buf1[1024],buf2[50],buf3[1024];
++    unsigned long val;
++    struct tabtab *tab = NULL;
++    int cpflg = 0;
++ 
++    while (fgets(buf1, sizeof buf1, f)) {
++           sscanf(buf1, &quot;%s %lu&quot;, buf2, &amp;val);
++           if(!cpflg) {
++              cpytitle(buf2, buf3);
++              tab = newtable(snmp6tabs, buf3);
++              cpflg = 1;
++           }
++           if(!strstr(buf2, buf3)) {
++              cpytitle(buf2, buf3);
++              tab = newtable(snmp6tabs, buf3);
++           }
++           printval(tab, buf2, val);
++    }
++ 
++ }
+  
+  void parsesnmp(int flag_raw, int flag_tcp, int flag_udp)
+***************
+*** 395,399 ****
+      }
+  
+!     if (process_fd(f) &lt; 0)
+        fprintf(stderr, _(&quot;Problem while parsing /proc/net/snmp\n&quot;));
+  
+--- 512,516 ----
+      }
+  
+!     if (process_fd(f, 1, NULL) &lt; 0)
+        fprintf(stderr, _(&quot;Problem while parsing /proc/net/snmp\n&quot;));
+  
+***************
+*** 406,410 ****
+  
+      if (f) {
+!     	if (process_fd(f) &lt;0)
+            fprintf(stderr, _(&quot;Problem while parsing /proc/net/netstat\n&quot;));
+  
+--- 523,527 ----
+  
+      if (f) {
+!     	if (process_fd(f, 1, NULL) &lt;0)
+            fprintf(stderr, _(&quot;Problem while parsing /proc/net/netstat\n&quot;));
+  
+***************
+*** 417,420 ****
+--- 534,564 ----
+  }
+      
++ void parsesnmp6(int flag_raw, int flag_tcp, int flag_udp)
++ {
++     FILE *f;
++ 
++     f_raw = flag_raw; f_tcp = flag_tcp; f_udp = flag_udp;
++ 
++     f = fopen(&quot;/proc/net/snmp6&quot;, &quot;r&quot;);
++     if (!f) {
++         perror(_(&quot;cannot open /proc/net/snmp6&quot;));
++         return;
++     }
++     process6_fd(f);
++     if (ferror(f))
++         perror(&quot;/proc/net/snmp6&quot;);
++ 
++     fclose(f);
++     f = fopen(&quot;/proc/net/snmp&quot;, &quot;r&quot;);
++     if (!f) {
++         perror(_(&quot;cannot open /proc/net/snmp&quot;));
++         return;
++     }
++     process_fd(f, 0, &quot;Tcp&quot;);
++     if (ferror(f))
++         perror(&quot;/proc/net/snmp&quot;);
++ 
++     fclose(f);
++ }
+  
+  void inittab(void)
+***************
+*** 427,428 ****
+--- 571,582 ----
+  	      sizeof(struct entry), cmpentries);
+  }
++ 
++ void inittab6(void)
++ {
++     struct tabtab *t;
++ 
++     for (t = snmp6tabs; t-&gt;title; t++)
++         qsort(t-&gt;tab, t-&gt;size / sizeof(struct entry),
++               sizeof(struct entry), cmpentries);
++ }
++ 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000035.html">[net-tools-cvscommit] net-tools ifconfig.c,1.57,1.58
+</A></li>
+	<LI>Next message: <A HREF="000037.html">[net-tools-cvscommit] net-tools netstat.c,1.57,1.58
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#36">[ date ]</a>
+              <a href="thread.html#36">[ thread ]</a>
+              <a href="subject.html#36">[ subject ]</a>
+              <a href="author.html#36">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

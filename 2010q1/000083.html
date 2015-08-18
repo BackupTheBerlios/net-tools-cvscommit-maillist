@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/lib interface.c,1.33,1.34
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20interface.c%2C1.33%2C1.34&In-Reply-To=%3C20100101063534.374DA4A921%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000082.html">
+   <LINK REL="Next"  HREF="000084.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/lib interface.c,1.33,1.34</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20interface.c%2C1.33%2C1.34&In-Reply-To=%3C20100101063534.374DA4A921%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/lib interface.c,1.33,1.34">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Fri Jan  1 07:35:34 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000082.html">[net-tools-cvscommit] net-tools/man Makefile,1.5,1.6
+</A></li>
+        <LI>Next message: <A HREF="000084.html">[net-tools-cvscommit] net-tools netstat.c,1.68,1.69
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#83">[ date ]</a>
+              <a href="thread.html#83">[ thread ]</a>
+              <a href="subject.html#83">[ subject ]</a>
+              <a href="author.html#83">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv18219/lib
+
+Modified Files:
+	interface.c 
+Log Message:
+interface: fix IPv6 parsing of interfaces with large indexes (&gt; 255)
+
+patch from Dave Johnson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">djohnson at sw.starentnetworks.com</A>&gt; via Debian #433543
+
+When running 'ifconfig' it will not show any IPv6 addresses for
+interfaces that have an ifindex &gt; 255.
+
+Because the kernel will increment the ifindex every time an interface
+is added or removed, it is not necessary to have 256 interfaces at
+once, just creating 256 interfaces since system boot and they will no
+longer show IPv6 addresses.
+
+This is due to an improper fscanf() maximum range argument.  Patch to
+fix the problem is below.
+
+Example:
+
+st34:~# ip addr list dev eth1.110
+268: <A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">eth1.110 at eth1</A>: &lt;BROADCAST,MULTICAST,UP,10000&gt; mtu 1500 qdisc noqueue
+    link/ether 00:e0:81:2a:0d:2d brd ff:ff:ff:ff:ff:ff
+    inet6 fd4d:5643:2886:6e::ea:0/64 scope global
+       valid_lft forever preferred_lft forever
+    inet6 fe80::2e0:81ff:fe2a:d2d/64 scope link
+       valid_lft forever preferred_lft forever
+st34:~# ifconfig eth1.110
+eth1.110  Link encap:Ethernet  HWaddr 00:E0:81:2A:0D:2D
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 b)  TX bytes:676 (676.0 b)
+
+st34:~# grep eth1.110 /proc/net/if_inet6
+fd4d56432886006e0000000000ea0000 10c 40 00 80 eth1.110
+fe8000000000000002e081fffe2a0d2d 10c 40 20 80 eth1.110
+st34:~#
+
+
+Index: interface.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/interface.c,v
+retrieving revision 1.33
+retrieving revision 1.34
+diff -C2 -d -r1.33 -r1.34
+*** interface.c	31 Dec 2009 19:51:31 -0000	1.33
+--- interface.c	1 Jan 2010 06:35:30 -0000	1.34
+***************
+*** 761,765 ****
+  
+      if ((f = fopen(_PATH_PROCNET_IFINET6, &quot;r&quot;)) != NULL) {
+! 	while (fscanf(f, &quot;%4s%4s%4s%4s%4s%4s%4s%4s %02x %02x %02x %02x %20s\n&quot;,
+  		      addr6p[0], addr6p[1], addr6p[2], addr6p[3],
+  		      addr6p[4], addr6p[5], addr6p[6], addr6p[7],
+--- 761,765 ----
+  
+      if ((f = fopen(_PATH_PROCNET_IFINET6, &quot;r&quot;)) != NULL) {
+! 	while (fscanf(f, &quot;%4s%4s%4s%4s%4s%4s%4s%4s %08x %02x %02x %02x %20s\n&quot;,
+  		      addr6p[0], addr6p[1], addr6p[2], addr6p[3],
+  		      addr6p[4], addr6p[5], addr6p[6], addr6p[7],
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000082.html">[net-tools-cvscommit] net-tools/man Makefile,1.5,1.6
+</A></li>
+	<LI>Next message: <A HREF="000084.html">[net-tools-cvscommit] net-tools netstat.c,1.68,1.69
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#83">[ date ]</a>
+              <a href="thread.html#83">[ thread ]</a>
+              <a href="subject.html#83">[ subject ]</a>
+              <a href="author.html#83">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

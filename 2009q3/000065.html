@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools Makefile,1.39,1.40
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20Makefile%2C1.39%2C1.40&In-Reply-To=%3C20090906225517.AA3B318F8CF%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000064.html">
+   <LINK REL="Next"  HREF="000066.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools Makefile,1.39,1.40</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20Makefile%2C1.39%2C1.40&In-Reply-To=%3C20090906225517.AA3B318F8CF%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools Makefile,1.39,1.40">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Mon Sep  7 00:55:17 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000064.html">[net-tools-cvscommit] net-tools Makefile,1.38,1.39
+</A></li>
+        <LI>Next message: <A HREF="000066.html">[net-tools-cvscommit] net-tools Makefile,1.40,1.41
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#65">[ date ]</a>
+              <a href="thread.html#65">[ thread ]</a>
+              <a href="subject.html#65">[ subject ]</a>
+              <a href="author.html#65">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv22273
+
+Modified Files:
+	Makefile 
+Log Message:
+add missing dependency on version.h to libdir target to fix parallel build failures
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.39
+retrieving revision 1.40
+diff -C2 -d -r1.39 -r1.40
+*** Makefile	6 Sep 2009 22:53:54 -0000	1.39
+--- Makefile	6 Sep 2009 22:55:13 -0000	1.40
+***************
+*** 173,177 ****
+  i18n.h:		i18ndir
+  
+! libdir:
+  		@$(MAKE) -C $(NET_LIB_PATH)
+  
+--- 173,177 ----
+  i18n.h:		i18ndir
+  
+! libdir:		version.h
+  		@$(MAKE) -C $(NET_LIB_PATH)
+  
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000064.html">[net-tools-cvscommit] net-tools Makefile,1.38,1.39
+</A></li>
+	<LI>Next message: <A HREF="000066.html">[net-tools-cvscommit] net-tools Makefile,1.40,1.41
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#65">[ date ]</a>
+              <a href="thread.html#65">[ thread ]</a>
+              <a href="subject.html#65">[ subject ]</a>
+              <a href="author.html#65">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

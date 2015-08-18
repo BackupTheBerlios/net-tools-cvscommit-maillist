@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools Makefile,1.44,1.45
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20Makefile%2C1.44%2C1.45&In-Reply-To=%3C20091231203804.DCA811A7B2F%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000078.html">
+   <LINK REL="Next"  HREF="000080.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools Makefile,1.44,1.45</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20Makefile%2C1.44%2C1.45&In-Reply-To=%3C20091231203804.DCA811A7B2F%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools Makefile,1.44,1.45">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Thu Dec 31 21:38:04 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000078.html">[net-tools-cvscommit] net-tools .gitignore,1.2,1.3
+</A></li>
+        <LI>Next message: <A HREF="000080.html">[net-tools-cvscommit] net-tools/po Makefile,1.11,1.12
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#79">[ date ]</a>
+              <a href="thread.html#79">[ thread ]</a>
+              <a href="subject.html#79">[ subject ]</a>
+              <a href="author.html#79">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv7077
+
+Modified Files:
+	Makefile 
+Log Message:
+improve dist target: include compiled gettext files, exclude scm files, and always prefix the paths in the tarball with the full versioned name
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.44
+retrieving revision 1.45
+diff -C2 -d -r1.44 -r1.45
+*** Makefile	31 Dec 2009 20:14:55 -0000	1.44
+--- Makefile	31 Dec 2009 20:38:02 -0000	1.45
+***************
+*** 155,160 ****
+  
+  dist: 		clobber
+  		@echo Creating net-tools-$(RELEASE) in ..
+! 		@tar -cvz -f ../net-tools-$(RELEASE).tar.gz -C .. net-tools
+  
+  
+--- 155,164 ----
+  
+  dist: 		clobber
++ 		@$(MAKE) -C po $@
+  		@echo Creating net-tools-$(RELEASE) in ..
+! 		@tar -cvz -f ../net-tools-$(RELEASE).tar.gz . \
+! 			--transform='s,^[.],net-tools-$(RELEASE),' \
+! 			--exclude=CVS --exclude=.cvsignore \
+! 			--exclude='.git*'
+  
+  
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000078.html">[net-tools-cvscommit] net-tools .gitignore,1.2,1.3
+</A></li>
+	<LI>Next message: <A HREF="000080.html">[net-tools-cvscommit] net-tools/po Makefile,1.11,1.12
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#79">[ date ]</a>
+              <a href="thread.html#79">[ thread ]</a>
+              <a href="subject.html#79">[ subject ]</a>
+              <a href="author.html#79">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

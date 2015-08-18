@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/po Makefile,1.12,1.13
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/po%20Makefile%2C1.12%2C1.13&In-Reply-To=%3C20100101055924.A088E1A3C0F%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000082.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/po Makefile,1.12,1.13</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/po%20Makefile%2C1.12%2C1.13&In-Reply-To=%3C20100101055924.A088E1A3C0F%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/po Makefile,1.12,1.13">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Fri Jan  1 06:59:24 CET 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000082.html">[net-tools-cvscommit] net-tools/man Makefile,1.5,1.6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#81">[ date ]</a>
+              <a href="thread.html#81">[ thread ]</a>
+              <a href="subject.html#81">[ subject ]</a>
+              <a href="author.html#81">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/po
+In directory sheep:/tmp/cvs-serv13829/po
+
+Modified Files:
+	Makefile 
+Log Message:
+po/man: if LINGUAS is set, only install translations for those langs
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/po/Makefile,v
+retrieving revision 1.12
+retrieving revision 1.13
+diff -C2 -d -r1.12 -r1.13
+*** Makefile	31 Dec 2009 20:38:02 -0000	1.12
+--- Makefile	1 Jan 2010 05:59:22 -0000	1.13
+***************
+*** 9,18 ****
+  
+  -include ../config.make
+! ALL_CATALOGS = de.mo fr.mo pt_BR.mo et_EE.mo cs.mo
+  ifeq ($(I18N),1)
+! CATALOGS = $(ALL_CATALOGS)
+  else
+! CATALOGS =
+  endif
+  
+  POTFILES=../arp.c ../hostname.c ../ifconfig.c ../netstat.c ../rarp.c \
+--- 9,25 ----
+  
+  -include ../config.make
+! ALL_POS = $(wildcard *.po)
+! ALL_LANGS = $(ALL_POS:%.po=%)
+! ALL_CATALOGS = $(ALL_LANGS:%=%.mo)
+  ifeq ($(I18N),1)
+! ifeq ($(LINGUAS),)
+! LANGS = $(ALL_LANGS)
+  else
+! LANGS = $(filter $(LINGUAS),$(ALL_LANGS))
+! endif
+! else
+! LANGS =
+  endif
++ CATALOGS = $(LANGS:%=%.mo)
+  
+  POTFILES=../arp.c ../hostname.c ../ifconfig.c ../netstat.c ../rarp.c \
+***************
+*** 46,52 ****
+  update-po: Makefile
+  	$(MAKE) $(NLSPACKAGE).pot
+! 	catalogs='$(CATALOGS)'; \
+! 	for cat in $$catalogs; do \
+! 		lang=`echo $$cat | sed 's/.mo//'`; \
+  		mv $$lang.po $$lang.old.po; \
+  		echo &quot;$$lang:&quot;; \
+--- 53,59 ----
+  update-po: Makefile
+  	$(MAKE) $(NLSPACKAGE).pot
+! 	langs='$(ALL_LANGS)'; \
+! 	for lang in $$langs; do \
+! 		cat=$$lang.mo; \
+  		mv $$lang.po $$lang.old.po; \
+  		echo &quot;$$lang:&quot;; \
+***************
+*** 71,80 ****
+  
+  install: $(CATALOGS)
+! 	catalogs='$(CATALOGS)'; \
+! 	for n in $$catalogs; do \
+! 	    l=`basename $$n .mo`; \
+  	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l; \
+  	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l/LC_MESSAGES; \
+! 	    $(INSTALL) -m 644 $$n $(INSTALLNLSDIR)/$$l/LC_MESSAGES/net-tools.mo; \
+  	done
+  
+--- 78,86 ----
+  
+  install: $(CATALOGS)
+! 	langs='$(LANGS)'; \
+! 	for l in $$langs; do \
+  	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l; \
+  	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l/LC_MESSAGES; \
+! 	    $(INSTALL) -m 644 $$l.mo $(INSTALLNLSDIR)/$$l/LC_MESSAGES/net-tools.mo; \
+  	done
+  
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000082.html">[net-tools-cvscommit] net-tools/man Makefile,1.5,1.6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#81">[ date ]</a>
+              <a href="thread.html#81">[ thread ]</a>
+              <a href="subject.html#81">[ subject ]</a>
+              <a href="author.html#81">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

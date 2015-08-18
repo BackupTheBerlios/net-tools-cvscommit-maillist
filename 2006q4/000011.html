@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/include util-ank.h,1.1,1.2
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2006q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/include%20util-ank.h%2C1.1%2C1.2&In-Reply-To=%3C20061011011511.AD59C878A1%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000010.html">
+   <LINK REL="Next"  HREF="000012.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/include util-ank.h,1.1,1.2</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/include%20util-ank.h%2C1.1%2C1.2&In-Reply-To=%3C20061011011511.AD59C878A1%40bat.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/include util-ank.h,1.1,1.2">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Wed Oct 11 03:15:11 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000010.html">[net-tools-cvscommit] net-tools ipmaddr.c,1.8,1.9
+</A></li>
+        <LI>Next message: <A HREF="000012.html">[net-tools-cvscommit] net-tools/lib util-ank.c,1.4,1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#11">[ date ]</a>
+              <a href="thread.html#11">[ thread ]</a>
+              <a href="subject.html#11">[ subject ]</a>
+              <a href="author.html#11">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/include
+In directory sheep:/tmp/cvs-serv20318/include
+
+Modified Files:
+	util-ank.h 
+Log Message:
+fixed signedness compiler warning
+
+
+Index: util-ank.h
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/include/util-ank.h,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -C2 -d -r1.1 -r1.2
+*** util-ank.h	21 Apr 1999 08:58:45 -0000	1.1
+--- util-ank.h	11 Oct 2006 01:14:33 -0000	1.2
+***************
+*** 76,80 ****
+  extern int do_filter(int argc, char **argv);
+  
+! extern const char *format_host(int af, void *addr, __u8 *abuf, int alen);
+  
+  #endif /* __UTILS_H__ */
+--- 76,80 ----
+  extern int do_filter(int argc, char **argv);
+  
+! extern const char *format_host(int af, void *addr, char *abuf, int alen);
+  
+  #endif /* __UTILS_H__ */
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000010.html">[net-tools-cvscommit] net-tools ipmaddr.c,1.8,1.9
+</A></li>
+	<LI>Next message: <A HREF="000012.html">[net-tools-cvscommit] net-tools/lib util-ank.c,1.4,1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#11">[ date ]</a>
+              <a href="thread.html#11">[ thread ]</a>
+              <a href="subject.html#11">[ subject ]</a>
+              <a href="author.html#11">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

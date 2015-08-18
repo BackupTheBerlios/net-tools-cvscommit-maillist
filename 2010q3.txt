@@ -1,0 +1,52 @@
+From net-tools-cvscommit at lists.berlios.de  Tue Jul  6 00:52:03 2010
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon, 05 Jul 2010 22:52:03 +0000
+Subject: [net-tools-cvscommit] net-tools/lib inet6.c,1.12,1.13
+Message-ID: <20100705225203.84627480964@sheep.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv18261/lib
+
+Modified Files:
+	inet6.c 
+Log Message:
+Remove garbage ipv6 scopes in netstat output (Debian Bug #508110)
+Thanks Marco Steinacher for reporting.
+
+
+Index: inet6.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/inet6.c,v
+retrieving revision 1.12
+retrieving revision 1.13
+diff -C 2 -d -r1.12 -r1.13
+*** inet6.c	10 Dec 2002 01:03:09 -0000	1.12
+--- inet6.c	5 Jul 2010 22:52:00 -0000	1.13
+***************
+*** 158,167 ****
+      sin6->sin6_family = AF_INET6;
+      sin6->sin6_port = 0;
+  
+      if (inet_pton(AF_INET6, bufp, sin6->sin6_addr.s6_addr) <= 0)
+  	return (-1);
+! 	p = fix_v4_address(bufp, &sin6->sin6_addr);
+! 	if (p != bufp) 
+! 		memcpy(bufp, p, strlen(p)+1); 
+      return 16;			/* ?;) */
+  }
+--- 158,169 ----
+      sin6->sin6_family = AF_INET6;
+      sin6->sin6_port = 0;
++     sin6->sin6_scope_id = 0;
++     sin6->sin6_flowinfo = 0;
+  
+      if (inet_pton(AF_INET6, bufp, sin6->sin6_addr.s6_addr) <= 0)
+  	return (-1);
+!     p = fix_v4_address(bufp, &sin6->sin6_addr);
+!     if (p != bufp) 
+!         memcpy(bufp, p, strlen(p)+1); 
+      return 16;			/* ?;) */
+  }
+
+
+

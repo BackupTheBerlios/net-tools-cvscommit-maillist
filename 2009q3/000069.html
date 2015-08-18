@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools slattach.c,1.11,1.12
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20slattach.c%2C1.11%2C1.12&In-Reply-To=%3C20090906225945.F0E92D8B9%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000068.html">
+   <LINK REL="Next"  HREF="000070.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools slattach.c,1.11,1.12</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20slattach.c%2C1.11%2C1.12&In-Reply-To=%3C20090906225945.F0E92D8B9%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools slattach.c,1.11,1.12">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Mon Sep  7 00:59:45 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000068.html">[net-tools-cvscommit] net-tools Makefile,1.41,1.42
+</A></li>
+        <LI>Next message: <A HREF="000070.html">[net-tools-cvscommit] net-tools/lib interface.c,1.31,1.32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#69">[ date ]</a>
+              <a href="thread.html#69">[ thread ]</a>
+              <a href="subject.html#69">[ subject ]</a>
+              <a href="author.html#69">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv27665
+
+Modified Files:
+	slattach.c 
+Log Message:
+slattach: use fchown() rather than chown() to avoid race between creation and permission changing
+
+Index: slattach.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/slattach.c,v
+retrieving revision 1.11
+retrieving revision 1.12
+diff -C2 -d -r1.11 -r1.12
+*** slattach.c	4 Dec 2005 05:15:36 -0000	1.11
+--- slattach.c	6 Sep 2009 22:59:43 -0000	1.12
+***************
+*** 196,208 ****
+  	}
+  
+- 	(void) close(fd);
+- 
+  	/* Make sure UUCP owns the lockfile.  Required by some packages. */
+  	if ((pw = getpwnam(_UID_UUCP)) == NULL) {
+  		if (opt_q == 0) fprintf(stderr, _(&quot;slattach: tty_lock: UUCP user %s unknown!\n&quot;),
+  					_UID_UUCP);
+  		return(0);	/* keep the lock anyway */
+  	}
+! 	(void) chown(saved_path, pw-&gt;pw_uid, pw-&gt;pw_gid);
+  	saved_lock = 1;
+    } else {	/* unlock */
+--- 196,210 ----
+  	}
+  
+  	/* Make sure UUCP owns the lockfile.  Required by some packages. */
+  	if ((pw = getpwnam(_UID_UUCP)) == NULL) {
+  		if (opt_q == 0) fprintf(stderr, _(&quot;slattach: tty_lock: UUCP user %s unknown!\n&quot;),
+  					_UID_UUCP);
++ 		(void) close(fd);
+  		return(0);	/* keep the lock anyway */
+  	}
+! 	(void) fchown(fd, pw-&gt;pw_uid, pw-&gt;pw_gid);
+! 
+! 	(void) close(fd);
+! 
+  	saved_lock = 1;
+    } else {	/* unlock */
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000068.html">[net-tools-cvscommit] net-tools Makefile,1.41,1.42
+</A></li>
+	<LI>Next message: <A HREF="000070.html">[net-tools-cvscommit] net-tools/lib interface.c,1.31,1.32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#69">[ date ]</a>
+              <a href="thread.html#69">[ thread ]</a>
+              <a href="subject.html#69">[ subject ]</a>
+              <a href="author.html#69">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

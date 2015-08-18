@@ -1,0 +1,280 @@
+From net-tools-cvscommit at lists.berlios.de  Fri Jan  1 06:59:24 2010
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  1 Jan 2010 06:59:24 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/po Makefile,1.12,1.13
+Message-ID: <20100101055924.A088E1A3C0F@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/po
+In directory sheep:/tmp/cvs-serv13829/po
+
+Modified Files:
+	Makefile 
+Log Message:
+po/man: if LINGUAS is set, only install translations for those langs
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/po/Makefile,v
+retrieving revision 1.12
+retrieving revision 1.13
+diff -C2 -d -r1.12 -r1.13
+*** Makefile	31 Dec 2009 20:38:02 -0000	1.12
+--- Makefile	1 Jan 2010 05:59:22 -0000	1.13
+***************
+*** 9,18 ****
+  
+  -include ../config.make
+! ALL_CATALOGS = de.mo fr.mo pt_BR.mo et_EE.mo cs.mo
+  ifeq ($(I18N),1)
+! CATALOGS = $(ALL_CATALOGS)
+  else
+! CATALOGS =
+  endif
+  
+  POTFILES=../arp.c ../hostname.c ../ifconfig.c ../netstat.c ../rarp.c \
+--- 9,25 ----
+  
+  -include ../config.make
+! ALL_POS = $(wildcard *.po)
+! ALL_LANGS = $(ALL_POS:%.po=%)
+! ALL_CATALOGS = $(ALL_LANGS:%=%.mo)
+  ifeq ($(I18N),1)
+! ifeq ($(LINGUAS),)
+! LANGS = $(ALL_LANGS)
+  else
+! LANGS = $(filter $(LINGUAS),$(ALL_LANGS))
+! endif
+! else
+! LANGS =
+  endif
++ CATALOGS = $(LANGS:%=%.mo)
+  
+  POTFILES=../arp.c ../hostname.c ../ifconfig.c ../netstat.c ../rarp.c \
+***************
+*** 46,52 ****
+  update-po: Makefile
+  	$(MAKE) $(NLSPACKAGE).pot
+! 	catalogs='$(CATALOGS)'; \
+! 	for cat in $$catalogs; do \
+! 		lang=`echo $$cat | sed 's/.mo//'`; \
+  		mv $$lang.po $$lang.old.po; \
+  		echo "$$lang:"; \
+--- 53,59 ----
+  update-po: Makefile
+  	$(MAKE) $(NLSPACKAGE).pot
+! 	langs='$(ALL_LANGS)'; \
+! 	for lang in $$langs; do \
+! 		cat=$$lang.mo; \
+  		mv $$lang.po $$lang.old.po; \
+  		echo "$$lang:"; \
+***************
+*** 71,80 ****
+  
+  install: $(CATALOGS)
+! 	catalogs='$(CATALOGS)'; \
+! 	for n in $$catalogs; do \
+! 	    l=`basename $$n .mo`; \
+  	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l; \
+  	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l/LC_MESSAGES; \
+! 	    $(INSTALL) -m 644 $$n $(INSTALLNLSDIR)/$$l/LC_MESSAGES/net-tools.mo; \
+  	done
+  
+--- 78,86 ----
+  
+  install: $(CATALOGS)
+! 	langs='$(LANGS)'; \
+! 	for l in $$langs; do \
+  	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l; \
+  	    $(INSTALL) -m 755 -d $(INSTALLNLSDIR)/$$l/LC_MESSAGES; \
+! 	    $(INSTALL) -m 644 $$l.mo $(INSTALLNLSDIR)/$$l/LC_MESSAGES/net-tools.mo; \
+  	done
+  
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Jan  1 06:59:24 2010
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  1 Jan 2010 06:59:24 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man Makefile,1.5,1.6
+Message-ID: <20100101055924.8991A1A394A@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man
+In directory sheep:/tmp/cvs-serv13829/man
+
+Modified Files:
+	Makefile 
+Log Message:
+po/man: if LINGUAS is set, only install translations for those langs
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/Makefile,v
+retrieving revision 1.5
+retrieving revision 1.6
+diff -C2 -d -r1.5 -r1.6
+*** Makefile	8 Oct 2000 00:12:30 -0000	1.5
+--- Makefile	1 Jan 2010 05:59:20 -0000	1.6
+***************
+*** 30,36 ****
+  -include ../config.make
+  ifeq ($(I18N),1)
+! LANGS=`ls -d * | grep -v Makefile`
+  else
+! LANGS=en_US
+  endif
+  
+--- 30,41 ----
+  -include ../config.make
+  ifeq ($(I18N),1)
+! ALL_LANGS = $(filter-out Makefile,$(wildcard *))
+! ifeq ($(LINGUAS),)
+! LANGS = $(ALL_LANGS)
+  else
+! LANGS = $(sort $(filter $(LINGUAS),$(ALL_LANGS)) en_US)
+! endif
+! else
+! LANGS = en_US
+  endif
+  
+***************
+*** 44,48 ****
+  
+  install:
+! 		LANGS=$(LANGS) ; \
+  		for LANG in $$LANGS; do \
+  			cd $$LANG; \
+--- 49,53 ----
+  
+  install:
+! 		LANGS='$(LANGS)' ; \
+  		for LANG in $$LANGS; do \
+  			cd $$LANG; \
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Jan  1 07:35:34 2010
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri,  1 Jan 2010 07:35:34 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/lib interface.c,1.33,1.34
+Message-ID: <20100101063534.374DA4A921@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv18219/lib
+
+Modified Files:
+	interface.c 
+Log Message:
+interface: fix IPv6 parsing of interfaces with large indexes (> 255)
+
+patch from Dave Johnson <djohnson at sw.starentnetworks.com> via Debian #433543
+
+When running 'ifconfig' it will not show any IPv6 addresses for
+interfaces that have an ifindex > 255.
+
+Because the kernel will increment the ifindex every time an interface
+is added or removed, it is not necessary to have 256 interfaces at
+once, just creating 256 interfaces since system boot and they will no
+longer show IPv6 addresses.
+
+This is due to an improper fscanf() maximum range argument.  Patch to
+fix the problem is below.
+
+Example:
+
+st34:~# ip addr list dev eth1.110
+268: eth1.110 at eth1: <BROADCAST,MULTICAST,UP,10000> mtu 1500 qdisc noqueue
+    link/ether 00:e0:81:2a:0d:2d brd ff:ff:ff:ff:ff:ff
+    inet6 fd4d:5643:2886:6e::ea:0/64 scope global
+       valid_lft forever preferred_lft forever
+    inet6 fe80::2e0:81ff:fe2a:d2d/64 scope link
+       valid_lft forever preferred_lft forever
+st34:~# ifconfig eth1.110
+eth1.110  Link encap:Ethernet  HWaddr 00:E0:81:2A:0D:2D
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 b)  TX bytes:676 (676.0 b)
+
+st34:~# grep eth1.110 /proc/net/if_inet6
+fd4d56432886006e0000000000ea0000 10c 40 00 80 eth1.110
+fe8000000000000002e081fffe2a0d2d 10c 40 20 80 eth1.110
+st34:~#
+
+
+Index: interface.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/interface.c,v
+retrieving revision 1.33
+retrieving revision 1.34
+diff -C2 -d -r1.33 -r1.34
+*** interface.c	31 Dec 2009 19:51:31 -0000	1.33
+--- interface.c	1 Jan 2010 06:35:30 -0000	1.34
+***************
+*** 761,765 ****
+  
+      if ((f = fopen(_PATH_PROCNET_IFINET6, "r")) != NULL) {
+! 	while (fscanf(f, "%4s%4s%4s%4s%4s%4s%4s%4s %02x %02x %02x %02x %20s\n",
+  		      addr6p[0], addr6p[1], addr6p[2], addr6p[3],
+  		      addr6p[4], addr6p[5], addr6p[6], addr6p[7],
+--- 761,765 ----
+  
+      if ((f = fopen(_PATH_PROCNET_IFINET6, "r")) != NULL) {
+! 	while (fscanf(f, "%4s%4s%4s%4s%4s%4s%4s%4s %08x %02x %02x %02x %20s\n",
+  		      addr6p[0], addr6p[1], addr6p[2], addr6p[3],
+  		      addr6p[4], addr6p[5], addr6p[6], addr6p[7],
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Fri Mar  5 16:35:05 2010
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Fri, 05 Mar 2010 15:35:05 -0000
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.68,1.69
+Message-ID: <mailman.0.1331735413.6627.net-tools-cvscommit@lists.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv25855
+
+Modified Files:
+	netstat.c 
+Log Message:
+netstat: PIDs can be long, Bug #199702 of Ubuntu Launchpad, Bug #16913 of Berlios
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.68
+retrieving revision 1.69
+diff -C2 -d -r1.68 -r1.69
+*** netstat.c	31 Dec 2009 19:54:16 -0000	1.68
+--- netstat.c	5 Mar 2010 15:35:02 -0000	1.69
+***************
+*** 327,331 ****
+          inode_str[inode_str_len] = '\0';
+          *inode_p = strtol(inode_str,&serr,0);
+!         if (!serr || *serr || *inode_p < 0 || *inode_p >= INT_MAX) 
+              return(-1);
+      }
+--- 327,331 ----
+          inode_str[inode_str_len] = '\0';
+          *inode_p = strtol(inode_str,&serr,0);
+!         if (!serr || *serr || *inode_p < 0 || *inode_p >= LONG_MAX) 
+              return(-1);
+      }
+***************
+*** 348,352 ****
+  
+          *inode_p=strtol(lname + PRG_SOCKET_PFX2l,&serr,0);
+!         if (!serr || *serr || *inode_p < 0 || *inode_p >= INT_MAX) 
+              return(-1);
+      }
+--- 348,352 ----
+  
+          *inode_p=strtol(lname + PRG_SOCKET_PFX2l,&serr,0);
+!         if (!serr || *serr || *inode_p < 0 || *inode_p >= LONG_MAX) 
+              return(-1);
+      }
+
+
+

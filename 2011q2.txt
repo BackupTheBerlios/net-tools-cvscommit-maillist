@@ -1,0 +1,40 @@
+From net-tools-cvscommit at lists.berlios.de  Wed Apr 20 03:35:24 2011
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Wed, 20 Apr 2011 01:35:24 +0000
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.72,1.73
+Message-ID: <20110420013524.965B94800F7@sheep.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv28611
+
+Modified Files:
+	netstat.c 
+Log Message:
+patch from Bert Wesarg to separate basename of -p only if it is absulote
+path (in order to make argv[0]="sshd pty/0" display as sshd, and not as /0.
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.72
+retrieving revision 1.73
+diff -C 2 -d -r1.72 -r1.73
+*** netstat.c	9 Apr 2011 13:57:28 -0000	1.72
+--- netstat.c	20 Apr 2011 01:35:22 -0000	1.73
+***************
+*** 421,425 ****
+  		if (cmdllen < sizeof(cmdlbuf) - 1) 
+  		    cmdlbuf[cmdllen]='\0';
+! 		if ((cmdlp = strrchr(cmdlbuf, '/'))) 
+  		    cmdlp++;
+  		else 
+--- 421,425 ----
+  		if (cmdllen < sizeof(cmdlbuf) - 1) 
+  		    cmdlbuf[cmdllen]='\0';
+! 		if (cmdlbuf[0] == '/' && (cmdlp = strrchr(cmdlbuf, '/'))) 
+  		    cmdlp++;
+  		else 
+
+
+

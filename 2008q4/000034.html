@@ -1,0 +1,1007 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/man/en_US arp.8, 1.10, 1.11 ethers.5,	1.2, 1.3 hostname.1, 1.2, 1.3 ifconfig.8, 1.13,	1.14 mii-tool.8, 1.3, 1.4 nameif.8, 1.1, 1.2 netstat.8, 1.20,	1.21 plipconfig.8, 1.1, 1.2 rarp.8, 1.5, 1.6 route.8, 1.7,	1.8 slattach.8, 1.3, 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/man/en_US%20arp.8%2C%201.10%2C%201.11%20ethers.5%2C%0A%091.2%2C%201.3%20hostname.1%2C%201.2%2C%201.3%20ifconfig.8%2C%201.13%2C%0A%091.14%20mii-tool.8%2C%201.3%2C%201.4%20nameif.8%2C%201.1%2C%201.2%20netstat.8%2C%201.20%2C%0A%091.21%20plipconfig.8%2C%201.1%2C%201.2%20rarp.8%2C%201.5%2C%201.6%20route.8%2C%201.7%2C%0A%091.8%20slattach.8%2C%201.3%2C%201.4&In-Reply-To=%3C20081002231702.6F806155BDC%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000033.html">
+   <LINK REL="Next"  HREF="000035.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/man/en_US arp.8, 1.10, 1.11 ethers.5,	1.2, 1.3 hostname.1, 1.2, 1.3 ifconfig.8, 1.13,	1.14 mii-tool.8, 1.3, 1.4 nameif.8, 1.1, 1.2 netstat.8, 1.20,	1.21 plipconfig.8, 1.1, 1.2 rarp.8, 1.5, 1.6 route.8, 1.7,	1.8 slattach.8, 1.3, 1.4</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/man/en_US%20arp.8%2C%201.10%2C%201.11%20ethers.5%2C%0A%091.2%2C%201.3%20hostname.1%2C%201.2%2C%201.3%20ifconfig.8%2C%201.13%2C%0A%091.14%20mii-tool.8%2C%201.3%2C%201.4%20nameif.8%2C%201.1%2C%201.2%20netstat.8%2C%201.20%2C%0A%091.21%20plipconfig.8%2C%201.1%2C%201.2%20rarp.8%2C%201.5%2C%201.6%20route.8%2C%201.7%2C%0A%091.8%20slattach.8%2C%201.3%2C%201.4&In-Reply-To=%3C20081002231702.6F806155BDC%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/man/en_US arp.8, 1.10, 1.11 ethers.5,	1.2, 1.3 hostname.1, 1.2, 1.3 ifconfig.8, 1.13,	1.14 mii-tool.8, 1.3, 1.4 nameif.8, 1.1, 1.2 netstat.8, 1.20,	1.21 plipconfig.8, 1.1, 1.2 rarp.8, 1.5, 1.6 route.8, 1.7,	1.8 slattach.8, 1.3, 1.4">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Fri Oct  3 01:17:02 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000033.html">[net-tools-cvscommit] net-tools/man/en_US arp.8,1.9,1.10
+</A></li>
+        <LI>Next message: <A HREF="000035.html">[net-tools-cvscommit] net-tools ifconfig.c,1.57,1.58
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#34">[ date ]</a>
+              <a href="thread.html#34">[ thread ]</a>
+              <a href="subject.html#34">[ subject ]</a>
+              <a href="author.html#34">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv11168
+
+Modified Files:
+	arp.8 ethers.5 hostname.1 ifconfig.8 mii-tool.8 nameif.8 
+	netstat.8 plipconfig.8 rarp.8 route.8 slattach.8 
+Log Message:
+Fix hypen in man pages (Debian Bug#288343 from Andrew Moise)
+Move man pages to sysadmin books
+update samples for route(8) (Debian Bug#400844, #368697 Danny Rathjens)
+update see also for ifconfig(8) (Debian Bug#365916 Dan Jacobs)
+
+
+Index: arp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/arp.8,v
+retrieving revision 1.10
+retrieving revision 1.11
+diff -C2 -d -r1.10 -r1.11
+*** arp.8	2 Oct 2008 22:42:51 -0000	1.10
+--- arp.8	2 Oct 2008 23:16:59 -0000	1.11
+***************
+*** 1,3 ****
+! .TH ARP 8 &quot;2008-10-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  .SH NAME
+  arp \- manipulate the system ARP cache
+--- 1,3 ----
+! .TH ARP 8 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  .SH NAME
+  arp \- manipulate the system ARP cache
+
+Index: ethers.5
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/ethers.5,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** ethers.5	13 May 2005 22:34:20 -0000	1.2
+--- ethers.5	2 Oct 2008 23:16:59 -0000	1.3
+***************
+*** 1,3 ****
+! .TH ETHERS 5 &quot;May 15th, 2005&quot; &quot;&quot; &quot;File formats&quot;
+  .SH NAME \&quot;{{{roff}}}\&quot;{{{
+  ethers \- Ethernet address to IP number database
+--- 1,3 ----
+! .TH ETHERS 5 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  .SH NAME \&quot;{{{roff}}}\&quot;{{{
+  ethers \- Ethernet address to IP number database
+***************
+*** 8,22 ****
+  .sp
+  .RS
+! \fIEthernet-address\fP  \fIIP-number\fP
+  .RE
+  .sp
+  The two items are separated by any number of SPACE and/or TAB characters.
+  A \fB#\fP at the beginning of a line starts a comment
+! which extends to the end of the line.  The \fIEthernet-address\fP is
+  written as
+  .IR x : x : x : x : x : x ,
+  where \fIx\fP is a hexadecimal number between \fB0\fP and \fBff\fP
+  which represents one byte of the address, which is in network byte
+! order (big-endian).  The \fIIP-number\fP may be a hostname which
+  can be resolved by DNS or a dot separated number.
+  .\&quot;}}}
+--- 8,22 ----
+  .sp
+  .RS
+! \fIEthernet\-address\fP  \fIIP\-number\fP
+  .RE
+  .sp
+  The two items are separated by any number of SPACE and/or TAB characters.
+  A \fB#\fP at the beginning of a line starts a comment
+! which extends to the end of the line.  The \fIEthernet\-address\fP is
+  written as
+  .IR x : x : x : x : x : x ,
+  where \fIx\fP is a hexadecimal number between \fB0\fP and \fBff\fP
+  which represents one byte of the address, which is in network byte
+! order (big-endian).  The \fIIP\-number\fP may be a hostname which
+  can be resolved by DNS or a dot separated number.
+  .\&quot;}}}
+
+Index: hostname.1
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/hostname.1,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** hostname.1	27 Feb 1999 11:27:50 -0000	1.2
+--- hostname.1	2 Oct 2008 23:16:59 -0000	1.3
+***************
+*** 1,3 ****
+! .TH HOSTNAME 1 &quot;28 Jan 1996&quot; &quot;net-tools&quot; &quot;Linux Programmer's Manual&quot;
+  
+  .SH NAME
+--- 1,3 ----
+! .TH HOSTNAME 1 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  
+  .SH NAME
+***************
+*** 24,28 ****
+  .RB [ \-\-fqdn ]
+  .RB [ \-i ]
+! .RB [ \-\-ip-address ]
+  .RB [ \-\-long ]
+  .RB [ \-s ]
+--- 24,28 ----
+  .RB [ \-\-fqdn ]
+  .RB [ \-i ]
+! .RB [ \-\-ip\-address ]
+  .RB [ \-\-long ]
+  .RB [ \-s ]
+***************
+*** 182,186 ****
+  Print a usage message and exit.
+  .TP
+! .I &quot;\-i, \-\-ip-address&quot;
+  Display the IP address(es) of the host.
+  .TP
+--- 182,186 ----
+  Print a usage message and exit.
+  .TP
+! .I &quot;\-i, \-\-ip\-address&quot;
+  Display the IP address(es) of the host.
+  .TP
+***************
+*** 206,212 ****
+  .B /etc/hosts
+  .SH AUTHOR
+! Peter Tobias, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">tobias at et-inf.fho-emden.de</A>&gt;
+  .br
+! Bernd Eckenfels, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">net-tools at lina.inka.de</A>&gt; (NIS and manpage).
+  .br
+  Steve Whitehouse, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">SteveW at ACM.org</A>&gt; (DECnet support and manpage).
+--- 206,212 ----
+  .B /etc/hosts
+  .SH AUTHOR
+! Peter Tobias, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">tobias at et</A>\-inf.fho\-emden.de&gt;
+  .br
+! Bernd Eckenfels, &lt;net\<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">-tools at lina.inka.de</A>&gt; (NIS and manpage).
+  .br
+  Steve Whitehouse, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">SteveW at ACM.org</A>&gt; (DECnet support and manpage).
+
+Index: ifconfig.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/ifconfig.8,v
+retrieving revision 1.13
+retrieving revision 1.14
+diff -C2 -d -r1.13 -r1.14
+*** ifconfig.8	7 Nov 2007 23:01:38 -0000	1.13
+--- ifconfig.8	2 Oct 2008 23:16:59 -0000	1.14
+***************
+*** 1,3 ****
+! .TH IFCONFIG 8 &quot;2007-11-07&quot; &quot;net-tools&quot; &quot;Linux Programmer's Manual&quot;
+  .SH NAME
+  ifconfig \- configure a network interface
+--- 1,3 ----
+! .TH IFCONFIG 8 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  .SH NAME
+  ifconfig \- configure a network interface
+***************
+*** 19,23 ****
+  argument is given, it displays the status of the given interface
+  only; if a single
+! .B -a
+  argument is given, it displays the status of all interfaces, even
+  those that are down.  Otherwise, it configures an interface.
+--- 19,23 ----
+  argument is given, it displays the status of the given interface
+  only; if a single
+! .B \-a
+  argument is given, it displays the status of all interfaces, even
+  those that are down.  Otherwise, it configures an interface.
+***************
+*** 139,143 ****
+  all drivers can do this.
+  .TP
+! .B &quot;[-]broadcast [addr]&quot;
+  If the address argument is given, set the protocol broadcast
+  address for this interface.  Otherwise, set (or clear) the
+--- 139,143 ----
+  all drivers can do this.
+  .TP
+! .B &quot;[\-]broadcast [addr]&quot;
+  If the address argument is given, set the protocol broadcast
+  address for this interface.  Otherwise, set (or clear) the
+***************
+*** 145,149 ****
+  flag for the interface.
+  .TP
+! .B &quot;[-]pointopoint [addr]&quot;
+  This keyword enables the
+  .B point-to-point
+--- 145,149 ----
+  flag for the interface.
+  .TP
+! .B &quot;[\-]pointopoint [addr]&quot;
+  This keyword enables the
+  .B point-to-point
+***************
+*** 195,199 ****
+  command.
+  .LP
+! Since net-tools 1.61 ifconfig is printing byte counters and human readable
+  counters with IEC 60027-2 units. So 1 KiB are 2^10 byte. Note, the numbers 
+  are truncated to one decimal (which can by quite a large error if you 
+--- 195,199 ----
+  command.
+  .LP
+! Since net\-tools 1.60\-4 ifconfig is printing byte counters and human readable
+  counters with IEC 60027-2 units. So 1 KiB are 2^10 byte. Note, the numbers 
+  are truncated to one decimal (which can by quite a large error if you 
+***************
+*** 203,207 ****
+  .I (SIOCSIIFLAGS: Resource temporarily unavailable)
+  it is most likely a interrupt conflict. See
+! .I <A HREF="http://www.scyld.com/expert/irq-conflict.html">http://www.scyld.com/expert/irq-conflict.html</A>
+  for more information.
+  .SH FILES
+--- 203,207 ----
+  .I (SIOCSIIFLAGS: Resource temporarily unavailable)
+  it is most likely a interrupt conflict. See
+! .I <A HREF="http://www.scyld.com/expert/irq\-conflict.html">http://www.scyld.com/expert/irq\-conflict.html</A>
+  for more information.
+  .SH FILES
+***************
+*** 215,219 ****
+  altered by this command.
+  .SH SEE ALSO
+! route(8), netstat(8), arp(8), rarp(8), ipchains(8), iptables(8)
+  .br
+  <A HREF="http://physics.nist.gov/cuu/Units/binary.html">http://physics.nist.gov/cuu/Units/binary.html</A> - Prefixes for binary multiples
+--- 215,219 ----
+  altered by this command.
+  .SH SEE ALSO
+! route(8), netstat(8), arp(8), rarp(8), ipchains(8), iptables(8), ifup(8), interfaces(5).
+  .br
+  <A HREF="http://physics.nist.gov/cuu/Units/binary.html">http://physics.nist.gov/cuu/Units/binary.html</A> - Prefixes for binary multiples
+***************
+*** 227,229 ****
+  Andi Kleen
+  .br
+! Bernd Eckenfels, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">net-tools at lina.inka.de</A>&gt;
+--- 227,229 ----
+  Andi Kleen
+  .br
+! Bernd Eckenfels, &lt;net\<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">-tools at lina.inka.de</A>&gt;
+
+Index: mii-tool.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/mii-tool.8,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -C2 -d -r1.3 -r1.4
+*** mii-tool.8	13 May 2005 22:31:41 -0000	1.3
+--- mii-tool.8	2 Oct 2008 23:16:59 -0000	1.4
+***************
+*** 2,12 ****
+  .\&quot; mii-tool.8 1.5 2000/04/25 22:58:19
+  .\&quot;
+! .TH MII-TOOL 8 &quot;2004/03/28 23:30:00&quot; &quot;net-tools&quot;
+  
+  .SH NAME
+! mii-tool \- view, manipulate media-independent interface status
+  
+  .SH SYNOPSIS
+! .B mii-tool
+  [\fB\-v\fR, \fB\-\-verbose\fR]
+  [\fB\-V\fR, \fB\-\-version\fR]
+--- 2,12 ----
+  .\&quot; mii-tool.8 1.5 2000/04/25 22:58:19
+  .\&quot;
+! .TH MII\-TOOL 8 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  
+  .SH NAME
+! mii\-tool \- view, manipulate media-independent interface status
+  
+  .SH SYNOPSIS
+! .B mii\-tool
+  [\fB\-v\fR, \fB\-\-verbose\fR]
+  [\fB\-V\fR, \fB\-\-version\fR]
+***************
+*** 33,42 ****
+  simply detecting either a 10baseT or 100baseT link beat.  The \fB\-F\fR
+  or \fB\-\-force\fR options can be used to force the MII to operate in
+! one mode, instead of autonegotiating.  The \fB\-A\fR and \fB-F\fR
+  options are mutually exclusive.
+  .PP
+  The default short output reports the negotiated link speed and link
+  status for each interface.  If an interface or interfaces are not
+! specified on the command line, then \fBmii-tool\fR will check any
+  available interfaces from \fBeth0\fR through \fBeth7\fR.
+  .SH OPTIONS
+--- 33,42 ----
+  simply detecting either a 10baseT or 100baseT link beat.  The \fB\-F\fR
+  or \fB\-\-force\fR options can be used to force the MII to operate in
+! one mode, instead of autonegotiating.  The \fB\-A\fR and \fB\-F\fR
+  options are mutually exclusive.
+  .PP
+  The default short output reports the negotiated link speed and link
+  status for each interface.  If an interface or interfaces are not
+! specified on the command line, then \fBmii\-tool\fR will check any
+  available interfaces from \fBeth0\fR through \fBeth7\fR.
+  .SH OPTIONS
+***************
+*** 60,64 ****
+  .TP
+  \fB\-l\fR, \fB\-\-log\fR
+! Used with \fB-w\fR, records link status changes in the system log
+  instead of printing on standard output.
+  .TP
+--- 60,64 ----
+  .TP
+  \fB\-l\fR, \fB\-\-log\fR
+! Used with \fB\-w\fR, records link status changes in the system log
+  instead of printing on standard output.
+  .TP
+
+Index: nameif.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/nameif.8,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -C2 -d -r1.1 -r1.2
+*** nameif.8	18 Oct 2000 17:26:29 -0000	1.1
+--- nameif.8	2 Oct 2008 23:16:59 -0000	1.2
+***************
+*** 1,9 ****
+! .TH NAMEIF 8 &quot;18 Oct 2000&quot; &quot;net-tools&quot; &quot;Linux's Administrator's Manual&quot;
+  .SH NAME
+  nameif \- name network interfaces based on MAC addresses
+  .SH SYNOPSIS
+! .B &quot;nameif [-c configfile] [-s]&quot;
+  .br
+! .B &quot;nameif [-c configfile] [-s] {interface macaddress}&quot;
+  .SH DESCRIPTION
+  .B nameif 
+--- 1,9 ----
+! .TH NAMEIF 8 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  .SH NAME
+  nameif \- name network interfaces based on MAC addresses
+  .SH SYNOPSIS
+! .B &quot;nameif [\-c configfile] [\-s]&quot;
+  .br
+! .B &quot;nameif [\-c configfile] [\-s] {interface macaddress}&quot;
+  .SH DESCRIPTION
+  .B nameif 
+***************
+*** 19,27 ****
+  
+  When the 
+! .I -s
+  argument is given all error messages go to the syslog.
+  
+  When the 
+! .I -c 
+  argument is given with a file name that file is read instead of /etc/mactab.
+  
+--- 19,27 ----
+  
+  When the 
+! .I \-s
+  argument is given all error messages go to the syslog.
+  
+  When the 
+! .I \-c 
+  argument is given with a file name that file is read instead of /etc/mactab.
+  
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.20
+retrieving revision 1.21
+diff -C2 -d -r1.20 -r1.21
+*** netstat.8	2 Oct 2008 22:30:25 -0000	1.20
+--- netstat.8	2 Oct 2008 23:16:59 -0000	1.21
+***************
+*** 9,13 ****
+  .\&quot;
+  .\&quot;
+! .TH NETSTAT 8 &quot;2008-10-04&quot; &quot;net-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  
+  .SH NAME
+--- 9,13 ----
+  .\&quot;
+  .\&quot;
+! .TH NETSTAT 8 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  
+  .SH NAME
+***************
+*** 24,28 ****
+  .RB [ \-\-all | \-a ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric-hosts &quot;] [&quot; \-\-numeric-ports &quot;] [&quot; \-\-numeric-users ]
+  .RB [ \-\-symbolic | \-N ]
+  .RB [ \-\-extend | \-e  [ \-\-extend | \-e] ]
+--- 24,28 ----
+  .RB [ \-\-all | \-a ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric\-hosts &quot;] [&quot; \-\-numeric\-ports &quot;] [&quot; \-\-numeric\-users ]
+  .RB [ \-\-symbolic | \-N ]
+  .RB [ \-\-extend | \-e  [ \-\-extend | \-e] ]
+***************
+*** 38,42 ****
+  .RB [ \-\-verbose | \-v ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric-hosts &quot;] [&quot; \-\-numeric-ports &quot;] [&quot; \-\-numeric-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+--- 38,42 ----
+  .RB [ \-\-verbose | \-v ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric\-hosts &quot;] [&quot; \-\-numeric\-ports &quot;] [&quot; \-\-numeric\-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+***************
+*** 54,58 ****
+  .RB { \-\-groups | \-g }
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric-hosts &quot;] [&quot; \-\-numeric-ports &quot;] [&quot; \-\-numeric-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+--- 54,58 ----
+  .RB { \-\-groups | \-g }
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric\-hosts &quot;] [&quot; \-\-numeric\-ports &quot;] [&quot; \-\-numeric\-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+***************
+*** 61,65 ****
+  .RB [ \-\-extend | \-e ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric-hosts &quot;] [&quot; \-\-numeric-ports &quot;] [&quot; \-\-numeric-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+--- 61,65 ----
+  .RB [ \-\-extend | \-e ]
+  .RB [ \-\-numeric | \-n ]
+! .RB [ \-\-numeric\-hosts &quot;] [&quot; \-\-numeric\-ports &quot;] [&quot; \-\-numeric\-users ]
+  .RB [ \-\-continuous | \-c]
+  .P
+***************
+*** 122,132 ****
+  Show numerical addresses instead of trying to determine symbolic host, port
+  or user names.
+! .SS &quot;\-\-numeric-hosts&quot;
+  shows numerical host addresses but does not affect the resolution of
+  port or user names.
+! .SS &quot;\-\-numeric-ports&quot;
+  shows numerical port numbers but does not affect the resolution of
+  host or user names.
+! .SS &quot;\-\-numeric-users&quot;
+  shows numerical user IDs but does not affect the resolution of host or
+  port names.
+--- 122,132 ----
+  Show numerical addresses instead of trying to determine symbolic host, port
+  or user names.
+! .SS &quot;\-\-numeric\-hosts&quot;
+  shows numerical host addresses but does not affect the resolution of
+  port or user names.
+! .SS &quot;\-\-numeric\-ports&quot;
+  shows numerical port numbers but does not affect the resolution of
+  host or user names.
+! .SS &quot;\-\-numeric\-users&quot;
+  shows numerical user IDs but does not affect the resolution of host or
+  port names.
+***************
+*** 171,175 ****
+  .SS &quot;\-a, \-\-all&quot;
+  Show both listening and non-listening sockets.  With the
+! .B --interfaces
+  option, show interfaces that are not up
+  .SS &quot;\-F&quot;
+--- 171,175 ----
+  .SS &quot;\-a, \-\-all&quot;
+  Show both listening and non-listening sockets.  With the
+! .B \-\-interfaces
+  option, show interfaces that are not up
+  .SS &quot;\-F&quot;
+***************
+*** 183,190 ****
+  .SS &quot;Proto&quot; 
+  The protocol (tcp, udp, raw) used by the socket. 
+! .SS &quot;Recv-Q&quot;
+  Established: The count of bytes not copied by the user program connected to this socket.
+  Listening: Since Kernel 2.6.18 this column contains the current syn backlog.
+! .SS &quot;Send-Q&quot;
+  Established: The count of bytes not acknowledged by the remote host.
+  Listening: Since Kernel 2.6.18 this column contains the maximum size of the syn backlog.
+--- 183,190 ----
+  .SS &quot;Proto&quot; 
+  The protocol (tcp, udp, raw) used by the socket. 
+! .SS &quot;Recv\-Q&quot;
+  Established: The count of bytes not copied by the user program connected to this socket.
+  Listening: Since Kernel 2.6.18 this column contains the current syn backlog.
+! .SS &quot;Send\-Q&quot;
+  Established: The count of bytes not acknowledged by the remote host.
+  Listening: Since Kernel 2.6.18 this column contains the maximum size of the syn backlog.
+***************
+*** 263,267 ****
+  Slash-separated pair of the process id (PID) and process name of the 
+  process that owns the socket.
+! .B --program
+  causes this column to be included.  You will also need
+  .I superuser
+--- 263,267 ----
+  Slash-separated pair of the process id (PID) and process name of the 
+  process that owns the socket.
+! .B \-\-program
+  causes this column to be included.  You will also need
+  .I superuser
+***************
+*** 366,370 ****
+  .SH NOTES
+  Starting with Linux release 2.2 
+! .B netstat -i 
+  does not show interface statistics for alias interfaces. To get per
+  alias interface counters you need to setup explicit rules using the
+--- 366,370 ----
+  .SH NOTES
+  Starting with Linux release 2.2 
+! .B netstat \-i 
+  does not show interface statistics for alias interfaces. To get per
+  alias interface counters you need to setup explicit rules using the
+***************
+*** 446,450 ****
+  .SH AUTHORS
+  The netstat user interface was written by Fred Baumgarten
+! &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">dc6iq at insu1.etec.uni-karlsruhe.de</A>&gt;, the man page basically
+  by Matt Welsh &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">mdw at tc.cornell.edu</A>&gt;. It was updated by
+  Alan Cox &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">Alan.Cox at linux.org</A>&gt; but could do with a bit more
+--- 446,450 ----
+  .SH AUTHORS
+  The netstat user interface was written by Fred Baumgarten
+! &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">dc6iq at insu1.etec.uni</A>\-karlsruhe.de&gt;, the man page basically
+  by Matt Welsh &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">mdw at tc.cornell.edu</A>&gt;. It was updated by
+  Alan Cox &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">Alan.Cox at linux.org</A>&gt; but could do with a bit more
+***************
+*** 452,456 ****
+  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">tqhoang at bigfoot.com</A>&gt;.
+  .br
+! The man page and the command included in the net-tools
+  package is totally rewritten by Bernd Eckenfels 
+  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">ecki at linux.de</A>&gt;.
+--- 452,456 ----
+  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">tqhoang at bigfoot.com</A>&gt;.
+  .br
+! The man page and the command included in the net\-tools
+  package is totally rewritten by Bernd Eckenfels 
+  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">ecki at linux.de</A>&gt;.
+
+Index: plipconfig.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/plipconfig.8,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -C2 -d -r1.1 -r1.2
+*** plipconfig.8	9 Jan 1999 14:36:46 -0000	1.1
+--- plipconfig.8	2 Oct 2008 23:16:59 -0000	1.2
+***************
+*** 1,3 ****
+! .TH PLIPCONFIG 8 &quot;17 February 1995&quot; &quot;&quot; &quot;&quot;
+  .SH NAME
+  plipconfig \- fine tune PLIP device parameters 
+--- 1,3 ----
+! .TH PLIPCONFIG 8 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  .SH NAME
+  plipconfig \- fine tune PLIP device parameters 
+
+Index: rarp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/rarp.8,v
+retrieving revision 1.5
+retrieving revision 1.6
+diff -C2 -d -r1.5 -r1.6
+*** rarp.8	5 Nov 2001 13:12:11 -0000	1.5
+--- rarp.8	2 Oct 2008 23:16:59 -0000	1.6
+***************
+*** 1,13 ****
+! .TH RARP 8 &quot;4 August 1997&quot; &quot;net-tools&quot; &quot;Linux Programmer's Manual&quot;
+  .SH NAME
+  rarp \- manipulate the system RARP table
+  .SH SYNOPSIS
+! .B &quot;rarp [-V] [--version] [-h] [--help]&quot;
+  .br
+! .B &quot;rarp -a&quot;
+  .br
+! .B &quot;rarp [-v] -d hostname ...&quot;
+  .br
+! .B &quot;rarp [-v] [-t type] -s hostname hw_addr&quot;
+  .SH NOTE
+  .P
+--- 1,13 ----
+! .TH RARP 8 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  .SH NAME
+  rarp \- manipulate the system RARP table
+  .SH SYNOPSIS
+! .B &quot;rarp [\-V] [\-\-version] [\-h] [\-\-help]&quot;
+  .br
+! .B &quot;rarp \-a&quot;
+  .br
+! .B &quot;rarp [\-v] \-d hostname ...&quot;
+  .br
+! .B &quot;rarp [\-v] [\-t type] \-s hostname hw_addr&quot;
+  .SH NOTE
+  .P
+***************
+*** 15,19 ****
+  no longer contains RARP support.  For a replacement RARP daemon, see
+  .I
+! <A HREF="ftp://ftp.dementia.org/pub/net-tools">ftp://ftp.dementia.org/pub/net-tools</A>
+  .SH DESCRIPTION
+  .B Rarp
+--- 15,19 ----
+  no longer contains RARP support.  For a replacement RARP daemon, see
+  .I
+! <A HREF="ftp://ftp.dementia.org/pub/net\-tools">ftp://ftp.dementia.org/pub/net\-tools</A>
+  .SH DESCRIPTION
+  .B Rarp
+
+Index: route.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/route.8,v
+retrieving revision 1.7
+retrieving revision 1.8
+diff -C2 -d -r1.7 -r1.8
+*** route.8	13 May 2005 22:28:41 -0000	1.7
+--- route.8	2 Oct 2008 23:16:59 -0000	1.8
+***************
+*** 1,3 ****
+! .TH ROUTE 8 &quot;02 October 2003&quot; &quot;net-tools&quot; &quot;Linux Programmer's Manual&quot;
+  .SH NAME
+  route \- show / manipulate the IP routing table
+--- 1,3 ----
+! .TH ROUTE 8 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  .SH NAME
+  route \- show / manipulate the IP routing table
+***************
+*** 52,56 ****
+  .RB [ \-\-version ]
+  .RB [ \-h ]
+! .RB [ \--help ]
+  .SH DESCRIPTION
+  .B Route
+--- 52,56 ----
+  .RB [ \-\-version ]
+  .RB [ \-h ]
+! .RB [ \-\-help ]
+  .SH DESCRIPTION
+  .B Route
+***************
+*** 74,87 ****
+  .TP
+  .B \-A family
+! use the specified address family (eg `inet'; use `route --help' for a full 
+  list).
+  
+  .TP 
+! .B -F
+  operate on the kernel's FIB (Forwarding Information Base) routing
+  table. 
+  This is the default.
+  .TP 
+! .B -C
+  operate on the kernel's routing cache.
+  
+--- 74,87 ----
+  .TP
+  .B \-A family
+! use the specified address family (eg `inet'; use `route \-\-help' for a full 
+  list).
+  
+  .TP 
+! .B \-F
+  operate on the kernel's FIB (Forwarding Information Base) routing
+  table. 
+  This is the default.
+  .TP 
+! .B \-C
+  operate on the kernel's routing cache.
+  
+***************
+*** 97,101 ****
+  .B \-e
+  use
+! .BR netstat (8)-format
+  for displaying the routing table.
+  .B \-ee 
+--- 97,101 ----
+  .B \-e
+  use
+! .BR netstat (8)\-format
+  for displaying the routing table.
+  .B \-ee 
+***************
+*** 118,122 ****
+  is a network.
+  .TP
+! .B -host
+  the
+  .B target 
+--- 118,122 ----
+  is a network.
+  .TP
+! .B \-host
+  the
+  .B target 
+***************
+*** 180,201 ****
+  .SH EXAMPLES
+  .TP
+! .B route add -net 127.0.0.0
+! adds the normal loopback entry, using netmask 255.0.0.0 (class A net,
+! determined from the destination address) and associated with the 
+  &quot;lo&quot; device (assuming this device was previously set up correctly with
+  .BR ifconfig (8)). 
+  
+  .TP 
+! .B route add -net 192.56.76.0 netmask 255.255.255.0 dev eth0
+! adds a route to the network 192.56.76.x via 
+! &quot;eth0&quot;. The Class C netmask modifier is not really necessary here because
+! 192.* is a Class C IP address. The word &quot;dev&quot; can be omitted here. 
+  
+  .TP
+! .B route add default gw mango-gw
+  adds a default route (which will be used if no other route matches).
+! All packets using this route will be gatewayed through &quot;mango-gw&quot;. The
+  device which will actually be used for that route depends on how we
+! can reach &quot;mango-gw&quot; - the static route to &quot;mango-gw&quot; will have to be
+  set up before. 
+  
+--- 180,204 ----
+  .SH EXAMPLES
+  .TP
+! .B route add \-net 127.0.0.0 netmask 255.0.0.0 dev lo
+! adds the normal loopback entry, using netmask 255.0.0.0 and associated with the 
+  &quot;lo&quot; device (assuming this device was previously set up correctly with
+  .BR ifconfig (8)). 
+  
+  .TP 
+! .B route add \-net 192.56.76.0 netmask 255.255.255.0 dev eth0
+! adds a route to the local network 192.56.76.x via 
+! &quot;eth0&quot;.  The word &quot;dev&quot; can be omitted here. 
+  
+  .TP
+! .B route del default
+! deletes the current default route, which is labeled &quot;default&quot; or 0.0.0.0
+! in the destination field of the current routing table.
+! 
+! .TP
+! .B route add default gw mango\-gw
+  adds a default route (which will be used if no other route matches).
+! All packets using this route will be gatewayed through &quot;mango\-gw&quot;. The
+  device which will actually be used for that route depends on how we
+! can reach &quot;mango\-gw&quot; - the static route to &quot;mango\-gw&quot; will have to be
+  set up before. 
+  
+***************
+*** 206,215 ****
+  
+  .TP
+! .B route add -net 192.57.66.0 netmask 255.255.255.0 gw ipx4
+  This command adds the net &quot;192.57.66.x&quot; to be gatewayed through the former
+  route to the SLIP interface.
+  
+  .TP
+! .B route add -net 224.0.0.0 netmask 240.0.0.0 dev eth0
+  This is an obscure one documented so people know how to do it. This sets
+  all of the class D (multicast) IP routes to go via &quot;eth0&quot;. This is the
+--- 209,218 ----
+  
+  .TP
+! .B route add \-net 192.57.66.0 netmask 255.255.255.0 gw ipx4
+  This command adds the net &quot;192.57.66.x&quot; to be gatewayed through the former
+  route to the SLIP interface.
+  
+  .TP
+! .B route add \-net 224.0.0.0 netmask 240.0.0.0 dev eth0
+  This is an obscure one documented so people know how to do it. This sets
+  all of the class D (multicast) IP routes to go via &quot;eth0&quot;. This is the
+***************
+*** 217,221 ****
+  
+  .TP
+! .B route add -net 10.0.0.0 netmask 255.0.0.0 reject
+  This installs a rejecting route for the private network &quot;10.x.x.x.&quot;
+  
+--- 220,224 ----
+  
+  .TP
+! .B route add \-net 10.0.0.0 netmask 255.0.0.0 reject
+  This installs a rejecting route for the private network &quot;10.x.x.x.&quot;
+  
+***************
+*** 283,288 ****
+  .TP
+  .B Use
+! Count of lookups for the route.  Depending on the use of -F and -C this will
+! be either route cache misses (-F) or hits (-C).
+  .TP
+  .B Iface
+--- 286,291 ----
+  .TP
+  .B Use
+! Count of lookups for the route.  Depending on the use of \-F and \-C this will
+! be either route cache misses (\-F) or hits (\-C).
+  .TP
+  .B Iface
+***************
+*** 324,326 ****
+  Linux 1.1.22. irtt support and merged with netstat from Bernd Eckenfels.
+  .SH AUTHOR
+! Currently maintained by Phil Blundell &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">Philip.Blundell at pobox.com</A>&gt;.
+--- 327,329 ----
+  Linux 1.1.22. irtt support and merged with netstat from Bernd Eckenfels.
+  .SH AUTHOR
+! Currently maintained by Phil Blundell &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">Philip.Blundell at pobox.com</A>&gt; and Bernd Eckenfels &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">net-tools at lina.inka.de</A>&gt;.
+
+Index: slattach.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/slattach.8,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -C2 -d -r1.3 -r1.4
+*** slattach.8	10 Oct 2006 05:58:46 -0000	1.3
+--- slattach.8	2 Oct 2008 23:16:59 -0000	1.4
+***************
+*** 1,7 ****
+! .TH SLATTACH 8 &quot;10 Oct 2006&quot; &quot;&quot; &quot;&quot;
+  .SH NAME
+  slattach \- attach a network interface to a serial line
+  .SH SYNOPSIS
+! .B &quot;slattach [-dehlLmnqv] [-c command] [-p proto] [-s speed] [tty]&quot;
+  .br
+  .SH DESCRIPTION
+--- 1,7 ----
+! .TH SLATTACH 8 &quot;2008\-10\-03&quot; &quot;net\-tools&quot; &quot;Linux System Administrator's Manual&quot;
+  .SH NAME
+  slattach \- attach a network interface to a serial line
+  .SH SYNOPSIS
+! .B &quot;slattach [\-dehlLmnqv] [\-c command] [\-p proto] [\-s speed] [tty]&quot;
+  .br
+  .SH DESCRIPTION
+***************
+*** 12,16 ****
+  .SH OPTIONS
+  .TP
+! .B &quot;[-c command]&quot;
+  Execute
+  .B command
+--- 12,16 ----
+  .SH OPTIONS
+  .TP
+! .B &quot;[\-c command]&quot;
+  Execute
+  .B command
+***************
+*** 18,53 ****
+  connections when a link goes down.
+  .TP
+! .B &quot;[-d]&quot;
+  Enable debugging output.  Useful when determining why a given
+  setup doesn't work.
+  .TP
+! .B &quot;[-h]&quot;
+  Exit when the carrier is lost. This works on both /dev/tty and /dev/cua
+  devices by directly monitoring the carrier status every 15 seconds.
+  .TP
+! .B &quot;[-v]&quot;
+  Enable verbose output.  Useful in shell scripts.
+  .TP
+! .B &quot;[-q]&quot;
+  Operate in quiet mode - no messages at all.
+  .TP
+! .B &quot;[-l]&quot;
+  Create an UUCP-style lockfile for the device in /var/lock.
+  .TP
+! .B &quot;[-n]&quot;
+  Equivalent to the &quot;mesg n&quot; command.
+  .TP
+! .B &quot;[-m]&quot;
+  Do \fBnot\fP initialize the line into 8 bits raw mode.
+  .TP
+! .B &quot;[-e]&quot;
+  Exit right after initializing device, instead of waiting for the
+  line to hang up.
+  .TP
+! .B &quot;[-L]&quot;
+  Enable 3 wire operation. The terminal is moved into CLOCAL mode, 
+  carrier watching is disabled.
+  .TP
+! .B &quot;[-p proto]&quot;
+  Set a specific kind of protocol to use on the line.  The default
+  is set to
+--- 18,53 ----
+  connections when a link goes down.
+  .TP
+! .B &quot;[\-d]&quot;
+  Enable debugging output.  Useful when determining why a given
+  setup doesn't work.
+  .TP
+! .B &quot;[\-h]&quot;
+  Exit when the carrier is lost. This works on both /dev/tty and /dev/cua
+  devices by directly monitoring the carrier status every 15 seconds.
+  .TP
+! .B &quot;[\-v]&quot;
+  Enable verbose output.  Useful in shell scripts.
+  .TP
+! .B &quot;[\-q]&quot;
+  Operate in quiet mode - no messages at all.
+  .TP
+! .B &quot;[\-l]&quot;
+  Create an UUCP-style lockfile for the device in /var/lock.
+  .TP
+! .B &quot;[\-n]&quot;
+  Equivalent to the &quot;mesg n&quot; command.
+  .TP
+! .B &quot;[\-m]&quot;
+  Do \fBnot\fP initialize the line into 8 bits raw mode.
+  .TP
+! .B &quot;[\-e]&quot;
+  Exit right after initializing device, instead of waiting for the
+  line to hang up.
+  .TP
+! .B &quot;[\-L]&quot;
+  Enable 3 wire operation. The terminal is moved into CLOCAL mode, 
+  carrier watching is disabled.
+  .TP
+! .B &quot;[\-p proto]&quot;
+  Set a specific kind of protocol to use on the line.  The default
+  is set to
+***************
+*** 72,76 ****
+  program should be used.
+  .TP
+! .B &quot;[-s speed]&quot;
+  Set a specific line speed, other than the default.
+  .PP
+--- 72,76 ----
+  program should be used.
+  .TP
+! .B &quot;[\-s speed]&quot;
+  Set a specific line speed, other than the default.
+  .PP
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000033.html">[net-tools-cvscommit] net-tools/man/en_US arp.8,1.9,1.10
+</A></li>
+	<LI>Next message: <A HREF="000035.html">[net-tools-cvscommit] net-tools ifconfig.c,1.57,1.58
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#34">[ date ]</a>
+              <a href="thread.html#34">[ thread ]</a>
+              <a href="subject.html#34">[ subject ]</a>
+              <a href="author.html#34">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

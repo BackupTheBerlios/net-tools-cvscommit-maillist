@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools arp.c,1.24,1.25
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2005q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20arp.c%2C1.24%2C1.25&In-Reply-To=%3C200512040257.jB42vLN24890%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000004.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools arp.c,1.24,1.25</H1>
+    <B>net-tools-cvscommit-admin at lists.berlios.de</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20arp.c%2C1.24%2C1.25&In-Reply-To=%3C200512040257.jB42vLN24890%40bat.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools arp.c,1.24,1.25">net-tools-cvscommit-admin at lists.berlios.de
+       </A><BR>
+    <I>Sun Dec  4 03:57:21 CET 2005</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000004.html">[net-tools-cvscommit] net-tools slattach.c,1.9,1.10
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3">[ date ]</a>
+              <a href="thread.html#3">[ thread ]</a>
+              <a href="subject.html#3">[ subject ]</a>
+              <a href="author.html#3">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv20291
+
+Modified Files:
+	arp.c 
+Log Message:
+In order to fix alignment bugs with recent GCCs I have to use
+sockaddr_storage instead of sockaddr for allocation.
+<A HREF="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=340384">http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=340384</A>
+Thanks to Blars Blarson, Jurij Smakov and Steve Langasek
+
+
+Index: arp.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/arp.c,v
+retrieving revision 1.24
+retrieving revision 1.25
+diff -C2 -d -r1.24 -r1.25
+*** arp.c	16 May 2005 04:30:17 -0000	1.24
+--- arp.c	4 Dec 2005 02:57:15 -0000	1.25
+***************
+*** 101,105 ****
+      char host[128];
+      struct arpreq req;
+!     struct sockaddr sa;
+      int flags = 0;
+      int deleted = 0;
+--- 101,106 ----
+      char host[128];
+      struct arpreq req;
+!     struct sockaddr_storage ss;
+!     struct sockaddr *sa;
+      int flags = 0;
+      int deleted = 0;
+***************
+*** 113,122 ****
+      }
+      safe_strncpy(host, *args, (sizeof host));
+!     if (ap-&gt;input(0, host, &amp;sa) &lt; 0) {
+  	ap-&gt;herror(host);
+  	return (-1);
+      }
+      /* If a host has more than one address, use the correct one! */
+!     memcpy((char *) &amp;req.arp_pa, (char *) &amp;sa, sizeof(struct sockaddr));
+  
+      if (hw_set)
+--- 114,124 ----
+      }
+      safe_strncpy(host, *args, (sizeof host));
+!     sa = (struct sockaddr *)&ss;
+!     if (ap-&gt;input(0, host, sa) &lt; 0) {
+  	ap-&gt;herror(host);
+  	return (-1);
+      }
+      /* If a host has more than one address, use the correct one! */
+!     memcpy((char *) &amp;req.arp_pa, (char *) sa, sizeof(struct sockaddr));
+  
+      if (hw_set)
+***************
+*** 178,186 ****
+  	    if (strcmp(*args, &quot;255.255.255.255&quot;) != 0) {
+  		strcpy(host, *args);
+! 		if (ap-&gt;input(0, host, &amp;sa) &lt; 0) {
+  		    ap-&gt;herror(host);
+  		    return (-1);
+  		}
+! 		memcpy((char *) &amp;req.arp_netmask, (char *) &amp;sa,
+  		       sizeof(struct sockaddr));
+  		req.arp_flags |= ATF_NETMASK;
+--- 180,188 ----
+  	    if (strcmp(*args, &quot;255.255.255.255&quot;) != 0) {
+  		strcpy(host, *args);
+! 		if (ap-&gt;input(0, host, sa) &lt; 0) {
+  		    ap-&gt;herror(host);
+  		    return (-1);
+  		}
+! 		memcpy((char *) &amp;req.arp_netmask, (char *) sa,
+  		       sizeof(struct sockaddr));
+  		req.arp_flags |= ATF_NETMASK;
+***************
+*** 267,271 ****
+      char host[128];
+      struct arpreq req;
+!     struct sockaddr sa;
+      int flags;
+  
+--- 269,274 ----
+      char host[128];
+      struct arpreq req;
+!     struct sockaddr_storage ss;
+!     struct sockaddr *sa;
+      int flags;
+  
+***************
+*** 278,287 ****
+      }
+      safe_strncpy(host, *args++, (sizeof host));
+!     if (ap-&gt;input(0, host, &amp;sa) &lt; 0) {
+  	ap-&gt;herror(host);
+  	return (-1);
+      }
+      /* If a host has more than one address, use the correct one! */
+!     memcpy((char *) &amp;req.arp_pa, (char *) &amp;sa, sizeof(struct sockaddr));
+  
+      /* Fetch the hardware address. */
+--- 281,291 ----
+      }
+      safe_strncpy(host, *args++, (sizeof host));
+!     sa = (struct sockaddr *)&ss;
+!     if (ap-&gt;input(0, host, sa) &lt; 0) {
+  	ap-&gt;herror(host);
+  	return (-1);
+      }
+      /* If a host has more than one address, use the correct one! */
+!     memcpy((char *) &amp;req.arp_pa, (char *) sa, sizeof(struct sockaddr));
+  
+      /* Fetch the hardware address. */
+***************
+*** 353,361 ****
+  	    if (strcmp(*args, &quot;255.255.255.255&quot;) != 0) {
+  		strcpy(host, *args);
+! 		if (ap-&gt;input(0, host, &amp;sa) &lt; 0) {
+  		    ap-&gt;herror(host);
+  		    return (-1);
+  		}
+! 		memcpy((char *) &amp;req.arp_netmask, (char *) &amp;sa,
+  		       sizeof(struct sockaddr));
+  		flags |= ATF_NETMASK;
+--- 357,365 ----
+  	    if (strcmp(*args, &quot;255.255.255.255&quot;) != 0) {
+  		strcpy(host, *args);
+! 		if (ap-&gt;input(0, host, sa) &lt; 0) {
+  		    ap-&gt;herror(host);
+  		    return (-1);
+  		}
+! 		memcpy((char *) &amp;req.arp_netmask, (char *) sa,
+  		       sizeof(struct sockaddr));
+  		flags |= ATF_NETMASK;
+***************
+*** 526,530 ****
+  {
+      char host[100];
+!     struct sockaddr sa;
+      char ip[100];
+      char hwa[100];
+--- 530,535 ----
+  {
+      char host[100];
+!     struct sockaddr_storage ss;
+!     struct sockaddr *sa;
+      char ip[100];
+      char hwa[100];
+***************
+*** 539,550 ****
+      host[0] = '\0';
+  
+      if (name != NULL) {
+  	/* Resolve the host name. */
+  	safe_strncpy(host, name, (sizeof host));
+! 	if (ap-&gt;input(0, host, &amp;sa) &lt; 0) {
+  	    ap-&gt;herror(host);
+  	    return (-1);
+  	}
+! 	safe_strncpy(host, ap-&gt;sprint(&amp;sa, 1), sizeof(host));
+      }
+      /* Open the PROCps kernel table. */
+--- 544,556 ----
+      host[0] = '\0';
+  
++     sa = (struct sockaddr *)&ss;
+      if (name != NULL) {
+  	/* Resolve the host name. */
+  	safe_strncpy(host, name, (sizeof host));
+! 	if (ap-&gt;input(0, host, sa) &lt; 0) {
+  	    ap-&gt;herror(host);
+  	    return (-1);
+  	}
+! 	safe_strncpy(host, ap-&gt;sprint(sa, 1), sizeof(host));
+      }
+      /* Open the PROCps kernel table. */
+***************
+*** 582,589 ****
+  		hostname = &quot;?&quot;;
+  	    else {
+! 		if (ap-&gt;input(0, ip, &amp;sa) &lt; 0)
+  		    hostname = ip;
+  		else
+! 		    hostname = ap-&gt;sprint(&amp;sa, opt_n | 0x8000);
+  		if (strcmp(hostname, ip) == 0)
+  		    hostname = &quot;?&quot;;
+--- 588,595 ----
+  		hostname = &quot;?&quot;;
+  	    else {
+! 		if (ap-&gt;input(0, ip, sa) &lt; 0)
+  		    hostname = ip;
+  		else
+! 		    hostname = ap-&gt;sprint(sa, opt_n | 0x8000);
+  		if (strcmp(hostname, ip) == 0)
+  		    hostname = &quot;?&quot;;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000004.html">[net-tools-cvscommit] net-tools slattach.c,1.9,1.10
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3">[ date ]</a>
+              <a href="thread.html#3">[ thread ]</a>
+              <a href="subject.html#3">[ subject ]</a>
+              <a href="author.html#3">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

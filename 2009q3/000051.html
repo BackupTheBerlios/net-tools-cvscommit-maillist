@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/lib inet_gr.c, 1.13,	1.14 interface.c, 1.30, 1.31
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20inet_gr.c%2C%201.13%2C%0A%091.14%20interface.c%2C%201.30%2C%201.31&In-Reply-To=%3C20090708002406.4A9213F380%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000052.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/lib inet_gr.c, 1.13,	1.14 interface.c, 1.30, 1.31</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20inet_gr.c%2C%201.13%2C%0A%091.14%20interface.c%2C%201.30%2C%201.31&In-Reply-To=%3C20090708002406.4A9213F380%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/lib inet_gr.c, 1.13,	1.14 interface.c, 1.30, 1.31">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Wed Jul  8 02:24:06 CEST 2009</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000052.html">[net-tools-cvscommit] net-tools netstat.c, 1.62, 1.63 arp.c, 1.25,	1.26
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#51">[ date ]</a>
+              <a href="thread.html#51">[ thread ]</a>
+              <a href="subject.html#51">[ subject ]</a>
+              <a href="author.html#51">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv10587/lib
+
+Modified Files:
+	inet_gr.c interface.c 
+Log Message:
+scanf format length fix (non exploitable?) from 
+Fabian Hugelshofer &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">hugelshofer2006 at gmx.ch</A>&gt;
+
+
+Index: inet_gr.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/inet_gr.c,v
+retrieving revision 1.13
+retrieving revision 1.14
+diff -C2 -d -r1.13 -r1.14
+*** inet_gr.c	8 Oct 2000 01:00:44 -0000	1.13
+--- inet_gr.c	8 Jul 2009 00:24:03 -0000	1.14
+***************
+*** 39,43 ****
+  int rprint_fib(int ext, int numeric)
+  {
+!     char buff[1024], iface[16], flags[64];
+      char gate_addr[128], net_addr[128];
+      char mask_addr[128];
+--- 39,43 ----
+  int rprint_fib(int ext, int numeric)
+  {
+!     char buff[1024], iface[17], flags[64];
+      char gate_addr[128], net_addr[128];
+      char mask_addr[128];
+***************
+*** 70,85 ****
+      fmt = proc_gen_fmt(_PATH_PROCNET_ROUTE, 0, fp,
+  		       &quot;Iface&quot;, &quot;%16s&quot;,
+! 		       &quot;Destination&quot;, &quot;%128s&quot;,
+! 		       &quot;Gateway&quot;, &quot;%128s&quot;,
+  		       &quot;Flags&quot;, &quot;%X&quot;,
+  		       &quot;RefCnt&quot;, &quot;%d&quot;,
+  		       &quot;Use&quot;, &quot;%d&quot;,
+  		       &quot;Metric&quot;, &quot;%d&quot;,
+! 		       &quot;Mask&quot;, &quot;%128s&quot;,
+  		       &quot;MTU&quot;, &quot;%d&quot;,
+  		       &quot;Window&quot;, &quot;%d&quot;,
+  		       &quot;IRTT&quot;, &quot;%d&quot;,
+  		       NULL);
+!     /* &quot;%16s %128s %128s %X %d %d %d %128s %d %d %d\n&quot; */
+  
+      if (!fmt)
+--- 70,85 ----
+      fmt = proc_gen_fmt(_PATH_PROCNET_ROUTE, 0, fp,
+  		       &quot;Iface&quot;, &quot;%16s&quot;,
+! 		       &quot;Destination&quot;, &quot;%127s&quot;,
+! 		       &quot;Gateway&quot;, &quot;%127s&quot;,
+  		       &quot;Flags&quot;, &quot;%X&quot;,
+  		       &quot;RefCnt&quot;, &quot;%d&quot;,
+  		       &quot;Use&quot;, &quot;%d&quot;,
+  		       &quot;Metric&quot;, &quot;%d&quot;,
+! 		       &quot;Mask&quot;, &quot;%127s&quot;,
+  		       &quot;MTU&quot;, &quot;%d&quot;,
+  		       &quot;Window&quot;, &quot;%d&quot;,
+  		       &quot;IRTT&quot;, &quot;%d&quot;,
+  		       NULL);
+!     /* &quot;%16s %127s %127s %X %d %d %d %127s %d %d %d\n&quot; */
+  
+      if (!fmt)
+***************
+*** 206,210 ****
+  int rprint_cache(int ext, int numeric)
+  {
+!     char buff[1024], iface[16], flags[64];
+      char gate_addr[128], dest_addr[128], specdst[128];
+      char src_addr[128];
+--- 206,210 ----
+  int rprint_cache(int ext, int numeric)
+  {
+!     char buff[1024], iface[17], flags[64];
+      char gate_addr[128], dest_addr[128], specdst[128];
+      char src_addr[128];
+***************
+*** 270,280 ****
+        fmt = proc_gen_fmt(_PATH_PROCNET_RTCACHE, 0, fp,
+  		       &quot;Iface&quot;, &quot;%16s&quot;,
+! 		       &quot;Destination&quot;, &quot;%128s&quot;,
+! 		       &quot;Gateway&quot;, &quot;%128s&quot;,
+  		       &quot;Flags&quot;, &quot;%X&quot;,
+  		       &quot;RefCnt&quot;, &quot;%d&quot;,
+  		       &quot;Use&quot;, &quot;%d&quot;,
+  		       &quot;Metric&quot;, &quot;%d&quot;,
+! 		       &quot;Source&quot;, &quot;%128s&quot;,
+  		       &quot;MTU&quot;, &quot;%d&quot;,
+  		       &quot;Window&quot;, &quot;%d&quot;,
+--- 270,280 ----
+        fmt = proc_gen_fmt(_PATH_PROCNET_RTCACHE, 0, fp,
+  		       &quot;Iface&quot;, &quot;%16s&quot;,
+! 		       &quot;Destination&quot;, &quot;%127s&quot;,
+! 		       &quot;Gateway&quot;, &quot;%127s&quot;,
+  		       &quot;Flags&quot;, &quot;%X&quot;,
+  		       &quot;RefCnt&quot;, &quot;%d&quot;,
+  		       &quot;Use&quot;, &quot;%d&quot;,
+  		       &quot;Metric&quot;, &quot;%d&quot;,
+! 		       &quot;Source&quot;, &quot;%127s&quot;,
+  		       &quot;MTU&quot;, &quot;%d&quot;,
+  		       &quot;Window&quot;, &quot;%d&quot;,
+***************
+*** 283,287 ****
+  		       &quot;ARP&quot;, &quot;%d&quot;,
+  		       NULL);
+!       /* &quot;%16s %128s %128s %X %d %d %d %128s %d %d %d %d %d\n&quot; */
+      }
+  
+--- 283,287 ----
+  		       &quot;ARP&quot;, &quot;%d&quot;,
+  		       NULL);
+!       /* &quot;%16s %127s %127s %X %d %d %d %127s %d %d %d %d %d\n&quot; */
+      }
+  
+***************
+*** 293,303 ****
+          fmt = proc_gen_fmt(_PATH_PROCNET_RTCACHE, 0, fp,
+  		       &quot;Iface&quot;, &quot;%16s&quot;,
+! 		       &quot;Destination&quot;, &quot;%128s&quot;,
+! 		       &quot;Gateway&quot;, &quot;%128s&quot;,
+  		       &quot;Flags&quot;, &quot;%X&quot;,
+  		       &quot;RefCnt&quot;, &quot;%d&quot;,
+  		       &quot;Use&quot;, &quot;%d&quot;,
+  		       &quot;Metric&quot;, &quot;%d&quot;,
+! 		       &quot;Source&quot;, &quot;%128s&quot;,
+  		       &quot;MTU&quot;, &quot;%d&quot;,
+  		       &quot;Window&quot;, &quot;%d&quot;,
+--- 293,303 ----
+          fmt = proc_gen_fmt(_PATH_PROCNET_RTCACHE, 0, fp,
+  		       &quot;Iface&quot;, &quot;%16s&quot;,
+! 		       &quot;Destination&quot;, &quot;%127s&quot;,
+! 		       &quot;Gateway&quot;, &quot;%127s&quot;,
+  		       &quot;Flags&quot;, &quot;%X&quot;,
+  		       &quot;RefCnt&quot;, &quot;%d&quot;,
+  		       &quot;Use&quot;, &quot;%d&quot;,
+  		       &quot;Metric&quot;, &quot;%d&quot;,
+! 		       &quot;Source&quot;, &quot;%127s&quot;,
+  		       &quot;MTU&quot;, &quot;%d&quot;,
+  		       &quot;Window&quot;, &quot;%d&quot;,
+***************
+*** 306,312 ****
+  		       &quot;HHRef&quot;, &quot;%d&quot;,
+  		       &quot;HHUptod&quot;, &quot;%d&quot;,
+! 		       &quot;SpecDst&quot;, &quot;%128s&quot;,
+  		       NULL);
+!       /* &quot;%16s %128s %128s %X %d %d %d %128s %d %d %d %d %d %128s\n&quot; */
+      }
+  
+--- 306,312 ----
+  		       &quot;HHRef&quot;, &quot;%d&quot;,
+  		       &quot;HHUptod&quot;, &quot;%d&quot;,
+! 		       &quot;SpecDst&quot;, &quot;%127s&quot;,
+  		       NULL);
+!       /* &quot;%16s %127s %127s %X %d %d %d %127s %d %d %d %d %d %127s\n&quot; */
+      }
+  
+
+Index: interface.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/interface.c,v
+retrieving revision 1.30
+retrieving revision 1.31
+diff -C2 -d -r1.30 -r1.31
+*** interface.c	23 Aug 2005 22:46:51 -0000	1.30
+--- interface.c	8 Jul 2009 00:24:03 -0000	1.31
+***************
+*** 667,671 ****
+  #if HAVE_AFINET6
+      FILE *f;
+!     char addr6[40], devname[20];
+      struct sockaddr_in6 sap;
+      int plen, scope, dad_status, if_idx;
+--- 667,671 ----
+  #if HAVE_AFINET6
+      FILE *f;
+!     char addr6[40], devname[21];
+      struct sockaddr_in6 sap;
+      int plen, scope, dad_status, if_idx;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000052.html">[net-tools-cvscommit] net-tools netstat.c, 1.62, 1.63 arp.c, 1.25,	1.26
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#51">[ date ]</a>
+              <a href="thread.html#51">[ thread ]</a>
+              <a href="subject.html#51">[ subject ]</a>
+              <a href="author.html#51">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

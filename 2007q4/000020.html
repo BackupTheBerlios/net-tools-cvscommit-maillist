@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools/lib proc.c,1.4,1.5 proc.h,1.4,1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2007q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20proc.c%2C1.4%2C1.5%20proc.h%2C1.4%2C1.5&In-Reply-To=%3C20071201184600.0B8AF11D1C7%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000021.html">
+   <LINK REL="Next"  HREF="000022.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools/lib proc.c,1.4,1.5 proc.h,1.4,1.5</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools/lib%20proc.c%2C1.4%2C1.5%20proc.h%2C1.4%2C1.5&In-Reply-To=%3C20071201184600.0B8AF11D1C7%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools/lib proc.c,1.4,1.5 proc.h,1.4,1.5">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Sat Dec  1 19:46:00 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000021.html">[net-tools-cvscommit] net-tools statistics.c,1.19,1.20
+</A></li>
+        <LI>Next message: <A HREF="000022.html">[net-tools-cvscommit] net-tools rarp.c,1.6,1.7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#20">[ date ]</a>
+              <a href="thread.html#20">[ thread ]</a>
+              <a href="subject.html#20">[ subject ]</a>
+              <a href="author.html#20">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv5348/lib
+
+Modified Files:
+	proc.c proc.h 
+Log Message:
+Faster pagesize aligned fopen for netstat -s (Eric Dumazet)
+
+
+Index: proc.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/proc.c,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -C2 -d -r1.4 -r1.5
+*** proc.c	5 Jan 1999 20:54:00 -0000	1.4
+--- proc.c	1 Dec 2007 18:44:57 -0000	1.5
+***************
+*** 7,10 ****
+--- 7,11 ----
+  #include &lt;stdio.h&gt;
+  #include &lt;ctype.h&gt;
++ #include &lt;unistd.h&gt;
+  
+  /* Caller must free return string. */
+***************
+*** 72,74 ****
+--- 73,94 ----
+      va_end(ap);
+      return flag;
++ }
++ 
++ 
++ FILE *proc_fopen(const char *name)
++ {
++     static char *buffer;
++     static size_t pagesz;
++     FILE *fd = fopen(name, &quot;r&quot;);
++ 
++     if (fd == NULL)
++       return NULL;
++       
++     if (!buffer) {
++       pagesz = getpagesize();
++       buffer = malloc(pagesz);
++     }
++     
++     setvbuf(fd, buffer, _IOFBF, pagesz);
++     return fd;
+  }
+
+Index: proc.h
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/proc.h,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -C2 -d -r1.4 -r1.5
+*** proc.h	5 Jan 1999 20:54:03 -0000	1.4
+--- proc.h	1 Dec 2007 18:44:57 -0000	1.5
+***************
+*** 1,5 ****
+! 
+! 
+! /* Generate a suitable scanf format for a column title line */
+  char *proc_gen_fmt(char *name, int more, FILE * fh,...);
+  int   proc_guess_fmt(char *name, FILE* fh,...);
+--- 1,7 ----
+! /* 
+!  * prototypes for proc.c
+!  */
+  char *proc_gen_fmt(char *name, int more, FILE * fh,...);
+  int   proc_guess_fmt(char *name, FILE* fh,...);
++ FILE *proc_fopen(const char *name);
++ 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000021.html">[net-tools-cvscommit] net-tools statistics.c,1.19,1.20
+</A></li>
+	<LI>Next message: <A HREF="000022.html">[net-tools-cvscommit] net-tools rarp.c,1.6,1.7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#20">[ date ]</a>
+              <a href="thread.html#20">[ thread ]</a>
+              <a href="subject.html#20">[ subject ]</a>
+              <a href="author.html#20">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

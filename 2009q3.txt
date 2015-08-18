@@ -1,0 +1,1566 @@
+From net-tools-cvscommit at lists.berlios.de  Wed Jul  8 02:24:06 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Wed,  8 Jul 2009 02:24:06 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/lib inet_gr.c, 1.13,
+	1.14 interface.c, 1.30, 1.31
+Message-ID: <20090708002406.4A9213F380@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv10587/lib
+
+Modified Files:
+	inet_gr.c interface.c 
+Log Message:
+scanf format length fix (non exploitable?) from 
+Fabian Hugelshofer <hugelshofer2006 at gmx.ch>
+
+
+Index: inet_gr.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/inet_gr.c,v
+retrieving revision 1.13
+retrieving revision 1.14
+diff -C2 -d -r1.13 -r1.14
+*** inet_gr.c	8 Oct 2000 01:00:44 -0000	1.13
+--- inet_gr.c	8 Jul 2009 00:24:03 -0000	1.14
+***************
+*** 39,43 ****
+  int rprint_fib(int ext, int numeric)
+  {
+!     char buff[1024], iface[16], flags[64];
+      char gate_addr[128], net_addr[128];
+      char mask_addr[128];
+--- 39,43 ----
+  int rprint_fib(int ext, int numeric)
+  {
+!     char buff[1024], iface[17], flags[64];
+      char gate_addr[128], net_addr[128];
+      char mask_addr[128];
+***************
+*** 70,85 ****
+      fmt = proc_gen_fmt(_PATH_PROCNET_ROUTE, 0, fp,
+  		       "Iface", "%16s",
+! 		       "Destination", "%128s",
+! 		       "Gateway", "%128s",
+  		       "Flags", "%X",
+  		       "RefCnt", "%d",
+  		       "Use", "%d",
+  		       "Metric", "%d",
+! 		       "Mask", "%128s",
+  		       "MTU", "%d",
+  		       "Window", "%d",
+  		       "IRTT", "%d",
+  		       NULL);
+!     /* "%16s %128s %128s %X %d %d %d %128s %d %d %d\n" */
+  
+      if (!fmt)
+--- 70,85 ----
+      fmt = proc_gen_fmt(_PATH_PROCNET_ROUTE, 0, fp,
+  		       "Iface", "%16s",
+! 		       "Destination", "%127s",
+! 		       "Gateway", "%127s",
+  		       "Flags", "%X",
+  		       "RefCnt", "%d",
+  		       "Use", "%d",
+  		       "Metric", "%d",
+! 		       "Mask", "%127s",
+  		       "MTU", "%d",
+  		       "Window", "%d",
+  		       "IRTT", "%d",
+  		       NULL);
+!     /* "%16s %127s %127s %X %d %d %d %127s %d %d %d\n" */
+  
+      if (!fmt)
+***************
+*** 206,210 ****
+  int rprint_cache(int ext, int numeric)
+  {
+!     char buff[1024], iface[16], flags[64];
+      char gate_addr[128], dest_addr[128], specdst[128];
+      char src_addr[128];
+--- 206,210 ----
+  int rprint_cache(int ext, int numeric)
+  {
+!     char buff[1024], iface[17], flags[64];
+      char gate_addr[128], dest_addr[128], specdst[128];
+      char src_addr[128];
+***************
+*** 270,280 ****
+        fmt = proc_gen_fmt(_PATH_PROCNET_RTCACHE, 0, fp,
+  		       "Iface", "%16s",
+! 		       "Destination", "%128s",
+! 		       "Gateway", "%128s",
+  		       "Flags", "%X",
+  		       "RefCnt", "%d",
+  		       "Use", "%d",
+  		       "Metric", "%d",
+! 		       "Source", "%128s",
+  		       "MTU", "%d",
+  		       "Window", "%d",
+--- 270,280 ----
+        fmt = proc_gen_fmt(_PATH_PROCNET_RTCACHE, 0, fp,
+  		       "Iface", "%16s",
+! 		       "Destination", "%127s",
+! 		       "Gateway", "%127s",
+  		       "Flags", "%X",
+  		       "RefCnt", "%d",
+  		       "Use", "%d",
+  		       "Metric", "%d",
+! 		       "Source", "%127s",
+  		       "MTU", "%d",
+  		       "Window", "%d",
+***************
+*** 283,287 ****
+  		       "ARP", "%d",
+  		       NULL);
+!       /* "%16s %128s %128s %X %d %d %d %128s %d %d %d %d %d\n" */
+      }
+  
+--- 283,287 ----
+  		       "ARP", "%d",
+  		       NULL);
+!       /* "%16s %127s %127s %X %d %d %d %127s %d %d %d %d %d\n" */
+      }
+  
+***************
+*** 293,303 ****
+          fmt = proc_gen_fmt(_PATH_PROCNET_RTCACHE, 0, fp,
+  		       "Iface", "%16s",
+! 		       "Destination", "%128s",
+! 		       "Gateway", "%128s",
+  		       "Flags", "%X",
+  		       "RefCnt", "%d",
+  		       "Use", "%d",
+  		       "Metric", "%d",
+! 		       "Source", "%128s",
+  		       "MTU", "%d",
+  		       "Window", "%d",
+--- 293,303 ----
+          fmt = proc_gen_fmt(_PATH_PROCNET_RTCACHE, 0, fp,
+  		       "Iface", "%16s",
+! 		       "Destination", "%127s",
+! 		       "Gateway", "%127s",
+  		       "Flags", "%X",
+  		       "RefCnt", "%d",
+  		       "Use", "%d",
+  		       "Metric", "%d",
+! 		       "Source", "%127s",
+  		       "MTU", "%d",
+  		       "Window", "%d",
+***************
+*** 306,312 ****
+  		       "HHRef", "%d",
+  		       "HHUptod", "%d",
+! 		       "SpecDst", "%128s",
+  		       NULL);
+!       /* "%16s %128s %128s %X %d %d %d %128s %d %d %d %d %d %128s\n" */
+      }
+  
+--- 306,312 ----
+  		       "HHRef", "%d",
+  		       "HHUptod", "%d",
+! 		       "SpecDst", "%127s",
+  		       NULL);
+!       /* "%16s %127s %127s %X %d %d %d %127s %d %d %d %d %d %127s\n" */
+      }
+  
+
+Index: interface.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/interface.c,v
+retrieving revision 1.30
+retrieving revision 1.31
+diff -C2 -d -r1.30 -r1.31
+*** interface.c	23 Aug 2005 22:46:51 -0000	1.30
+--- interface.c	8 Jul 2009 00:24:03 -0000	1.31
+***************
+*** 667,671 ****
+  #if HAVE_AFINET6
+      FILE *f;
+!     char addr6[40], devname[20];
+      struct sockaddr_in6 sap;
+      int plen, scope, dad_status, if_idx;
+--- 667,671 ----
+  #if HAVE_AFINET6
+      FILE *f;
+!     char addr6[40], devname[21];
+      struct sockaddr_in6 sap;
+      int plen, scope, dad_status, if_idx;
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Wed Jul  8 02:24:06 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Wed,  8 Jul 2009 02:24:06 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools netstat.c, 1.62, 1.63 arp.c, 1.25,
+	1.26
+Message-ID: <20090708002406.4990C1033D@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv10587
+
+Modified Files:
+	netstat.c arp.c 
+Log Message:
+scanf format length fix (non exploitable?) from 
+Fabian Hugelshofer <hugelshofer2006 at gmx.ch>
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.62
+retrieving revision 1.63
+diff -C2 -d -r1.62 -r1.63
+*** netstat.c	2 Dec 2008 01:53:48 -0000	1.62
+--- netstat.c	8 Jul 2009 00:24:03 -0000	1.63
+***************
+*** 850,854 ****
+      more[0] = '\0';
+      num = sscanf(line,
+! 		 "%d: %64[0-9A-Fa-f]:%X %64[0-9A-Fa-f]:%X %X %lX:%lX %X:%lX %lX %d %d %lu %512s\n",
+  		 &d, local_addr, &local_port,
+  		 rem_addr, &rem_port, &state,
+--- 850,854 ----
+      more[0] = '\0';
+      num = sscanf(line,
+! 		 "%d: %64[0-9A-Fa-f]:%X %64[0-9A-Fa-f]:%X %X %lX:%lX %X:%lX %lX %d %d %lu %511s\n",
+  		 &d, local_addr, &local_port,
+  		 rem_addr, &rem_port, &state,
+***************
+*** 996,1000 ****
+      more[0] = '\0';
+      num = sscanf(line,
+! 		 "%d: %64[0-9A-Fa-f]:%X %64[0-9A-Fa-f]:%X %X %lX:%lX %X:%lX %lX %d %d %lu %512s\n",
+  		 &d, local_addr, &local_port, rem_addr, &rem_port, &state,
+  	  &txq, &rxq, &timer_run, &time_len, &retr, &uid, &timeout, &inode, more);
+--- 996,1000 ----
+      more[0] = '\0';
+      num = sscanf(line,
+! 		 "%d: %64[0-9A-Fa-f]:%X %64[0-9A-Fa-f]:%X %X %lX:%lX %X:%lX %lX %d %d %lu %511s\n",
+  		 &d, local_addr, &local_port, rem_addr, &rem_port, &state,
+  	  &txq, &rxq, &timer_run, &time_len, &retr, &uid, &timeout, &inode, more);
+
+Index: arp.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/arp.c,v
+retrieving revision 1.25
+retrieving revision 1.26
+diff -C2 -d -r1.25 -r1.26
+*** arp.c	4 Dec 2005 02:57:15 -0000	1.25
+--- arp.c	8 Jul 2009 00:24:03 -0000	1.26
+***************
+*** 565,569 ****
+  	/* Read the ARP cache entries. */
+  	for (; fgets(line, sizeof(line), fp);) {
+! 	    num = sscanf(line, "%s 0x%x 0x%x %100s %100s %100s\n",
+  			 ip, &type, &flags, hwa, mask, dev);
+  	    if (num < 4)
+--- 565,569 ----
+  	/* Read the ARP cache entries. */
+  	for (; fgets(line, sizeof(line), fp);) {
+! 	    num = sscanf(line, "%s 0x%x 0x%x %99s %99s %99s\n",
+  			 ip, &type, &flags, hwa, mask, dev);
+  	    if (num < 4)
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Tue Jul 28 03:40:19 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Tue, 28 Jul 2009 03:40:19 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.63,1.64
+Message-ID: <20090728014019.20F4518770D@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv15612
+
+Modified Files:
+	netstat.c 
+Log Message:
+Avoid name resolution for listening or established sockets (-l) by return
+fast. Problem reported by Ragnar Hojland Espinosa <ragnar at ragnar-hojland.com>
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.63
+retrieving revision 1.64
+diff -C2 -d -r1.63 -r1.64
+*** netstat.c	8 Jul 2009 00:24:03 -0000	1.63
+--- netstat.c	28 Jul 2009 01:40:17 -0000	1.64
+***************
+*** 728,731 ****
+--- 728,734 ----
+  		 &txq, &rxq, &timer_run, &time_len, &retr, &uid, &timeout, &inode, more);
+  
++     if (!flag_all && ((flag_lst && rem_port) || (!flag_lst && !rem_port)))
++       return;
++ 
+      if (strlen(local_addr) > 8) {
+  #if HAVE_AFINET6
+***************
+*** 766,770 ****
+      safe_strncpy(rem_addr, ap->sprint((struct sockaddr *) &remaddr, flag_not),
+  		 sizeof(rem_addr));
+!     if (flag_all || (flag_lst && !rem_port) || (!flag_lst && rem_port)) {
+  	snprintf(buffer, sizeof(buffer), "%s",
+  		 get_sname(htons(local_port), "tcp",
+--- 769,773 ----
+      safe_strncpy(rem_addr, ap->sprint((struct sockaddr *) &remaddr, flag_not),
+  		 sizeof(rem_addr));
+! 
+  	snprintf(buffer, sizeof(buffer), "%s",
+  		 get_sname(htons(local_port), "tcp",
+***************
+*** 820,824 ****
+  
+  	finish_this_one(uid,inode,timers);
+-     }
+  }
+  
+--- 823,826 ----
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Aug 27 22:13:12 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 27 Aug 2009 22:13:12 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/po cs.po,1.2,1.3
+Message-ID: <20090827201312.0CCE7186B34@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/po
+In directory sheep:/tmp/cvs-serv23037
+
+Modified Files:
+	cs.po 
+Log Message:
+Czech translation update by petr.pisar at atlas.cz
+
+
+Index: cs.po
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/po/cs.po,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** cs.po	13 Feb 2000 22:28:04 -0000	1.2
+--- cs.po	27 Aug 2009 20:13:08 -0000	1.3
+***************
+*** 1,107 ****
+  # Czech translation of net-tools
+  # Copyright (C) 1999 Free Software Foundation, Inc.
+! # Ji?? Pavlovsk? <pavlovsk at ffcuni.cz>, 1999.
+  #
+  msgid ""
+  msgstr ""
+! "Project-Id-Version: net-tools-1.51\n"
+! "POT-Creation-Date: 2000-02-14 02:31+0100\n"
+! "PO-Revision-Date: 1999-08-29 23:20+0200\n"
+! "Last-Translator: Ji?? Pavlovsk? <pavlovsk at ff.cuni.cz>\n"
+[...5816 lines suppressed...]
+! #~ "tak??\n"
+  
+  #~ msgid ""
+  #~ "   also read the DNS domain or the FQDN (fully qualified domain name).\n"
+! #~ msgstr "   zjistit DNS dom??nu ??i kanonick?? jm??no po????ta??e.\n"
+  
+  #~ msgid ""
+  #~ "   Unless you are using bind or NIS for host lookups you can change the\n"
+  #~ msgstr ""
+! #~ "   Pokud nepou????v??te bind ??i NIS pro vyhled??v??n?? jmen po????ta????, pak "
+! #~ "m????ete\n"
+  
+  #~ msgid ""
+  #~ "   FQDN (Fully Qualified Domain Name) and the DNS domain name (which is\n"
+  #~ msgstr ""
+! #~ "   zm??nit kanonick?? jm??no po????ta??e a jm??no DNS dom??ny (je sou????st?? "
+! #~ "kanonick??ho\n"
+  
+  #~ msgid "   part of the FQDN) in the /etc/hosts file.\n"
+! #~ msgstr "   jm??na po????ta??e) v souboru /etc/hosts.\n"
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Thu Aug 27 22:29:21 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu, 27 Aug 2009 22:29:21 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.64,1.65
+Message-ID: <20090827202921.E973818E5C0@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv25663
+
+Modified Files:
+	netstat.c 
+Log Message:
+Fix for Feature Request from ssb 
+[ Feature Request #4466 ] --continuous should flush stdout
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.64
+retrieving revision 1.65
+diff -C2 -d -r1.64 -r1.65
+*** netstat.c	28 Jul 2009 01:40:17 -0000	1.64
+--- netstat.c	27 Aug 2009 20:29:19 -0000	1.65
+***************
+*** 300,303 ****
+--- 300,309 ----
+  }
+  
++ static void wait_continous(void)
++ {
++     fflush(stdout);
++     sleep(1);
++ }
++ 
+  static int extract_type_1_socket_inode(const char lname[], unsigned long * inode_p) {
+  
+***************
+*** 1726,1730 ****
+  	    if (i || !flag_cnt)
+  		break;
+! 	    sleep(1);
+  	}
+  #else
+--- 1732,1736 ----
+  	    if (i || !flag_cnt)
+  		break;
+! 	    wait_continous();
+  	}
+  #else
+***************
+*** 1779,1783 ****
+  	    if (i || !flag_cnt)
+  		break;
+! 	    sleep(1);
+  	}
+  	return (i);
+--- 1785,1789 ----
+  	    if (i || !flag_cnt)
+  		break;
+!             wait_continous();
+  	}
+  	return (i);
+***************
+*** 1788,1792 ****
+  	    if (!flag_cnt || i)
+  		break;
+! 	    sleep(1);
+  	}
+  	return (i);
+--- 1794,1798 ----
+  	    if (!flag_cnt || i)
+  		break;
+!             wait_continous();
+  	}
+  	return (i);
+***************
+*** 1935,1939 ****
+  	if (!flag_cnt || i)
+  	    break;
+! 	sleep(1);
+  	prg_cache_clear();
+      }
+--- 1941,1945 ----
+  	if (!flag_cnt || i)
+  	    break;
+!         wait_continous();
+  	prg_cache_clear();
+      }
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:39:15 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:39:15 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools .cvsignore,1.2,1.3
+Message-ID: <20090906223915.9CE8C1854C9@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv9222
+
+Modified Files:
+	.cvsignore 
+Log Message:
+ignore local .git dir
+
+Index: .cvsignore
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/.cvsignore,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** .cvsignore	18 Mar 2001 04:04:01 -0000	1.2
+--- .cvsignore	6 Sep 2009 22:39:11 -0000	1.3
+***************
+*** 1,2 ****
+--- 1,3 ----
+  arp hostname ifconfig ipmaddr iptunnel netstat plipconfig rarp route slattach
+  version.h config.make config.status config.h nameif mii-tool
++ .git
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:39:24 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:39:24 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/lib ec_hw.c,1.2,1.3
+Message-ID: <20090906223924.D59121854C9@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv7940/lib
+
+Modified Files:
+	ec_hw.c 
+Log Message:
+Missing include to make compileable with gcc-4.3.2 and glibc-2.9_p20081201
+Patch from Petr Pisar [Berlios Bug#16232].
+
+
+Index: ec_hw.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/ec_hw.c,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -C2 -d -r1.2 -r1.3
+*** ec_hw.c	27 Sep 1999 11:00:46 -0000	1.2
+--- ec_hw.c	6 Sep 2009 22:39:20 -0000	1.3
+***************
+*** 17,20 ****
+--- 17,21 ----
+  #if HAVE_HWEC
+  
++ #include <stdlib.h>
+  #include <net/if_arp.h>
+  #include "net-support.h"
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:40:35 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:40:35 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools .gitignore,NONE,1.1
+Message-ID: <20090906224035.A79291854C9@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv10226
+
+Added Files:
+	.gitignore 
+Log Message:
+start a .gitignore
+
+--- NEW FILE: .gitignore ---
+*.o
+
+/config.h
+/config.make
+/config.status
+
+/lib/libnet-tools.a
+
+/version.h
+
+/arp
+/hostname
+/ifconfig
+/ipmaddr
+/iptunnel
+/mii-tool
+/nameif
+/netstat
+/plipconfig
+/rarp
+/route
+/slattach
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:47:57 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:47:57 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.65,1.66
+Message-ID: <20090906224757.8FC08F0E7B@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv15513
+
+Modified Files:
+	netstat.c 
+Log Message:
+netstat: fix typo in udp display
+
+The recent patch to add udplite support introduced a typo in the udp name.
+This fixes Gentoo #282794 and Debian #545328.  Originally reported by
+Ambroz Bizjak <ambro at b4ever.net>.
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.65
+retrieving revision 1.66
+diff -C2 -d -r1.65 -r1.66
+*** netstat.c	27 Aug 2009 20:29:19 -0000	1.65
+--- netstat.c	6 Sep 2009 22:47:46 -0000	1.66
+***************
+*** 974,978 ****
+  {
+      INFO_GUTS6(_PATH_PROCNET_UDP, _PATH_PROCNET_UDP6, "AF INET (udp)",
+! 	       udp_do_one, "upd", "udp6");
+  }
+  
+--- 974,978 ----
+  {
+      INFO_GUTS6(_PATH_PROCNET_UDP, _PATH_PROCNET_UDP6, "AF INET (udp)",
+! 	       udp_do_one, "udp", "udp6");
+  }
+  
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:50:14 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:50:14 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools arp.c,1.26,1.27
+Message-ID: <20090906225014.EB34418F8D7@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv19168
+
+Modified Files:
+	arp.c 
+Log Message:
+arp: document the existing -e/-t options
+
+Index: arp.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/arp.c,v
+retrieving revision 1.26
+retrieving revision 1.27
+diff -C2 -d -r1.26 -r1.27
+*** arp.c	8 Jul 2009 00:24:03 -0000	1.26
+--- arp.c	6 Sep 2009 22:50:11 -0000	1.27
+***************
+*** 631,634 ****
+--- 631,635 ----
+      
+      fprintf(stderr, _("        -a                       display (all) hosts in alternative (BSD) style\n"));
++     fprintf(stderr, _("        -e                       display (all) hosts in default (Linux) style\n"));
+      fprintf(stderr, _("        -s, --set                set a new ARP entry\n"));
+      fprintf(stderr, _("        -d, --delete             delete a specified entry\n"));
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:50:16 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:50:16 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/man/en_US arp.8,1.11,1.12
+Message-ID: <20090906225016.E568C18F8DD@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv19168/man/en_US
+
+Modified Files:
+	arp.8 
+Log Message:
+arp: document the existing -e/-t options
+
+Index: arp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/arp.8,v
+retrieving revision 1.11
+retrieving revision 1.12
+diff -C2 -d -r1.11 -r1.12
+*** arp.8	2 Oct 2008 23:16:59 -0000	1.11
+--- arp.8	6 Sep 2009 22:50:12 -0000	1.12
+***************
+*** 9,13 ****
+  .RB [ \-i
+  .IR if ] 
+! .RB [ \-a ] 
+  .RI [ hostname ]
+  .PP
+--- 9,13 ----
+  .RB [ \-i
+  .IR if ] 
+! .RB [ \-ae ]
+  .RI [ hostname ]
+  .PP
+***************
+*** 116,120 ****
+  or user names.
+  .TP
+! .B "\-H type, \-\-hw\-type type"
+  When setting or reading the ARP cache, this optional parameter tells
+  .B arp
+--- 116,120 ----
+  or user names.
+  .TP
+! .B "\-H type, \-\-hw\-type type, \-t type"
+  When setting or reading the ARP cache, this optional parameter tells
+  .B arp
+***************
+*** 134,137 ****
+--- 134,140 ----
+  .B \-a
+  Use alternate BSD style output format (with no fixed columns).
++ .TP
++ .B \-e
++ Use default Linux style output format (with fixed columns).
+  .TP
+  .B "\-D, \-\-use-device"
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:51:00 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:51:00 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/man/fr_FR arp.8, 1.3, 1.4 ifconfig.8,
+	1.4, 1.5 netstat.8, 1.5, 1.6 rarp.8, 1.4, 1.5 route.8, 1.3, 1.4
+Message-ID: <20090906225100.D58FD18F8DB@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/fr_FR
+In directory sheep:/tmp/cvs-serv19320/man/fr_FR
+
+Modified Files:
+	arp.8 ifconfig.8 netstat.8 rarp.8 route.8 
+Log Message:
+move man/fr_FR/*.8 pages into the "administrator" section
+
+Index: arp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/fr_FR/arp.8,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -C2 -d -r1.3 -r1.4
+*** arp.8	5 Nov 2001 13:12:11 -0000	1.3
+--- arp.8	6 Sep 2009 22:50:58 -0000	1.4
+***************
+*** 1,3 ****
+! .TH ARP 8 "5 Jan 1999" "net-tools" "Linux Programmer's Manual"
+  .SH NOM
+  arp \- manipule la table ARP du syst?me
+--- 1,3 ----
+! .TH ARP 8 "5 Jan 1999" "net-tools" "Linux Administrator's Manual"
+  .SH NOM
+  arp \- manipule la table ARP du syst?me
+
+Index: ifconfig.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/fr_FR/ifconfig.8,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -C2 -d -r1.4 -r1.5
+*** ifconfig.8	5 Nov 2001 13:12:11 -0000	1.4
+--- ifconfig.8	6 Sep 2009 22:50:58 -0000	1.5
+***************
+*** 1,3 ****
+! .TH IFCONFIG 8 "4 August 1997" "net-tools" "Linux Programmer's Manual"
+  .SH NOM
+  ifconfig \- configure une interface r?seau
+--- 1,3 ----
+! .TH IFCONFIG 8 "4 August 1997" "net-tools" "Linux Administrator's Manual"
+  .SH NOM
+  ifconfig \- configure une interface r?seau
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/fr_FR/netstat.8,v
+retrieving revision 1.5
+retrieving revision 1.6
+diff -C2 -d -r1.5 -r1.6
+*** netstat.8	2 Dec 2007 04:42:32 -0000	1.5
+--- netstat.8	6 Sep 2009 22:50:58 -0000	1.6
+***************
+*** 9,13 ****
+  .\"
+  .\"
+! .TH NETSTAT 8 "2007-12-02" "net-tools" "Linux Programmer's Manual"
+  
+  .SH NAME
+--- 9,13 ----
+  .\"
+  .\"
+! .TH NETSTAT 8 "2007-12-02" "net-tools" "Linux Administrator's Manual"
+  
+  .SH NAME
+
+Index: rarp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/fr_FR/rarp.8,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -C2 -d -r1.4 -r1.5
+*** rarp.8	5 Nov 2001 13:12:11 -0000	1.4
+--- rarp.8	6 Sep 2009 22:50:58 -0000	1.5
+***************
+*** 1,3 ****
+! .TH RARP 8 "4 Ao?t 1997" "net-tools" "Linux Programmer's Manual"
+  .SH NOM
+  rarp \- manipule la table syst?me RARP
+--- 1,3 ----
+! .TH RARP 8 "4 Ao?t 1997" "net-tools" "Linux Administrator's Manual"
+  .SH NOM
+  rarp \- manipule la table syst?me RARP
+
+Index: route.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/fr_FR/route.8,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -C2 -d -r1.3 -r1.4
+*** route.8	3 Dec 1999 13:03:30 -0000	1.3
+--- route.8	6 Sep 2009 22:50:58 -0000	1.4
+***************
+*** 1,3 ****
+! .TH ROUTE 8 "8 Ao?t 1997" "net-tools" "Linux Programmer's Manual"
+  .SH NAME
+  route \- affiche / manipule la table de routage IP
+--- 1,3 ----
+! .TH ROUTE 8 "8 Ao?t 1997" "net-tools" "Linux Administrator's Manual"
+  .SH NAME
+  route \- affiche / manipule la table de routage IP
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:52:04 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:52:04 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/lib masq_info.c,1.7,1.8
+Message-ID: <20090906225204.6DBBC18F8DB@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv19406/lib
+
+Modified Files:
+	masq_info.c 
+Log Message:
+handle raw "IP" masqinfo
+
+Index: masq_info.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/masq_info.c,v
+retrieving revision 1.7
+retrieving revision 1.8
+diff -C2 -d -r1.7 -r1.8
+*** masq_info.c	8 Oct 2000 01:00:44 -0000	1.7
+--- masq_info.c	6 Sep 2009 22:52:01 -0000	1.8
+***************
+*** 120,124 ****
+  	ms->dst.sin_family = AF_INET;
+  
+! 	if (strcmp("TCP", buf) == 0)
+  	    ms->proto = "tcp";
+  	else if (strcmp("UDP", buf) == 0)
+--- 120,126 ----
+  	ms->dst.sin_family = AF_INET;
+  
+! 	if (strcmp("IP", buf) == 0)
+! 	    ms->proto = "ip";
+! 	else if (strcmp("TCP", buf) == 0)
+  	    ms->proto = "tcp";
+  	else if (strcmp("UDP", buf) == 0)
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:53:57 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:53:57 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools Makefile,1.38,1.39
+Message-ID: <20090906225357.12FF618F8CF@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv20549
+
+Modified Files:
+	Makefile 
+Log Message:
+touch up build system to respect normal toolchain env vars rather than requiring people to set random custom ones
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.38
+retrieving revision 1.39
+diff -C2 -d -r1.38 -r1.39
+*** Makefile	15 Apr 2001 14:34:57 -0000	1.38
+--- Makefile	6 Sep 2009 22:53:54 -0000	1.39
+***************
+*** 89,96 ****
+  # Compiler and Linker Options
+  # You may need to uncomment and edit these if you are using libc5 and IPv6.
+! COPTS = -D_GNU_SOURCE -O2 -Wall -g # -I/usr/inet6/include
+! ifeq ($(origin LOPTS), undefined)
+! LOPTS = 
+! endif
+  RESLIB = # -L/usr/inet6/lib -linet6
+  
+--- 89,95 ----
+  # Compiler and Linker Options
+  # You may need to uncomment and edit these if you are using libc5 and IPv6.
+! CFLAGS ?= -O2 -g
+! CFLAGS += -Wall
+! CPPFLAGS += -D_GNU_SOURCE
+  RESLIB = # -L/usr/inet6/lib -linet6
+  
+***************
+*** 114,119 ****
+  NET_LIB = $(NET_LIB_PATH)/lib$(NET_LIB_NAME).a
+  
+! CFLAGS	= $(COPTS) -I. -idirafter ./include/ -I$(NET_LIB_PATH)
+! LDFLAGS	= $(LOPTS) -L$(NET_LIB_PATH)
+  
+  SUBDIRS	= man/ $(NET_LIB_PATH)/
+--- 113,118 ----
+  NET_LIB = $(NET_LIB_PATH)/lib$(NET_LIB_NAME).a
+  
+! CPPFLAGS += -I. -idirafter ./include/ -I$(NET_LIB_PATH)
+! LDFLAGS  += -L$(NET_LIB_PATH)
+  
+  SUBDIRS	= man/ $(NET_LIB_PATH)/
+***************
+*** 126,131 ****
+  NLIB	= -l$(NET_LIB_NAME)
+  
+- MDEFINES = COPTS='$(COPTS)' LOPTS='$(LOPTS)' TOPDIR='$(TOPDIR)'
+- 
+  %.o:		%.c config.h version.h intl.h net-features.h $<
+  		$(CC) $(CFLAGS) -c $<
+--- 125,128 ----
+***************
+*** 177,181 ****
+  
+  libdir:
+! 		@$(MAKE) -C $(NET_LIB_PATH) $(MDEFINES)
+  
+  i18ndir:
+--- 174,178 ----
+  
+  libdir:
+! 		@$(MAKE) -C $(NET_LIB_PATH)
+  
+  i18ndir:
+***************
+*** 183,187 ****
+  
+  subdirs:
+! 		@for i in $(SUBDIRS); do $(MAKE) -C $$i $(MDEFINES) ; done
+  
+  ifconfig:	$(NET_LIB) ifconfig.o
+--- 180,184 ----
+  
+  subdirs:
+! 		@for i in $(SUBDIRS); do $(MAKE) -C $$i || exit $$? ; done
+  
+  ifconfig:	$(NET_LIB) ifconfig.o
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:55:17 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:55:17 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools Makefile,1.39,1.40
+Message-ID: <20090906225517.AA3B318F8CF@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv22273
+
+Modified Files:
+	Makefile 
+Log Message:
+add missing dependency on version.h to libdir target to fix parallel build failures
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.39
+retrieving revision 1.40
+diff -C2 -d -r1.39 -r1.40
+*** Makefile	6 Sep 2009 22:53:54 -0000	1.39
+--- Makefile	6 Sep 2009 22:55:13 -0000	1.40
+***************
+*** 173,177 ****
+  i18n.h:		i18ndir
+  
+! libdir:
+  		@$(MAKE) -C $(NET_LIB_PATH)
+  
+--- 173,177 ----
+  i18n.h:		i18ndir
+  
+! libdir:		version.h
+  		@$(MAKE) -C $(NET_LIB_PATH)
+  
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:56:53 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:56:53 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools Makefile,1.40,1.41
+Message-ID: <20090906225653.4F66818F8CF@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv22937
+
+Modified Files:
+	Makefile 
+Log Message:
+convert -idirafter to -I
+
+The local include trees no longer need -idirafter semantics, so use the
+normal -I flags to avoid random cruft on users' systems.  This fixes Gentoo
+#283759 where user had local headers named the same as the net-tools local
+headers, but the toolchain defaulted to the system paths due to -idirafter.
+
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.40
+retrieving revision 1.41
+diff -C2 -d -r1.40 -r1.41
+*** Makefile	6 Sep 2009 22:55:13 -0000	1.40
+--- Makefile	6 Sep 2009 22:56:50 -0000	1.41
+***************
+*** 113,117 ****
+  NET_LIB = $(NET_LIB_PATH)/lib$(NET_LIB_NAME).a
+  
+! CPPFLAGS += -I. -idirafter ./include/ -I$(NET_LIB_PATH)
+  LDFLAGS  += -L$(NET_LIB_PATH)
+  
+--- 113,117 ----
+  NET_LIB = $(NET_LIB_PATH)/lib$(NET_LIB_NAME).a
+  
+! CPPFLAGS += -I. -I$(TOPDIR)/include -I$(NET_LIB_PATH)
+  LDFLAGS  += -L$(NET_LIB_PATH)
+  
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:56:54 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:56:54 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/lib Makefile,1.25,1.26
+Message-ID: <20090906225654.16ED818F8CF@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv22937/lib
+
+Modified Files:
+	Makefile 
+Log Message:
+convert -idirafter to -I
+
+The local include trees no longer need -idirafter semantics, so use the
+normal -I flags to avoid random cruft on users' systems.  This fixes Gentoo
+#283759 where user had local headers named the same as the net-tools local
+headers, but the toolchain defaulted to the system paths due to -idirafter.
+
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/Makefile,v
+retrieving revision 1.25
+retrieving revision 1.26
+diff -C2 -d -r1.25 -r1.26
+*** Makefile	3 Oct 2008 01:52:04 -0000	1.25
+--- Makefile	6 Sep 2009 22:56:51 -0000	1.26
+***************
+*** 37,41 ****
+  # This can be overwritten by the TOPLEVEL Makefile
+  TOPDIR=..
+! CFLAGS += -I$(TOPDIR) -idirafter $(TOPDIR)/include # -fPIC
+  SONAME=libnet-tools.so.0
+  
+--- 37,41 ----
+  # This can be overwritten by the TOPLEVEL Makefile
+  TOPDIR=..
+! CFLAGS += -I$(TOPDIR) -I$(TOPDIR)/include # -fPIC
+  SONAME=libnet-tools.so.0
+  
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:58:43 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:58:43 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools Makefile,1.41,1.42
+Message-ID: <20090906225843.7946C18D1DA@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv24980
+
+Modified Files:
+	Makefile 
+Log Message:
+enable -fno-strict-aliasing until the code base gets a hefty clean up to fix all of the strict aliasing problems
+
+
+Index: Makefile
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/Makefile,v
+retrieving revision 1.41
+retrieving revision 1.42
+diff -C2 -d -r1.41 -r1.42
+*** Makefile	6 Sep 2009 22:56:50 -0000	1.41
+--- Makefile	6 Sep 2009 22:58:40 -0000	1.42
+***************
+*** 91,94 ****
+--- 91,95 ----
+  CFLAGS ?= -O2 -g
+  CFLAGS += -Wall
++ CFLAGS += -fno-strict-aliasing # code needs a lot of work before strict aliasing is safe
+  CPPFLAGS += -D_GNU_SOURCE
+  RESLIB = # -L/usr/inet6/lib -linet6
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 00:59:45 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 00:59:45 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools slattach.c,1.11,1.12
+Message-ID: <20090906225945.F0E92D8B9@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv27665
+
+Modified Files:
+	slattach.c 
+Log Message:
+slattach: use fchown() rather than chown() to avoid race between creation and permission changing
+
+Index: slattach.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/slattach.c,v
+retrieving revision 1.11
+retrieving revision 1.12
+diff -C2 -d -r1.11 -r1.12
+*** slattach.c	4 Dec 2005 05:15:36 -0000	1.11
+--- slattach.c	6 Sep 2009 22:59:43 -0000	1.12
+***************
+*** 196,208 ****
+  	}
+  
+- 	(void) close(fd);
+- 
+  	/* Make sure UUCP owns the lockfile.  Required by some packages. */
+  	if ((pw = getpwnam(_UID_UUCP)) == NULL) {
+  		if (opt_q == 0) fprintf(stderr, _("slattach: tty_lock: UUCP user %s unknown!\n"),
+  					_UID_UUCP);
+  		return(0);	/* keep the lock anyway */
+  	}
+! 	(void) chown(saved_path, pw->pw_uid, pw->pw_gid);
+  	saved_lock = 1;
+    } else {	/* unlock */
+--- 196,210 ----
+  	}
+  
+  	/* Make sure UUCP owns the lockfile.  Required by some packages. */
+  	if ((pw = getpwnam(_UID_UUCP)) == NULL) {
+  		if (opt_q == 0) fprintf(stderr, _("slattach: tty_lock: UUCP user %s unknown!\n"),
+  					_UID_UUCP);
++ 		(void) close(fd);
+  		return(0);	/* keep the lock anyway */
+  	}
+! 	(void) fchown(fd, pw->pw_uid, pw->pw_gid);
+! 
+! 	(void) close(fd);
+! 
+  	saved_lock = 1;
+    } else {	/* unlock */
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 01:01:18 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 01:01:18 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/lib interface.c,1.31,1.32
+Message-ID: <20090906230118.C1FC2189BFF@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv28667/lib
+
+Modified Files:
+	interface.c 
+Log Message:
+ifconfig: fix no output when if_readlist_proc() fails
+
+The rewrite of if_readlist() on 28 Jun 2003 broke the function when the
+proc interface isn't readable.  Have if_readlist() return an error only if
+both if_readxxx funcs failed.  This fixes Gentoo 238363.
+
+
+Index: interface.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/interface.c,v
+retrieving revision 1.31
+retrieving revision 1.32
+diff -C2 -d -r1.31 -r1.32
+*** interface.c	8 Jul 2009 00:24:03 -0000	1.31
+--- interface.c	6 Sep 2009 23:01:16 -0000	1.32
+***************
+*** 383,394 ****
+       *   (i.e. only if if_list_all == 0 
+       */
+!     int err = 0;
+  
+!     err |= if_readlist_proc(NULL); 
+!     err |= if_readconf();
+  
+      if_list_all = 1;
+  
+!     return err;
+  } 
+  
+--- 383,397 ----
+       *   (i.e. only if if_list_all == 0 
+       */
+!     int proc_err, conf_err;
+  
+!     proc_err = if_readlist_proc(NULL);
+!     conf_err = if_readconf();
+  
+      if_list_all = 1;
+  
+!     if (proc_err < 0 && conf_err < 0)
+!         return -1;
+!     else
+!         return 0;
+  } 
+  
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 01:05:31 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 01:05:31 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.66,1.67
+Message-ID: <20090906230531.DD2AF18F877@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv32586
+
+Modified Files:
+	netstat.c 
+Log Message:
+netstat: add sctp connection decoding (Debian #306428 and Gentoo #258714)
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.66
+retrieving revision 1.67
+diff -C2 -d -r1.66 -r1.67
+*** netstat.c	6 Sep 2009 22:47:46 -0000	1.66
+--- netstat.c	6 Sep 2009 23:05:28 -0000	1.67
+***************
+*** 60,63 ****
+--- 60,64 ----
+   *20010404 {1.39} Arnaldo Carvalho de Melo - use setlocale
+   *20081201 {1.42} Brian Micek           added -L|--udplite options for RFC 3828 
++  *20020722 {1.51} Thomas Preusser       added SCTP over IPv4 support
+   *
+   *              This program is free software; you can redistribute it
+***************
+*** 147,150 ****
+--- 148,152 ----
+  int flag_raw = 0;
+  int flag_tcp = 0;
++ int flag_sctp= 0;
+  int flag_udp = 0;
+  int flag_udplite = 0;
+***************
+*** 711,714 ****
+--- 713,873 ----
+  }
+  
++ static int ip_parse_dots(uint32_t *addr, char const *src) {
++   unsigned  a, b, c, d;
++   unsigned  ret = 4-sscanf(src, "%u.%u.%u.%u", &a, &b, &c, &d);
++   *addr = htonl((a << 24)|(b << 16)|(c << 8)|d);
++   return  ret;
++ }
++ 
++ static void print_ip_service(struct sockaddr_in *addr, char const *protname,
++ 			     char *buf, unsigned size) {
++   struct aftype *ap;
++ 
++   if(size == 0)  return;
++ 
++   /* print host */
++   if((ap = get_afntype(addr->sin_family)) == NULL) {
++     fprintf(stderr, _("netstat: unsupported address family %d !\n"),
++ 	    addr->sin_family);
++     return;
++   }
++   safe_strncpy(buf, ap->sprint((struct sockaddr*)addr, flag_not), size);
++ 
++   /* print service */
++   if(flag_all || (flag_lst && !addr->sin_port) || (!flag_lst && addr->sin_port)) {
++     char  bfs[32];
++ 
++     snprintf(bfs, sizeof(bfs), "%s",
++ 	     get_sname(addr->sin_port, (char*)protname, flag_not & FLAG_NUM_PORT));
++ 
++     /* check if we must cut on host and/or service name */
++     {
++       unsigned const  bufl = strlen(buf);
++       unsigned const  bfsl = strlen(bfs);
++ 
++       if(bufl+bfsl+2 > size) {
++ 	unsigned const  half = (size-2)>>1;
++ 	if(bufl > half) {
++ 	  if(bfsl > half) {
++ 	    buf[size-2-half] = '\0';
++ 	    bfs[half+1]      = '\0';
++ 	  }
++ 	  else  buf[size-2-bfsl] = '\0';
++ 	}
++ 	else  bfs[size-2-bufl] = '\0';
++       }  
++     }
++     strcat(buf, ":");
++     strcat(buf, bfs);
++   }
++ }
++ 
++ /* process single SCTP endpoint */
++ static void sctp_do_ept(int lnr, char const *line, const char *prot)
++ {
++   struct sockaddr_in  laddr, raddr;
++   unsigned            uid, inode;
++ 
++   char        l_addr[23], r_addr[23];
++ 
++   /* fill sockaddr_in structures */
++   {
++     unsigned  lport;
++     unsigned  ate;
++ 
++     if(lnr == 0)  return;
++     if(sscanf(line, "%*X %*X %*u %*u %*u %u %u %u %n",
++ 	      &lport, &uid, &inode, &ate) < 3)  goto err;
++ 
++     /* decode IP address */
++     if(ip_parse_dots(&laddr.sin_addr.s_addr, line+ate))  goto err;
++     raddr.sin_addr.s_addr = htonl(0);
++     laddr.sin_family = raddr.sin_family = AF_INET;
++     laddr.sin_port = htons(lport);
++     raddr.sin_port = htons(0);
++   }
++ 
++   /* print IP:service to l_addr and r_addr */
++   print_ip_service(&laddr, prot, l_addr, sizeof(l_addr));
++   print_ip_service(&raddr, prot, r_addr, sizeof(r_addr));
++ 
++   /* Print line */
++   printf("%-4s  %6d %6d %-*s %-*s %-11s",
++ 	 prot, 0, 0,
++ 	 (int)netmax(23,strlen(l_addr)), l_addr,
++ 	 (int)netmax(23,strlen(r_addr)), r_addr,
++ 	 _(tcp_state[TCP_LISTEN]));
++   finish_this_one(uid, inode, "");
++   return;
++  err:
++   fprintf(stderr, "SCTP error in line: %d\n", lnr);
++ }
++ 
++ /* process single SCTP association */
++ static void sctp_do_assoc(int lnr, char const *line, const char *prot)
++ {
++   struct sockaddr_in  laddr, raddr;
++   unsigned long       rxq, txq;
++   unsigned            uid, inode;
++ 
++   char        l_addr[23], r_addr[23];
++ 
++   /* fill sockaddr_in structures */
++   {
++     unsigned    lport, rport;
++     unsigned    ate;
++     char const *addr;
++ 
++     if(lnr == 0)  return;
++     if(sscanf(line, "%*X %*X %*u %*u %*u %*u %*u %lu %lu %u %u %u %u %n",
++ 	      &txq, &rxq, &uid, &inode, &lport, &rport, &ate) < 6)  goto err;
++ 
++     /* decode IP addresses */
++     addr = strchr(line+ate, '*');
++     if(addr == 0)  goto err;
++     if(ip_parse_dots(&laddr.sin_addr.s_addr, ++addr))  goto err;
++     addr = strchr(addr, '*');
++     if(addr == 0)  goto err;
++     if(ip_parse_dots(&raddr.sin_addr.s_addr, ++addr))  goto err;
++ 
++     /* complete sockaddr_in structures */
++     laddr.sin_family = raddr.sin_family = AF_INET;
++     laddr.sin_port = htons(lport);
++     raddr.sin_port = htons(rport);
++   }
++ 
++   /* print IP:service to l_addr and r_addr */
++   print_ip_service(&laddr, prot, l_addr, sizeof(l_addr));
++   print_ip_service(&raddr, prot, r_addr, sizeof(r_addr));
++ 
++   /* Print line */
++   printf("%-4s  %6ld %6ld %-*s %-*s %-11s",
++ 	 prot, rxq, txq,
++ 	 (int)netmax(23,strlen(l_addr)), l_addr,
++ 	 (int)netmax(23,strlen(r_addr)), r_addr,
++ 	 _(tcp_state[TCP_ESTABLISHED]));
++   finish_this_one(uid, inode, "");
++   return;
++  err:
++   fprintf(stderr, "SCTP error in line: %d\n", lnr);
++ }
++ 
++ static int sctp_info_epts(void) {
++   INFO_GUTS6(_PATH_PROCNET_SCTPEPTS, _PATH_PROCNET_SCTP6EPTS, "AF INET (sctp)",
++ 	     sctp_do_ept, "sctp", "sctp6");
++ }
++ 
++ static int sctp_info_assocs(void) {
++   INFO_GUTS6(_PATH_PROCNET_SCTPASSOCS, _PATH_PROCNET_SCTP6ASSOCS, "AF INET (sctp)",
++ 	     sctp_do_assoc, "sctp", "sctp6");
++ }
++ 
++ static int sctp_info(void) {
++   int  res;
++   res = sctp_info_epts();
++   if(res)  return  res;
++   return  sctp_info_assocs();
++ }
++ 
+  static void tcp_do_one(int lnr, const char *line, const char *prot)
+  {
+***************
+*** 1564,1567 ****
+--- 1723,1727 ----
+  	{"protocol", 1, 0, 'A'},
+  	{"tcp", 0, 0, 't'},
++ 	{"sctp", 0, 0, 'S'},
+  	{"udp", 0, 0, 'u'},
+          {"udplite", 0, 0, 'U'},
+***************
+*** 1596,1600 ****
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, "A:CFMacdeghilnNoprstuUvVWwx64?", longopts, &lop)) != EOF)
+  	switch (i) {
+  	case -1:
+--- 1756,1760 ----
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, "A:CFMacdeghilnNoprsStuUvVWwx64?", longopts, &lop)) != EOF)
+  	switch (i) {
+  	case -1:
+***************
+*** 1687,1690 ****
+--- 1847,1853 ----
+  	    flag_tcp++;
+  	    break;
++ 	case 'S':
++ 	    flag_sctp++;
++ 	    break;
+  	case 'u':
+  	    flag_udp++;
+***************
+*** 1711,1722 ****
+  
+      if ((flag_inet || flag_inet6 || flag_sta) && 
+!         !(flag_tcp || flag_udp || flag_udplite || flag_raw))
+! 	   flag_tcp = flag_udp = flag_udplite = flag_raw = 1;
+  
+!     if ((flag_tcp || flag_udp || flag_udplite || flag_raw || flag_igmp) && 
+          !(flag_inet || flag_inet6))
+          flag_inet = flag_inet6 = 1;
+  
+!     flag_arg = flag_tcp + flag_udplite + flag_udp + flag_raw + flag_unx 
+          + flag_ipx + flag_ax25 + flag_netrom + flag_igmp + flag_x25 + flag_rose;
+  
+--- 1874,1885 ----
+  
+      if ((flag_inet || flag_inet6 || flag_sta) && 
+!         !(flag_tcp || flag_sctp || flag_udp || flag_udplite || flag_raw))
+! 	   flag_tcp = flag_sctp = flag_udp = flag_udplite = flag_raw = 1;
+  
+!     if ((flag_tcp || flag_sctp || flag_udp || flag_udplite || flag_raw || flag_igmp) && 
+          !(flag_inet || flag_inet6))
+          flag_inet = flag_inet6 = 1;
+  
+!     flag_arg = flag_tcp + flag_sctp + flag_udplite + flag_udp + flag_raw + flag_unx 
+          + flag_ipx + flag_ax25 + flag_netrom + flag_igmp + flag_x25 + flag_rose;
+  
+***************
+*** 1799,1803 ****
+      }
+      for (;;) {
+! 	if (!flag_arg || flag_tcp || flag_udp || flag_udplite || flag_raw) {
+  #if HAVE_AFINET
+  	    prg_cache_load();
+--- 1962,1966 ----
+      }
+      for (;;) {
+! 	if (!flag_arg || flag_tcp || flag_sctp || flag_udp || flag_udplite || flag_raw) {
+  #if HAVE_AFINET
+  	    prg_cache_load();
+***************
+*** 1829,1832 ****
+--- 1992,2001 ----
+  	if (!flag_arg || flag_tcp) {
+  	    i = tcp_info();
++ 	    if (i)
++ 		return (i);
++ 	}
++ 
++ 	if (!flag_arg || flag_sctp) {
++ 	    i = sctp_info();
+  	    if (i)
+  		return (i);
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Mon Sep  7 01:05:32 2009
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Mon,  7 Sep 2009 01:05:32 +0200 (CEST)
+Subject: [net-tools-cvscommit] net-tools/lib pathnames.h,1.9,1.10
+Message-ID: <20090906230532.B203D18F877@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv32586/lib
+
+Modified Files:
+	pathnames.h 
+Log Message:
+netstat: add sctp connection decoding (Debian #306428 and Gentoo #258714)
+
+
+Index: pathnames.h
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/pathnames.h,v
+retrieving revision 1.9
+retrieving revision 1.10
+diff -C2 -d -r1.9 -r1.10
+*** pathnames.h	1 Dec 2008 23:15:36 -0000	1.9
+--- pathnames.h	6 Sep 2009 23:05:30 -0000	1.10
+***************
+*** 19,22 ****
+--- 19,26 ----
+  #define _PATH_PROCNET_UDPLITE           "/proc/net/udplite"
+  #define _PATH_PROCNET_UDPLITE6          "/proc/net/udplite6"
++ #define _PATH_PROCNET_SCTPEPTS		"/proc/net/sctp/eps"
++ #define _PATH_PROCNET_SCTP6EPTS		"/proc/net/sctp6/eps"
++ #define _PATH_PROCNET_SCTPASSOCS	"/proc/net/sctp/assocs"
++ #define _PATH_PROCNET_SCTP6ASSOCS	"/proc/net/sctp6/assocs"
+  #define _PATH_PROCNET_RAW		"/proc/net/raw"
+  #define _PATH_PROCNET_RAW6		"/proc/net/raw6"
+
+
+

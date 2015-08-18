@@ -1,0 +1,1234 @@
+From net-tools-cvscommit at lists.berlios.de  Thu Nov  8 00:02:32 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Thu,  8 Nov 2007 00:02:32 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/en_US ifconfig.8,1.12,1.13
+Message-ID: <20071107230232.E7E1311431@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv12146/man/en_US
+
+Modified Files:
+	ifconfig.8 
+Log Message:
+Fix Formatting Bug for ifconfig.8 (Debian Bug#450432 reported by Ivan
+Shmakov)
+
+
+Index: ifconfig.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/ifconfig.8,v
+retrieving revision 1.12
+retrieving revision 1.13
+diff -C2 -d -r1.12 -r1.13
+*** ifconfig.8	30 Jun 2005 19:26:37 -0000	1.12
+--- ifconfig.8	7 Nov 2007 23:01:38 -0000	1.13
+***************
+*** 1,3 ****
+! .TH IFCONFIG 8 "2005-06-30" "net-tools" "Linux Programmer's Manual"
+  .SH NAME
+  ifconfig \- configure a network interface
+--- 1,3 ----
+! .TH IFCONFIG 8 "2007-11-07" "net-tools" "Linux Programmer's Manual"
+  .SH NAME
+  ifconfig \- configure a network interface
+***************
+*** 60,65 ****
+  for the first alias of eth0. You can use them to assign a second address. To
+  delete an alias interface use
+! .B ifconfig eth0:0 down
+! . Note: for every scope (i.e. same net with address/netmask combination) all
+  aliases are deleted, if you delete the first (primary).
+  .TP
+--- 60,65 ----
+  for the first alias of eth0. You can use them to assign a second address. To
+  delete an alias interface use
+! .BR "ifconfig eth0:0 down" .
+! Note: for every scope (i.e. same net with address/netmask combination) all
+  aliases are deleted, if you delete the first (primary).
+  .TP
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 18:50:43 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 18:50:43 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/lib af.c,1.13,1.14
+Message-ID: <20071201175043.C937511E8EF@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv18444/lib
+
+Modified Files:
+	af.c 
+Log Message:
+ROSE support
+
+
+Index: af.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/af.c,v
+retrieving revision 1.13
+retrieving revision 1.14
+diff -C2 -d -r1.13 -r1.14
+*** af.c	20 May 2000 13:38:10 -0000	1.13
+--- af.c	1 Dec 2007 17:49:35 -0000	1.14
+***************
+*** 36,39 ****
+--- 36,40 ----
+  int flag_inet6;
+  int flag_econet;
++ int flag_rose;
+  int flag_x25 = 0;
+  int flag_ash;
+***************
+*** 57,60 ****
+--- 58,64 ----
+      {
+  	"ipx", "ipx", &flag_ipx
++     },
++     {
++ 	"rose", "rose", &flag_rose
+      },
+      {
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 18:51:33 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 18:51:33 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/lib net-support.h,1.15,1.16
+Message-ID: <20071201175133.BE33211FFDC@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv19669/lib
+
+Modified Files:
+	net-support.h 
+Log Message:
+ROSE support
+
+
+Index: net-support.h
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/net-support.h,v
+retrieving revision 1.15
+retrieving revision 1.16
+diff -C2 -d -r1.15 -r1.16
+*** net-support.h	8 Oct 2000 01:00:44 -0000	1.15
+--- net-support.h	1 Dec 2007 17:50:30 -0000	1.16
+***************
+*** 120,123 ****
+--- 120,124 ----
+  extern int AX25_rinput(int action, int flags, char **argv);
+  extern int X25_rinput(int action, int flags, char **argv);
++ extern int ROSE_rinput(int action, int flags, char **argv);
+  
+  extern int aftrans_opt(const char *arg);
+***************
+*** 132,135 ****
+--- 133,137 ----
+  extern int flag_netrom;
+  extern int flag_x25;
++ extern int flag_rose;
+  extern int flag_inet;
+  extern int flag_inet6;
+***************
+*** 147,153 ****
+  	{"inet6",	0,	0,	1}, \
+  	{"ddp",		0,	0,	1}, \
+  	{"unix",	0,	0,	1}, \
+  	{"tcpip",	0,	0,	1}
+! #define AFTRANS_CNT 11
+  
+  #define EINTERN(file, text) fprintf(stderr, \
+--- 149,156 ----
+  	{"inet6",	0,	0,	1}, \
+  	{"ddp",		0,	0,	1}, \
++ 	{"rose",		0,	0,	1}, \
+  	{"unix",	0,	0,	1}, \
+  	{"tcpip",	0,	0,	1}
+! #define AFTRANS_CNT 12
+  
+  #define EINTERN(file, text) fprintf(stderr, \
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 19:13:38 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 19:13:38 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.53,1.54
+Message-ID: <20071201181338.573EC11DCEB@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv7137
+
+Modified Files:
+	netstat.c 
+Log Message:
+ROSE support (not yet enabled)
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.53
+retrieving revision 1.54
+diff -C2 -d -r1.53 -r1.54
+*** netstat.c	16 Mar 2006 08:59:42 -0000	1.53
+--- netstat.c	1 Dec 2007 18:12:34 -0000	1.54
+***************
+*** 1706,1710 ****
+  
+      flag_arg = flag_tcp + flag_udp + flag_raw + flag_unx + flag_ipx
+! 	+ flag_ax25 + flag_netrom + flag_igmp + flag_x25;
+  
+      if (flag_mas) {
+--- 1706,1710 ----
+  
+      flag_arg = flag_tcp + flag_udp + flag_raw + flag_unx + flag_ipx
+! 	+ flag_ax25 + flag_netrom + flag_igmp + flag_x25 + flag_rose;
+  
+      if (flag_mas) {
+***************
+*** 1886,1889 ****
+--- 1886,1902 ----
+  #endif
+  	}
++ 	if (!flag_arg || flag_rose) {
++ #if 0 && HAVE_AFROSE
++           i = rose_info();
++           if (i)
++             return (i);
++ #else
++           if (flag_arg) {
++             i = 1;
++             ENOSUPP("netstat", "AF ROSE");
++           }
++ #endif
++         }
++ 	            
+  	if (!flag_cnt || i)
+  	    break;
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 19:20:36 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 19:20:36 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/en_US arp.8,1.7,1.8
+Message-ID: <20071201182036.9D40D1200D7@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv24427/man/en_US
+
+Modified Files:
+	arp.8 
+Log Message:
+cleanup man page (arp.8 2007-12-01)
+
+
+Index: arp.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/arp.8,v
+retrieving revision 1.7
+retrieving revision 1.8
+diff -C2 -d -r1.7 -r1.8
+*** arp.8	16 May 2005 04:30:18 -0000	1.7
+--- arp.8	1 Dec 2007 18:19:32 -0000	1.8
+***************
+*** 1,3 ****
+! .TH ARP 8 "2005-05-16" "net-tools" "Linux Programmer's Manual"
+  .SH NAME
+  arp \- manipulate the system ARP cache
+--- 1,3 ----
+! .TH ARP 8 "2007-12-01" "net-tools" "Linux Programmer's Manual"
+  .SH NAME
+  arp \- manipulate the system ARP cache
+***************
+*** 5,55 ****
+  .B arp 
+  .RB [ \-vn ] 
+! .RB [ "\-H type" ] 
+! .RB [ "-i if" ] 
+! .B -a 
+! .RB [ hostname ]
+  .PP
+  .B arp 
+  .RB [ \-v ]
+! .RB [ "\-i if" ] 
+! .B "\-d hostname"
+  .RB [ pub ]
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ "\-H type" ] 
+! .RB [ "\-i if" ] 
+! .B -s hostname hw_addr
+  .RB [ temp ] 
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ "\-H type" ] 
+! .RB [ "\-i if" ] 
+! .B -s hostname hw_addr
+! .RB [ "netmask nm" ] 
+  .B pub
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ "\-H type" ] 
+! .RB [ "\-i if" ] 
+! .B -Ds hostname ifa
+! .RB [ "netmask nm" ] 
+  .B pub
+  .PP
+  .B arp 
+  .RB [ \-vnD ]
+! .RB [ "\-H type" ] 
+! .RB [ "-i if" ]
+! .B -f [filename]
+  
+  .SH DESCRIPTION
+  .B Arp
+! manipulates the kernel's ARP cache in various ways.  The primary options
+! are clearing an address mapping entry and manually setting up one.  For
+! debugging purposes, the
+  .B arp
+! program also allows a complete dump of the ARP cache.
+  .SH OPTIONS
+  .TP
+--- 5,110 ----
+  .B arp 
+  .RB [ \-vn ] 
+! .RB [ \-H 
+! .IR type ] 
+! .RB [ \-i
+! .IR if ] 
+! .RB [ \-a ] 
+! .RI [ hostname ]
+  .PP
+  .B arp 
+  .RB [ \-v ]
+! .RB [ \-i
+! .IR if ] 
+! .B \-d 
+! .I hostname
+  .RB [ pub ]
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ \-H
+! .IR type ] 
+! .RB [ \-i
+! .IR if ] 
+! .B \-s
+! .I hostname hw_addr
+  .RB [ temp ] 
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ \-H
+! .IR type ] 
+! .RB [ \-i
+! .IR if ] 
+! .B \-s
+! .I hostname hw_addr
+! .RB [ netmask
+! .IR nm ] 
+  .B pub
+  .PP
+  .B arp 
+  .RB [ \-v ] 
+! .RB [ \-H
+! .IR type ] 
+! .RB [ \-i
+! .IR if ] 
+! .B \-Ds 
+! .I hostname
+! .I ifname
+! .RB [ netmask
+! .IR nm ] 
+  .B pub
+  .PP
+  .B arp 
+  .RB [ \-vnD ]
+! .RB [ \-H 
+! .IR type ] 
+! .RB [ \-i
+! .IR if ]
+! .B \-f 
+! .RI [ filename ]
+  
+  .SH DESCRIPTION
+  .B Arp
+! manipulates or displays the kernel's IPv4 network neighbour cache. It can add
+! entries to the table, delete one or display the current content.
+! 
+! .B ARP
+! stands for Address Resolution Protocol, which is used to find the media
+! access control address of a network neighbour for a given IPv4 Address.
+! .SH MODES
+  .B arp
+! with no mode specifier will print the current content of the table. It is
+! possible to limit the number of entries printed, by specifying an hardware
+! address type, interface name or host address.
+! 
+! .B arp -d
+! .I address
+! will delete a ARP table entry. Root or netadmin priveledge is required to do
+! this. The entry is found by IP address. If a hostname is given, it will be
+! resolved before looking up the entry in the ARP table.
+! 
+! .B arp -s
+! .I address hw_addr
+! is used to set up a new table entry. The format of the 
+! .I hw_addr
+! parameter is dependent on the hardware class, but for most classes one can
+! assume that the usual presentation can be used.  For the Ethernet class,
+! this is 6 bytes in hexadecimal, separated by colons. When adding proxy arp
+! entries (that is those with the
+! .BR pub lish 
+! flag set a 
+! .B netmask 
+! may be specified to proxy arp for entire subnets. This is not good
+! practice, but is supported by older kernels because it can be
+! useful. If the
+! .B temp
+! flag is not supplied entries will be permanent stored into the ARP
+! cache. To simplyfy setting up entries for one of your own network interfaces, you can use the
+! .B "arp \-Ds"
+! .I address ifname
+! form. In that case the hardware address is taken from the interface with the
+! specified name.
+! 
+! .br
+  .SH OPTIONS
+  .TP
+***************
+*** 77,95 ****
+  .RB "NET/ROM (" netrom ")."
+  .TP
+! .B "\-a [hostname], \-\-display [hostname]"
+! Shows the entries of the specified hosts.  If the
+! .B hostname
+! parameter is not used,
+! .B all
+! entries will be displayed.
+! .TP
+! .B "\-d hostname, \-\-delete hostname"
+! Remove any entry for the specified host.  This can be used if the
+! indicated host is brought down, for example.
+  .TP
+  .B "\-D, \-\-use-device"
+! Use the interface
+! .BR ifa "'s"
+! hardware address.
+  .TP
+  .B "\-i If, \-\-device If"
+--- 132,142 ----
+  .RB "NET/ROM (" netrom ")."
+  .TP
+! .B \-a
+! Use alternate BSD style output format (with no fixed columns).
+  .TP
+  .B "\-D, \-\-use-device"
+! Instead of a hw_addr, the given argument is the name of an interface. 
+! .B arp
+! will use the MAC address of that interface for the table entry. This is usually the best option to set up a proxy ARP entry to yourself.
+  .TP
+  .B "\-i If, \-\-device If"
+***************
+*** 107,131 ****
+  This has to be different from the interface to which the IP
+  datagrams will be routed.
+- .TP
+- .B "\-s hostname hw_addr, \-\-set hostname"
+- Manually create an ARP address mapping entry for host
+- .B hostname
+- with hardware address set to
+- .B hw_addr
+- .  The format of the hardware address is dependent on the hardware
+- class, but for most classes one can assume that the usual presentation
+- can be used.  For the Ethernet class, this is 6 bytes in hexadecimal,
+- separated by colons. When adding proxy arp entries (that is those with
+- the 
+- .BR pub lish 
+- flag set a 
+- .B netmask 
+- may be specified to proxy arp for entire subnets. This is not good
+- practice, but is supported by older kernels because it can be
+- useful. If the
+- .B temp
+- flag is not supplied entries will be permanent stored into the ARP
+- cache.
+- .br
+  .B NOTE:
+  As of kernel 2.2.0 it is no longer possible to set an ARP entry for an 
+--- 154,157 ----
+***************
+*** 171,176 ****
+  .B P
+  flag.
+  .SH FILES
+! .I /proc/net/arp,
+  .br
+  .I /etc/networks
+--- 197,212 ----
+  .B P
+  flag.
++ .SH EXSAMPLES
++ .B /usr/sbin/arp -i eth0 -Ds 10.0.0.2 eth1 pub
++ 
++ This will answer ARP requests for 10.0.0.2 on eth0 with the MAC address for
++ eth1.
++ 
++ .B /usr/sbin/arp -i eth1 -d 10.0.0.1
++ 
++ Delete the ARP table entry for 10.0.0.1 on interface eth1. This will match
++ published proxy ARP entries and permanent entries.
+  .SH FILES
+! .I /proc/net/arp
+  .br
+  .I /etc/networks
+***************
+*** 182,185 ****
+  rarp(8), route(8), ifconfig(8), netstat(8)
+  .SH AUTHORS
+! Fred N. van Kempen, <waltje at uwalt.nl.mugnet.org> with a lot of improvements
+! from net-tools Maintainer Bernd Eckenfels <net-tools at lina.inka.de>.
+--- 218,220 ----
+  rarp(8), route(8), ifconfig(8), netstat(8)
+  .SH AUTHORS
+! Fred N. van Kempen <waltje at uwalt.nl.mugnet.org>, Bernd Eckenfels <net-tools at lina.inka.de>.
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 19:30:08 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 19:30:08 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools statistics.c,1.18,1.19
+Message-ID: <20071201183008.EAB2911F397@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv4166
+
+Modified Files:
+	statistics.c 
+Log Message:
+Better netstat -s error handling and larger buffers
+
+
+Index: statistics.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/statistics.c,v
+retrieving revision 1.18
+retrieving revision 1.19
+diff -C2 -d -r1.18 -r1.19
+*** statistics.c	12 Feb 2003 03:30:57 -0000	1.18
+--- statistics.c	1 Dec 2007 18:29:05 -0000	1.19
+***************
+*** 331,337 ****
+  }
+  
+! void process_fd(FILE *f)
+  {
+!     char buf1[1024], buf2[1024];
+      char *sp, *np, *p;
+      while (fgets(buf1, sizeof buf1, f)) {
+--- 331,337 ----
+  }
+  
+! int process_fd(FILE *f)
+  {
+!     char buf1[2048], buf2[2048];
+      char *sp, *np, *p;
+      while (fgets(buf1, sizeof buf1, f)) {
+***************
+*** 339,342 ****
+--- 339,345 ----
+  	struct tabtab *tab;
+  
++         if (buf1[0] == '\n') // skip empty first line in 2.6 kernels
++             continue;
++             
+  	if (!fgets(buf2, sizeof buf2, f))
+  	    break;
+***************
+*** 372,380 ****
+  	}
+      }
+!   return;
+    
+  formaterr:
+!   perror(_("error parsing /proc/net/snmp"));
+!   return;
+  }
+  
+--- 375,382 ----
+  	}
+      }
+!   return 0;
+    
+  formaterr:
+!   return -1;
+  }
+  
+***************
+*** 391,395 ****
+  	return;
+      }
+!     process_fd(f);
+  
+      if (ferror(f))
+--- 393,399 ----
+  	return;
+      }
+! 
+!     if (process_fd(f) < 0)
+!       fprintf(stderr, _("Problem while parsing /proc/net/snmp\n"));
+  
+      if (ferror(f))
+***************
+*** 401,405 ****
+  
+      if (f) {
+!     	process_fd(f);
+  
+          if (ferror(f))
+--- 405,410 ----
+  
+      if (f) {
+!     	if (process_fd(f) <0)
+!           fprintf(stderr, _("Problem while parsing /proc/net/netstat\n"));
+  
+          if (ferror(f))
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 19:46:00 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 19:46:00 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/lib proc.c,1.4,1.5 proc.h,1.4,1.5
+Message-ID: <20071201184600.0B8AF11D1C7@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/lib
+In directory sheep:/tmp/cvs-serv5348/lib
+
+Modified Files:
+	proc.c proc.h 
+Log Message:
+Faster pagesize aligned fopen for netstat -s (Eric Dumazet)
+
+
+Index: proc.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/proc.c,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -C2 -d -r1.4 -r1.5
+*** proc.c	5 Jan 1999 20:54:00 -0000	1.4
+--- proc.c	1 Dec 2007 18:44:57 -0000	1.5
+***************
+*** 7,10 ****
+--- 7,11 ----
+  #include <stdio.h>
+  #include <ctype.h>
++ #include <unistd.h>
+  
+  /* Caller must free return string. */
+***************
+*** 72,74 ****
+--- 73,94 ----
+      va_end(ap);
+      return flag;
++ }
++ 
++ 
++ FILE *proc_fopen(const char *name)
++ {
++     static char *buffer;
++     static size_t pagesz;
++     FILE *fd = fopen(name, "r");
++ 
++     if (fd == NULL)
++       return NULL;
++       
++     if (!buffer) {
++       pagesz = getpagesize();
++       buffer = malloc(pagesz);
++     }
++     
++     setvbuf(fd, buffer, _IOFBF, pagesz);
++     return fd;
+  }
+
+Index: proc.h
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/lib/proc.h,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -C2 -d -r1.4 -r1.5
+*** proc.h	5 Jan 1999 20:54:03 -0000	1.4
+--- proc.h	1 Dec 2007 18:44:57 -0000	1.5
+***************
+*** 1,5 ****
+! 
+! 
+! /* Generate a suitable scanf format for a column title line */
+  char *proc_gen_fmt(char *name, int more, FILE * fh,...);
+  int   proc_guess_fmt(char *name, FILE* fh,...);
+--- 1,7 ----
+! /* 
+!  * prototypes for proc.c
+!  */
+  char *proc_gen_fmt(char *name, int more, FILE * fh,...);
+  int   proc_guess_fmt(char *name, FILE* fh,...);
++ FILE *proc_fopen(const char *name);
++ 
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 19:45:59 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 19:45:59 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools statistics.c,1.19,1.20
+Message-ID: <20071201184559.C4BD3118016@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv5348
+
+Modified Files:
+	statistics.c 
+Log Message:
+Faster pagesize aligned fopen for netstat -s (Eric Dumazet)
+
+
+Index: statistics.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/statistics.c,v
+retrieving revision 1.19
+retrieving revision 1.20
+diff -C2 -d -r1.19 -r1.20
+*** statistics.c	1 Dec 2007 18:29:05 -0000	1.19
+--- statistics.c	1 Dec 2007 18:44:56 -0000	1.20
+***************
+*** 12,15 ****
+--- 12,16 ----
+  #include "config.h"
+  #include "intl.h"
++ #include "proc.h"
+  
+  /* #define WARN 1 */
+***************
+*** 388,392 ****
+      f_raw = flag_raw; f_tcp = flag_tcp; f_udp = flag_udp;
+      
+!     f = fopen("/proc/net/snmp", "r");
+      if (!f) {
+  	perror(_("cannot open /proc/net/snmp"));
+--- 389,393 ----
+      f_raw = flag_raw; f_tcp = flag_tcp; f_udp = flag_udp;
+      
+!     f = proc_fopen("/proc/net/snmp");
+      if (!f) {
+  	perror(_("cannot open /proc/net/snmp"));
+***************
+*** 402,406 ****
+      fclose(f);
+  
+!     f = fopen("/proc/net/netstat", "r");
+  
+      if (f) {
+--- 403,407 ----
+      fclose(f);
+  
+!     f = proc_fopen("/proc/net/netstat");
+  
+      if (f) {
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 19:52:12 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 19:52:12 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools rarp.c,1.6,1.7
+Message-ID: <20071201185212.19E2111B44B@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv5997
+
+Modified Files:
+	rarp.c 
+Log Message:
+Page aligned fopen buffer
+
+
+Index: rarp.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/rarp.c,v
+retrieving revision 1.6
+retrieving revision 1.7
+diff -C2 -d -r1.6 -r1.7
+*** rarp.c	8 Apr 2001 17:05:05 -0000	1.6
+--- rarp.c	1 Dec 2007 18:51:09 -0000	1.7
+***************
+*** 41,44 ****
+--- 41,45 ----
+  #include "version.h"
+  #include "pathnames.h"
++ #include "proc.h"
+  
+  static char no_rarp_message[] = N_("This kernel does not support RARP.\n");
+***************
+*** 125,129 ****
+      struct hostent *hp;
+  
+!     if ((fp = fopen(name, "r")) == NULL) {
+  	fprintf(stderr, _("rarp: cannot open file %s:%s.\n"), name, strerror(errno));
+  	return -1;
+--- 126,130 ----
+      struct hostent *hp;
+  
+!     if ((fp = proc_fopen(name)) == NULL) {
+  	fprintf(stderr, _("rarp: cannot open file %s:%s.\n"), name, strerror(errno));
+  	return -1;
+***************
+*** 155,159 ****
+  static int display_cache(void)
+  {
+!     FILE *fd = fopen(_PATH_PROCNET_RARP, "r");
+      char buffer[256];
+      if (fd == NULL) {
+--- 156,160 ----
+  static int display_cache(void)
+  {
+!     FILE *fd = proc_fopen(_PATH_PROCNET_RARP);
+      char buffer[256];
+      if (fd == NULL) {
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 20:01:43 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 20:01:43 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools netstat.c,1.54,1.55
+Message-ID: <20071201190143.19881114F42@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv6422
+
+Modified Files:
+	netstat.c 
+Log Message:
+use new page aliged proc_fopen for address families
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.54
+retrieving revision 1.55
+diff -C2 -d -r1.54 -r1.55
+*** netstat.c	1 Dec 2007 18:12:34 -0000	1.54
+--- netstat.c	1 Dec 2007 19:00:40 -0000	1.55
+***************
+*** 95,98 ****
+--- 95,99 ----
+  #include "interface.h"
+  #include "util.h"
++ #include "proc.h"
+  
+  #define PROGNAME_WIDTH 20
+***************
+*** 154,158 ****
+  
+  #define INFO_GUTS1(file,name,proc)			\
+!   procinfo = fopen((file), "r");			\
+    if (procinfo == NULL) {				\
+      if (errno != ENOENT) {				\
+--- 155,159 ----
+  
+  #define INFO_GUTS1(file,name,proc)			\
+!   procinfo = proc_fopen((file));			\
+    if (procinfo == NULL) {				\
+      if (errno != ENOENT) {				\
+***************
+*** 175,179 ****
+  #define INFO_GUTS2(file,proc)				\
+    lnr = 0;						\
+!   procinfo = fopen((file), "r");		       	\
+    if (procinfo != NULL) {				\
+      do {						\
+--- 176,180 ----
+  #define INFO_GUTS2(file,proc)				\
+    lnr = 0;						\
+!   procinfo = proc_fopen((file));		       	\
+    if (procinfo != NULL) {				\
+      do {						\
+***************
+*** 455,459 ****
+      int st, vs, vr, sendq, recvq, ret;
+  
+!     f = fopen(_PATH_PROCNET_NR, "r");
+      if (f == NULL) {
+  	if (errno != ENOENT) {
+--- 456,460 ----
+      int st, vs, vr, sendq, recvq, ret;
+  
+!     f = proc_fopen(_PATH_PROCNET_NR);
+      if (f == NULL) {
+  	if (errno != ENOENT) {
+***************
+*** 651,655 ****
+  static int x25_info(void)
+  {
+!        FILE *f=fopen(_PATH_PROCNET_X25, "r");
+         char buffer[256],dev[16];
+         int st,vs,vr,sendq,recvq,lci;
+--- 652,656 ----
+  static int x25_info(void)
+  {
+!        FILE *f=proc_fopen(_PATH_PROCNET_X25);
+         char buffer[256],dev[16];
+         int st,vs,vr,sendq,recvq,lci;
+***************
+*** 662,666 ****
+                 "RECOVERY"
+         };
+!        if(!(f=fopen(_PATH_PROCNET_X25, "r")))
+         {
+                 if (errno != ENOENT) {
+--- 663,667 ----
+                 "RECOVERY"
+         };
+!        if(!(f=proc_fopen(_PATH_PROCNET_X25)))
+         {
+                 if (errno != ENOENT) {
+***************
+*** 1270,1274 ****
+  	N_("RECOVERY")
+      };
+!     if (!(f = fopen(_PATH_PROCNET_AX25, "r"))) {
+  	if (errno != ENOENT) {
+  	    perror(_PATH_PROCNET_AX25);
+--- 1271,1275 ----
+  	N_("RECOVERY")
+      };
+!     if (!(f = proc_fopen(_PATH_PROCNET_AX25))) {
+  	if (errno != ENOENT) {
+  	    perror(_PATH_PROCNET_AX25);
+***************
+*** 1366,1370 ****
+      struct stat s;
+      
+!     f = fopen(_PATH_PROCNET_IPX_SOCKET1, "r");
+      if (!f) {
+          if (errno != ENOENT) {
+--- 1367,1371 ----
+      struct stat s;
+      
+!     f = proc_fopen(_PATH_PROCNET_IPX_SOCKET1);
+      if (!f) {
+          if (errno != ENOENT) {
+***************
+*** 1372,1376 ****
+              return (-1);
+          }
+!         f = fopen(_PATH_PROCNET_IPX_SOCKET2, "r");
+  
+          /* We need to check for directory */
+--- 1373,1377 ----
+              return (-1);
+          }
+!         f = proc_fopen(_PATH_PROCNET_IPX_SOCKET2);
+  
+          /* We need to check for directory */
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sat Dec  1 20:37:57 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sat,  1 Dec 2007 20:37:57 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools rarp.c,1.7,1.8
+Message-ID: <20071201193757.E62061202BA@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv8195
+
+Modified Files:
+	rarp.c 
+Log Message:
+backoff proc_fopen usage from etherfile.
+
+
+Index: rarp.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/rarp.c,v
+retrieving revision 1.7
+retrieving revision 1.8
+diff -C2 -d -r1.7 -r1.8
+*** rarp.c	1 Dec 2007 18:51:09 -0000	1.7
+--- rarp.c	1 Dec 2007 19:36:55 -0000	1.8
+***************
+*** 126,130 ****
+      struct hostent *hp;
+  
+!     if ((fp = proc_fopen(name)) == NULL) {
+  	fprintf(stderr, _("rarp: cannot open file %s:%s.\n"), name, strerror(errno));
+  	return -1;
+--- 126,130 ----
+      struct hostent *hp;
+  
+!     if ((fp = fopen(name)) == NULL) {
+  	fprintf(stderr, _("rarp: cannot open file %s:%s.\n"), name, strerror(errno));
+  	return -1;
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sun Dec  2 03:20:55 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sun,  2 Dec 2007 03:20:55 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools rarp.c,1.8,1.9
+Message-ID: <20071202022055.6B34011C3D9@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv31242
+
+Modified Files:
+	rarp.c 
+Log Message:
+more backoff
+
+
+Index: rarp.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/rarp.c,v
+retrieving revision 1.8
+retrieving revision 1.9
+diff -C2 -d -r1.8 -r1.9
+*** rarp.c	1 Dec 2007 19:36:55 -0000	1.8
+--- rarp.c	2 Dec 2007 02:19:52 -0000	1.9
+***************
+*** 126,130 ****
+      struct hostent *hp;
+  
+!     if ((fp = fopen(name)) == NULL) {
+  	fprintf(stderr, _("rarp: cannot open file %s:%s.\n"), name, strerror(errno));
+  	return -1;
+--- 126,130 ----
+      struct hostent *hp;
+  
+!     if ((fp = fopen(name, "r")) == NULL) {
+  	fprintf(stderr, _("rarp: cannot open file %s:%s.\n"), name, strerror(errno));
+  	return -1;
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sun Dec  2 05:43:36 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sun,  2 Dec 2007 05:43:36 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/en_US netstat.8,1.18,1.19
+Message-ID: <20071202044336.A259812031E@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/en_US
+In directory sheep:/tmp/cvs-serv4005/en_US
+
+Modified Files:
+	netstat.8 
+Log Message:
+fixed interfaceS spelling (Debian Bug #435690). Thanks Alan and Liu Xing.
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/en_US/netstat.8,v
+retrieving revision 1.18
+retrieving revision 1.19
+diff -C2 -d -r1.18 -r1.19
+*** netstat.8	29 Jun 2004 20:28:08 -0000	1.18
+--- netstat.8	2 Dec 2007 04:42:32 -0000	1.19
+***************
+*** 9,13 ****
+  .\"
+  .\"
+! .TH NETSTAT 8 "02 October 2003" "net-tools" "Linux Programmer's Manual"
+  
+  .SH NAME
+--- 9,13 ----
+  .\"
+  .\"
+! .TH NETSTAT 8 "2007-12-02" "net-tools" "Linux Programmer's Manual"
+  
+  .SH NAME
+***************
+*** 109,113 ****
+  .SS "\-\-groups , \-g"
+  Display multicast group membership information for IPv4 and IPv6.
+! .SS "\-\-interface, \-i"
+  Display a table of all network interfaces.
+  .SS "\-\-masquerade , \-M"
+--- 109,113 ----
+  .SS "\-\-groups , \-g"
+  Display multicast group membership information for IPv4 and IPv6.
+! .SS "\-\-interfaces, \-i"
+  Display a table of all network interfaces.
+  .SS "\-\-masquerade , \-M"
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sun Dec  2 05:43:36 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sun,  2 Dec 2007 05:43:36 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/fr_FR netstat.8,1.4,1.5
+Message-ID: <20071202044336.9AAD41202AF@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/fr_FR
+In directory sheep:/tmp/cvs-serv4005/fr_FR
+
+Modified Files:
+	netstat.8 
+Log Message:
+fixed interfaceS spelling (Debian Bug #435690). Thanks Alan and Liu Xing.
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/fr_FR/netstat.8,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -C2 -d -r1.4 -r1.5
+*** netstat.8	5 Nov 2001 13:12:11 -0000	1.4
+--- netstat.8	2 Dec 2007 04:42:32 -0000	1.5
+***************
+*** 9,13 ****
+  .\"
+  .\"
+! .TH NETSTAT 8 "29 June 2001" "net-tools" "Linux Programmer's Manual"
+  
+  .SH NAME
+--- 9,13 ----
+  .\"
+  .\"
+! .TH NETSTAT 8 "2007-12-02" "net-tools" "Linux Programmer's Manual"
+  
+  .SH NAME
+***************
+*** 107,111 ****
+  pour plus de d?tails.
+  
+! .SS "\-i, \-\-interface \fIiface\fI"
+  Si vous utilisez l'option
+  .BR -i ", " --interfaces
+--- 107,111 ----
+  pour plus de d?tails.
+  
+! .SS "\-i, \-\-interfaces \fIiface\fI"
+  Si vous utilisez l'option
+  .BR -i ", " --interfaces
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sun Dec  2 05:43:36 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sun,  2 Dec 2007 05:43:36 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/pt_BR netstat.8,1.3,1.4
+Message-ID: <20071202044336.AA48B12032D@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/pt_BR
+In directory sheep:/tmp/cvs-serv4005/pt_BR
+
+Modified Files:
+	netstat.8 
+Log Message:
+fixed interfaceS spelling (Debian Bug #435690). Thanks Alan and Liu Xing.
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/pt_BR/netstat.8,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -C2 -d -r1.3 -r1.4
+*** netstat.8	11 Dec 1998 10:49:09 -0000	1.3
+--- netstat.8	2 Dec 2007 04:42:32 -0000	1.4
+***************
+*** 9,13 ****
+  .\" Revisado por Jorge Luiz Godoy Filho <jorge at bestway.com.br>
+  .\"
+! .TH NETSTAT 8 "19 de maio de 1997" "net-tools" "Manual do Programador Linux"
+  
+  .SH NOME
+--- 9,13 ----
+  .\" Revisado por Jorge Luiz Godoy Filho <jorge at bestway.com.br>
+  .\"
+! .TH NETSTAT 8 "2007-12-02" "net-tools" "Manual do Programador Linux"
+  
+  .SH NOME
+***************
+*** 98,102 ****
+  para maiores detalhes.
+  
+! .SS "\-i, \-\-interface \fIiface\fI"
+  Se voc? usar a op??o
+  .BR -i ", " --interfaces
+--- 98,102 ----
+  para maiores detalhes.
+  
+! .SS "\-i, \-\-interfaces \fIiface\fI"
+  Se voc? usar a op??o
+  .BR -i ", " --interfaces
+
+
+
+From net-tools-cvscommit at lists.berlios.de  Sun Dec  2 05:43:36 2007
+From: net-tools-cvscommit at lists.berlios.de (CVS Commits for net-tools project)
+Date: Sun,  2 Dec 2007 05:43:36 +0100 (CET)
+Subject: [net-tools-cvscommit] net-tools/man/de_DE netstat.8,1.4,1.5
+Message-ID: <20071202044336.ACD0F120355@mail.berlios.de>
+
+Update of /cvsroot/net-tools/net-tools/man/de_DE
+In directory sheep:/tmp/cvs-serv4005/de_DE
+
+Modified Files:
+	netstat.8 
+Log Message:
+fixed interfaceS spelling (Debian Bug #435690). Thanks Alan and Liu Xing.
+
+
+Index: netstat.8
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/man/de_DE/netstat.8,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -C2 -d -r1.4 -r1.5
+*** netstat.8	20 Feb 2002 14:31:00 -0000	1.4
+--- netstat.8	2 Dec 2007 04:42:31 -0000	1.5
+***************
+*** 10,14 ****
+  .\"
+  .\"
+! .TH NETSTAT 8 "2002-02-20" "net-tools" "Handbuch f\(:ur Linuxprogrammierer"
+  
+  .SH NAME
+--- 10,14 ----
+  .\"
+  .\"
+! .TH NETSTAT 8 "2007-12-02" "net-tools" "Handbuch f\(:ur Linuxprogrammierer"
+  
+  .SH NAME
+***************
+*** 105,109 ****
+  .BR route (8).
+  
+! .SS "\-i, \-\-interface"
+  Wird die
+  .BR -i ", " --interfaces
+--- 105,109 ----
+  .BR route (8).
+  
+! .SS "\-i, \-\-interfaces"
+  Wird die
+  .BR -i ", " --interfaces
+
+
+

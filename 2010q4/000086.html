@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools statistics.c,1.22,1.23
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20statistics.c%2C1.22%2C1.23&In-Reply-To=%3C20101029192440.0DF354803DC%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools statistics.c,1.22,1.23</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20statistics.c%2C1.22%2C1.23&In-Reply-To=%3C20101029192440.0DF354803DC%40sheep.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools statistics.c,1.22,1.23">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Fri Oct 29 21:24:39 CEST 2010</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv6775
+
+Modified Files:
+	statistics.c 
+Log Message:
+[Bug #17645] Add netstat(8) support for RcvbufErrors, SndbufErrors.
+Thanks jwm
+
+
+Index: statistics.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/statistics.c,v
+retrieving revision 1.22
+retrieving revision 1.23
+diff -C 2 -d -r1.22 -r1.23
+*** statistics.c	3 Oct 2008 01:07:47 -0000	1.22
+--- statistics.c	29 Oct 2010 19:24:36 -0000	1.23
+***************
+*** 200,204 ****
+      {&quot;InErrors&quot;, N_(&quot;%u packet receive errors&quot;), number},
+      {&quot;OutDatagrams&quot;, N_(&quot;%u packets sent&quot;), number},
+! };
+  
+  struct entry Udp6tab[] =
+--- 200,206 ----
+      {&quot;InErrors&quot;, N_(&quot;%u packet receive errors&quot;), number},
+      {&quot;OutDatagrams&quot;, N_(&quot;%u packets sent&quot;), number},
+!     {&quot;RcvbufErrors&quot;, N_(&quot;%u receive buffer errors&quot;), number},
+!     {&quot;SndbufErrors&quot;, N_(&quot;%u send buffer errors&quot;), number},
+!  };
+  
+  struct entry Udp6tab[] =
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

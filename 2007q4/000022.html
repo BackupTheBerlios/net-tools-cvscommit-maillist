@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools rarp.c,1.6,1.7
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2007q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20rarp.c%2C1.6%2C1.7&In-Reply-To=%3C20071201185212.19E2111B44B%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000020.html">
+   <LINK REL="Next"  HREF="000023.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools rarp.c,1.6,1.7</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20rarp.c%2C1.6%2C1.7&In-Reply-To=%3C20071201185212.19E2111B44B%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools rarp.c,1.6,1.7">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Sat Dec  1 19:52:12 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000020.html">[net-tools-cvscommit] net-tools/lib proc.c,1.4,1.5 proc.h,1.4,1.5
+</A></li>
+        <LI>Next message: <A HREF="000023.html">[net-tools-cvscommit] net-tools netstat.c,1.54,1.55
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#22">[ date ]</a>
+              <a href="thread.html#22">[ thread ]</a>
+              <a href="subject.html#22">[ subject ]</a>
+              <a href="author.html#22">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv5997
+
+Modified Files:
+	rarp.c 
+Log Message:
+Page aligned fopen buffer
+
+
+Index: rarp.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/rarp.c,v
+retrieving revision 1.6
+retrieving revision 1.7
+diff -C2 -d -r1.6 -r1.7
+*** rarp.c	8 Apr 2001 17:05:05 -0000	1.6
+--- rarp.c	1 Dec 2007 18:51:09 -0000	1.7
+***************
+*** 41,44 ****
+--- 41,45 ----
+  #include &quot;version.h&quot;
+  #include &quot;pathnames.h&quot;
++ #include &quot;proc.h&quot;
+  
+  static char no_rarp_message[] = N_(&quot;This kernel does not support RARP.\n&quot;);
+***************
+*** 125,129 ****
+      struct hostent *hp;
+  
+!     if ((fp = fopen(name, &quot;r&quot;)) == NULL) {
+  	fprintf(stderr, _(&quot;rarp: cannot open file %s:%s.\n&quot;), name, strerror(errno));
+  	return -1;
+--- 126,130 ----
+      struct hostent *hp;
+  
+!     if ((fp = proc_fopen(name)) == NULL) {
+  	fprintf(stderr, _(&quot;rarp: cannot open file %s:%s.\n&quot;), name, strerror(errno));
+  	return -1;
+***************
+*** 155,159 ****
+  static int display_cache(void)
+  {
+!     FILE *fd = fopen(_PATH_PROCNET_RARP, &quot;r&quot;);
+      char buffer[256];
+      if (fd == NULL) {
+--- 156,160 ----
+  static int display_cache(void)
+  {
+!     FILE *fd = proc_fopen(_PATH_PROCNET_RARP);
+      char buffer[256];
+      if (fd == NULL) {
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000020.html">[net-tools-cvscommit] net-tools/lib proc.c,1.4,1.5 proc.h,1.4,1.5
+</A></li>
+	<LI>Next message: <A HREF="000023.html">[net-tools-cvscommit] net-tools netstat.c,1.54,1.55
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#22">[ date ]</a>
+              <a href="thread.html#22">[ thread ]</a>
+              <a href="subject.html#22">[ subject ]</a>
+              <a href="author.html#22">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools slattach.c,1.9,1.10
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2005q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20slattach.c%2C1.9%2C1.10&In-Reply-To=%3C200512040514.jB45ECN28261%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000003.html">
+   <LINK REL="Next"  HREF="000005.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools slattach.c,1.9,1.10</H1>
+    <B>net-tools-cvscommit-admin at lists.berlios.de</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20slattach.c%2C1.9%2C1.10&In-Reply-To=%3C200512040514.jB45ECN28261%40bat.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools slattach.c,1.9,1.10">net-tools-cvscommit-admin at lists.berlios.de
+       </A><BR>
+    <I>Sun Dec  4 06:14:12 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000003.html">[net-tools-cvscommit] net-tools arp.c,1.24,1.25
+</A></li>
+        <LI>Next message: <A HREF="000005.html">[net-tools-cvscommit] net-tools slattach.c,1.10,1.11
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv17447
+
+Modified Files:
+	slattach.c 
+Log Message:
+make slattach 3-wire -L mode work (no RTSCTS) (Debian Bug #175743)
+
+
+Index: slattach.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/slattach.c,v
+retrieving revision 1.9
+retrieving revision 1.10
+diff -C2 -d -r1.9 -r1.10
+*** slattach.c	14 Aug 2000 02:44:11 -0000	1.9
+--- slattach.c	4 Dec 2005 05:14:08 -0000	1.10
+***************
+*** 116,120 ****
+  #endif
+  int		opt_l = 0;		/* &quot;lock it&quot; flag		*/
+! int		opt_L = 0;		/* clocal flag			*/
+  int		opt_m = 0;		/* &quot;set RAW mode&quot; flag		*/
+  int		opt_n = 0;		/* &quot;set No Mesg&quot; flag		*/
+--- 116,120 ----
+  #endif
+  int		opt_l = 0;		/* &quot;lock it&quot; flag		*/
+! int		opt_L = 0;		/* 3-wire mode flag		*/
+  int		opt_m = 0;		/* &quot;set RAW mode&quot; flag		*/
+  int		opt_n = 0;		/* &quot;set No Mesg&quot; flag		*/
+***************
+*** 343,349 ****
+    tty-&gt;c_lflag = (0);				/* local flags		*/
+    speed = (tty-&gt;c_cflag &amp; CBAUD);		/* save current speed	*/
+!   tty-&gt;c_cflag = (CRTSCTS | HUPCL | CREAD);	/* UART flags		*/
+    if (opt_L) 
+  	tty-&gt;c_cflag |= CLOCAL;
+    tty-&gt;c_cflag |= speed;			/* restore speed	*/
+    return(0);
+--- 343,351 ----
+    tty-&gt;c_lflag = (0);				/* local flags		*/
+    speed = (tty-&gt;c_cflag &amp; CBAUD);		/* save current speed	*/
+!   tty-&gt;c_cflag = (HUPCL | CREAD);		/* UART flags		*/
+    if (opt_L) 
+  	tty-&gt;c_cflag |= CLOCAL;
++   else
++ 	tty-&gt;c_cflag |= CRTSCTS;
+    tty-&gt;c_cflag |= speed;			/* restore speed	*/
+    return(0);
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000003.html">[net-tools-cvscommit] net-tools arp.c,1.24,1.25
+</A></li>
+	<LI>Next message: <A HREF="000005.html">[net-tools-cvscommit] net-tools slattach.c,1.10,1.11
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>

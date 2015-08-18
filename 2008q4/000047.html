@@ -1,0 +1,554 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [net-tools-cvscommit] net-tools netstat.c,1.60,1.61
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/net-tools-cvscommit/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.60%2C1.61&In-Reply-To=%3C20081201231538.6BC2F168495%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000046.html">
+   <LINK REL="Next"  HREF="000048.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[net-tools-cvscommit] net-tools netstat.c,1.60,1.61</H1>
+    <B>CVS Commits for net-tools project</B> 
+    <A HREF="mailto:net-tools-cvscommit%40lists.berlios.de?Subject=Re%3A%20%5Bnet-tools-cvscommit%5D%20net-tools%20netstat.c%2C1.60%2C1.61&In-Reply-To=%3C20081201231538.6BC2F168495%40mail.berlios.de%3E"
+       TITLE="[net-tools-cvscommit] net-tools netstat.c,1.60,1.61">net-tools-cvscommit at lists.berlios.de
+       </A><BR>
+    <I>Tue Dec  2 00:15:38 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000046.html">[net-tools-cvscommit] net-tools/man/en_US netstat.8,1.22,1.23
+</A></li>
+        <LI>Next message: <A HREF="000048.html">[net-tools-cvscommit] net-tools netstat.c,1.61,1.62
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update of /cvsroot/net-tools/net-tools
+In directory sheep:/tmp/cvs-serv23298
+
+Modified Files:
+	netstat.c 
+Log Message:
+UDPlite Support for net-stat by Brian Micek &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">bmicek at gmail.com</A>&gt;
+
+
+Index: netstat.c
+===================================================================
+RCS file: /cvsroot/net-tools/net-tools/netstat.c,v
+retrieving revision 1.60
+retrieving revision 1.61
+diff -C2 -d -r1.60 -r1.61
+*** netstat.c	16 Nov 2008 16:45:08 -0000	1.60
+--- netstat.c	1 Dec 2008 23:15:35 -0000	1.61
+***************
+*** 59,62 ****
+--- 59,63 ----
+   *990420 {1.38} Tuan Hoang              removed a useless assignment from igmp_do_one()
+   *20010404 {1.39} Arnaldo Carvalho de Melo - use setlocale
++  *20081201 {1.42} Brian Micek           added -L|--udplite options for RFC 3828 
+   *
+   *              This program is free software; you can redistribute it
+***************
+*** 126,130 ****
+  #include &quot;lib/net-features.h&quot;
+  
+! char *Release = RELEASE, *Version = &quot;netstat 1.42 (2001-04-15)&quot;, *Signature = &quot;Fred Baumgarten, Alan Cox, Bernd Eckenfels, Phil Blundell, Tuan Hoang and others&quot;;
+  
+  
+--- 127,131 ----
+  #include &quot;lib/net-features.h&quot;
+  
+! char *Release = RELEASE, *Version = &quot;netstat 1.42 (2001-04-15)&quot;, *Signature = &quot;Fred Baumgarten, Alan Cox, Bernd Eckenfels, Phil Blundell, Tuan Hoang, Brian Micek and others&quot;;
+  
+  
+***************
+*** 147,150 ****
+--- 148,152 ----
+  int flag_tcp = 0;
+  int flag_udp = 0;
++ int flag_udplite = 0;
+  int flag_igmp= 0;
+  int flag_rom = 0;
+***************
+*** 157,161 ****
+  FILE *procinfo;
+  
+! #define INFO_GUTS1(file,name,proc)			\
+    procinfo = proc_fopen((file));			\
+    if (procinfo == NULL) {				\
+--- 159,163 ----
+  FILE *procinfo;
+  
+! #define INFO_GUTS1(file,name,proc,prot)			\
+    procinfo = proc_fopen((file));			\
+    if (procinfo == NULL) {				\
+***************
+*** 171,175 ****
+      do {						\
+        if (fgets(buffer, sizeof(buffer), procinfo))	\
+!         (proc)(lnr++, buffer);				\
+      } while (!feof(procinfo));				\
+      fclose(procinfo);					\
+--- 173,177 ----
+      do {						\
+        if (fgets(buffer, sizeof(buffer), procinfo))	\
+!         (proc)(lnr++, buffer,prot);			\
+      } while (!feof(procinfo));				\
+      fclose(procinfo);					\
+***************
+*** 177,181 ****
+  
+  #if HAVE_AFINET6
+! #define INFO_GUTS2(file,proc)				\
+    lnr = 0;						\
+    procinfo = proc_fopen((file));		       	\
+--- 179,183 ----
+  
+  #if HAVE_AFINET6
+! #define INFO_GUTS2(file,proc,prot)			\
+    lnr = 0;						\
+    procinfo = proc_fopen((file));		       	\
+***************
+*** 183,192 ****
+      do {						\
+        if (fgets(buffer, sizeof(buffer), procinfo))	\
+! 	(proc)(lnr++, buffer);				\
+      } while (!feof(procinfo));				\
+      fclose(procinfo);					\
+    }
+  #else
+! #define INFO_GUTS2(file,proc)
+  #endif
+  
+--- 185,194 ----
+      do {						\
+        if (fgets(buffer, sizeof(buffer), procinfo))	\
+! 	(proc)(lnr++, buffer,prot);			\
+      } while (!feof(procinfo));				\
+      fclose(procinfo);					\
+    }
+  #else
+! #define INFO_GUTS2(file,proc,prot)
+  #endif
+  
+***************
+*** 194,214 ****
+   return rc;
+  
+! #define INFO_GUTS6(file,file6,name,proc)		\
+   char buffer[8192];					\
+   int rc = 0;						\
+   int lnr = 0;						\
+   if (!flag_arg || flag_inet) {				\
+!     INFO_GUTS1(file,name,proc)				\
+   }							\
+   if (!flag_arg || flag_inet6) {				\
+!     INFO_GUTS2(file6,proc)				\
+   }							\
+   INFO_GUTS3
+  
+! #define INFO_GUTS(file,name,proc)			\
+   char buffer[8192];					\
+   int rc = 0;						\
+   int lnr = 0;						\
+!  INFO_GUTS1(file,name,proc)				\
+   INFO_GUTS3
+  
+--- 196,216 ----
+   return rc;
+  
+! #define INFO_GUTS6(file,file6,name,proc,prot4,prot6)	\
+   char buffer[8192];					\
+   int rc = 0;						\
+   int lnr = 0;						\
+   if (!flag_arg || flag_inet) {				\
+!     INFO_GUTS1(file,name,proc,prot4)			\
+   }							\
+   if (!flag_arg || flag_inet6) {				\
+!     INFO_GUTS2(file6,proc,prot6)			\
+   }							\
+   INFO_GUTS3
+  
+! #define INFO_GUTS(file,name,proc,prot)			\
+   char buffer[8192];					\
+   int rc = 0;						\
+   int lnr = 0;						\
+!  INFO_GUTS1(file,name,proc,prot)			\
+   INFO_GUTS3
+  
+***************
+*** 542,546 ****
+  }
+  
+! static void igmp_do_one(int lnr, const char *line)
+  {
+      char mcast_addr[128];
+--- 544,548 ----
+  }
+  
+! static void igmp_do_one(int lnr, const char *line,const char *prot)
+  {
+      char mcast_addr[128];
+***************
+*** 700,712 ****
+  {
+      INFO_GUTS6(_PATH_PROCNET_IGMP, _PATH_PROCNET_IGMP6, &quot;AF INET (igmp)&quot;,
+! 	       igmp_do_one);
+  }
+  
+! static void tcp_do_one(int lnr, const char *line)
+  {
+      unsigned long rxq, txq, time_len, retr, inode;
+      int num, local_port, rem_port, d, state, uid, timer_run, timeout;
+      char rem_addr[128], local_addr[128], timers[64], buffer[1024], more[512];
+-     char *protname;
+      struct aftype *ap;
+  #if HAVE_AFINET6
+--- 702,713 ----
+  {
+      INFO_GUTS6(_PATH_PROCNET_IGMP, _PATH_PROCNET_IGMP6, &quot;AF INET (igmp)&quot;,
+! 	       igmp_do_one, &quot;igmp&quot;, &quot;igmp6&quot;);
+  }
+  
+! static void tcp_do_one(int lnr, const char *line, const char *prot)
+  {
+      unsigned long rxq, txq, time_len, retr, inode;
+      int num, local_port, rem_port, d, state, uid, timer_run, timeout;
+      char rem_addr[128], local_addr[128], timers[64], buffer[1024], more[512];
+      struct aftype *ap;
+  #if HAVE_AFINET6
+***************
+*** 729,733 ****
+      if (strlen(local_addr) &gt; 8) {
+  #if HAVE_AFINET6
+- 	protname = &quot;tcp6&quot;;
+  	/* Demangle what the kernel gives us */
+  	sscanf(local_addr, &quot;%08X%08X%08X%08X&quot;,
+--- 730,733 ----
+***************
+*** 745,749 ****
+  #endif
+      } else {
+- 	protname = &quot;tcp&quot;;
+  	sscanf(local_addr, &quot;%X&quot;,
+  	       &amp;((struct sockaddr_in *) &amp;localaddr)-&gt;sin_addr.s_addr);
+--- 745,748 ----
+***************
+*** 818,822 ****
+  	    }
+  	printf(&quot;%-4s  %6ld %6ld %-*s %-*s %-11s&quot;,
+! 	       protname, rxq, txq, netmax(23,strlen(local_addr)), local_addr, netmax(23,strlen(rem_addr)), rem_addr, _(tcp_state[state]));
+  
+  	finish_this_one(uid,inode,timers);
+--- 817,821 ----
+  	    }
+  	printf(&quot;%-4s  %6ld %6ld %-*s %-*s %-11s&quot;,
+! 	       prot, rxq, txq, netmax(23,strlen(local_addr)), local_addr, netmax(23,strlen(rem_addr)), rem_addr, _(tcp_state[state]));
+  
+  	finish_this_one(uid,inode,timers);
+***************
+*** 827,839 ****
+  {
+      INFO_GUTS6(_PATH_PROCNET_TCP, _PATH_PROCNET_TCP6, &quot;AF INET (tcp)&quot;,
+! 	       tcp_do_one);
+  }
+  
+! static void udp_do_one(int lnr, const char *line)
+  {
+      char buffer[8192], local_addr[64], rem_addr[64];
+      char *udp_state, timers[64], more[512];
+      int num, local_port, rem_port, d, state, timer_run, uid, timeout;
+-     char *protname;
+  #if HAVE_AFINET6
+      struct sockaddr_in6 localaddr, remaddr;
+--- 826,837 ----
+  {
+      INFO_GUTS6(_PATH_PROCNET_TCP, _PATH_PROCNET_TCP6, &quot;AF INET (tcp)&quot;,
+! 	       tcp_do_one, &quot;tcp&quot;, &quot;tcp6&quot;);
+  }
+  
+! static void udp_do_one(int lnr, const char *line,const char *prot)
+  {
+      char buffer[8192], local_addr[64], rem_addr[64];
+      char *udp_state, timers[64], more[512];
+      int num, local_port, rem_port, d, state, timer_run, uid, timeout;
+  #if HAVE_AFINET6
+      struct sockaddr_in6 localaddr, remaddr;
+***************
+*** 859,863 ****
+      if (strlen(local_addr) &gt; 8) {
+  #if HAVE_AFINET6
+- 	protname=&quot;udp6&quot;;
+  	sscanf(local_addr, &quot;%08X%08X%08X%08X&quot;,
+  	       &amp;in6.s6_addr32[0], &amp;in6.s6_addr32[1],
+--- 857,860 ----
+***************
+*** 874,878 ****
+  #endif
+      } else {
+-         protname=&quot;udp&quot;;
+  	sscanf(local_addr, &quot;%X&quot;,
+  	       &amp;((struct sockaddr_in *) &amp;localaddr)-&gt;sin_addr.s_addr);
+--- 871,874 ----
+***************
+*** 960,965 ****
+  		break;
+  	    }
+! 	printf(&quot;%-4s  %6ld %6ld %-23s %-23s %-11s&quot;,
+! 	       protname, rxq, txq, local_addr, rem_addr, udp_state);
+  
+  	finish_this_one(uid,inode,timers);
+--- 956,961 ----
+  		break;
+  	    }
+! 	printf(&quot;%-5s %6ld %6ld %-23s %-23s %-11s&quot;,
+! 	       prot, rxq, txq, local_addr, rem_addr, udp_state);
+  
+  	finish_this_one(uid,inode,timers);
+***************
+*** 970,982 ****
+  {
+      INFO_GUTS6(_PATH_PROCNET_UDP, _PATH_PROCNET_UDP6, &quot;AF INET (udp)&quot;,
+! 	       udp_do_one);
+  }
+  
+! static void raw_do_one(int lnr, const char *line)
+  {
+      char buffer[8192], local_addr[64], rem_addr[64];
+      char timers[64], more[512];
+      int num, local_port, rem_port, d, state, timer_run, uid, timeout;
+-     char *protname;
+  #if HAVE_AFINET6
+      struct sockaddr_in6 localaddr, remaddr;
+--- 966,983 ----
+  {
+      INFO_GUTS6(_PATH_PROCNET_UDP, _PATH_PROCNET_UDP6, &quot;AF INET (udp)&quot;,
+! 	       udp_do_one, &quot;upd&quot;, &quot;udp6&quot;);
+  }
+  
+! static int udplite_info(void)
+! {
+!     INFO_GUTS6(_PATH_PROCNET_UDPLITE, _PATH_PROCNET_UDPLITE6, 
+!                &quot;AF INET (udplite)&quot;, udp_do_one, &quot;udpl&quot;, &quot;udpl6&quot; );
+! }
+! 
+! static void raw_do_one(int lnr, const char *line,const char *prot)
+  {
+      char buffer[8192], local_addr[64], rem_addr[64];
+      char timers[64], more[512];
+      int num, local_port, rem_port, d, state, timer_run, uid, timeout;
+  #if HAVE_AFINET6
+      struct sockaddr_in6 localaddr, remaddr;
+***************
+*** 1001,1005 ****
+      if (strlen(local_addr) &gt; 8) {
+  #if HAVE_AFINET6
+- 	protname = &quot;raw6&quot;;
+  	sscanf(local_addr, &quot;%08X%08X%08X%08X&quot;,
+  	       &amp;in6.s6_addr32[0], &amp;in6.s6_addr32[1],
+--- 1002,1005 ----
+***************
+*** 1016,1020 ****
+  #endif
+      } else {
+-         protname = &quot;raw&quot;;
+  	sscanf(local_addr, &quot;%X&quot;,
+  	       &amp;((struct sockaddr_in *) &amp;localaddr)-&gt;sin_addr.s_addr);
+--- 1016,1019 ----
+***************
+*** 1085,1089 ****
+  	    }
+  	printf(&quot;%-4s  %6ld %6ld %-23s %-23s %-11d&quot;,
+! 	       protname, rxq, txq, local_addr, rem_addr, state);
+  
+  	finish_this_one(uid,inode,timers);
+--- 1084,1088 ----
+  	    }
+  	printf(&quot;%-4s  %6ld %6ld %-23s %-23s %-11d&quot;,
+! 	       prot, rxq, txq, local_addr, rem_addr, state);
+  
+  	finish_this_one(uid,inode,timers);
+***************
+*** 1094,1098 ****
+  {
+      INFO_GUTS6(_PATH_PROCNET_RAW, _PATH_PROCNET_RAW6, &quot;AF INET (raw)&quot;,
+! 	       raw_do_one);
+  }
+  
+--- 1093,1097 ----
+  {
+      INFO_GUTS6(_PATH_PROCNET_RAW, _PATH_PROCNET_RAW6, &quot;AF INET (raw)&quot;,
+! 	       raw_do_one, &quot;raw&quot;, &quot;raw6&quot;);
+  }
+  
+***************
+*** 1104,1108 ****
+  #define HAS_INODE 1
+  
+! static void unix_do_one(int nr, const char *line)
+  {
+      static int has = 0;
+--- 1103,1107 ----
+  #define HAS_INODE 1
+  
+! static void unix_do_one(int nr, const char *line, const char *prot)
+  {
+      static int has = 0;
+***************
+*** 1245,1249 ****
+  
+      {
+! 	INFO_GUTS(_PATH_PROCNET_UNIX, &quot;AF UNIX&quot;, unix_do_one);
+      }
+  }
+--- 1244,1248 ----
+  
+      {
+! 	INFO_GUTS(_PATH_PROCNET_UNIX, &quot;AF UNIX&quot;, unix_do_one, &quot;unix&quot;);
+      }
+  }
+***************
+*** 1533,1537 ****
+      fprintf(stderr, _(&quot;        -C, --cache              display routing cache instead of FIB\n\n&quot;));
+  
+!     fprintf(stderr, _(&quot;  &lt;Socket&gt;={-t|--tcp} {-u|--udp} {-w|--raw} {-x|--unix} --ax25 --ipx --netrom\n&quot;));
+      fprintf(stderr, _(&quot;  &lt;AF&gt;=Use '-6|-4' or '-A &lt;af&gt;' or '--&lt;af&gt;'; default: %s\n&quot;), DFLT_AF);
+      fprintf(stderr, _(&quot;  List of possible address families (which support routing):\n&quot;));
+--- 1532,1536 ----
+      fprintf(stderr, _(&quot;        -C, --cache              display routing cache instead of FIB\n\n&quot;));
+  
+!     fprintf(stderr, _(&quot;  &lt;Socket&gt;={-t|--tcp} {-u|--udp} {-U|--udplite} {-w|--raw} {-x|--unix} --ax25 --ipx --netrom\n&quot;));
+      fprintf(stderr, _(&quot;  &lt;AF&gt;=Use '-6|-4' or '-A &lt;af&gt;' or '--&lt;af&gt;'; default: %s\n&quot;), DFLT_AF);
+      fprintf(stderr, _(&quot;  List of possible address families (which support routing):\n&quot;));
+***************
+*** 1558,1561 ****
+--- 1557,1561 ----
+  	{&quot;tcp&quot;, 0, 0, 't'},
+  	{&quot;udp&quot;, 0, 0, 'u'},
++         {&quot;udplite&quot;, 0, 0, 'U'},
+  	{&quot;raw&quot;, 0, 0, 'w'},
+  	{&quot;unix&quot;, 0, 0, 'x'},
+***************
+*** 1588,1592 ****
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, &quot;MCFA:acdegphinNorstuWVv?wxl64&quot;, longopts, &amp;lop)) != EOF)
+  	switch (i) {
+  	case -1:
+--- 1588,1592 ----
+  
+      afname[0] = '\0';
+!     while ((i = getopt_long(argc, argv, &quot;MCFA:acdegphinNorstuWVv?wxl64U&quot;, longopts, &amp;lop)) != EOF)
+  	switch (i) {
+  	case -1:
+***************
+*** 1684,1687 ****
+--- 1684,1690 ----
+  	    flag_udp++;
+  	    break;
++         case 'U':
++ 	    flag_udplite++;
++ 	    break;
+  	case 'w':
+  	    flag_raw++;
+***************
+*** 1701,1712 ****
+  	usage();
+  
+!     if ((flag_inet || flag_inet6 || flag_sta) &amp;&amp; !(flag_tcp || flag_udp || flag_raw))
+! 	flag_tcp = flag_udp = flag_raw = 1;
+  
+!     if ((flag_tcp || flag_udp || flag_raw || flag_igmp) &amp;&amp; !(flag_inet || flag_inet6))
+          flag_inet = flag_inet6 = 1;
+  
+!     flag_arg = flag_tcp + flag_udp + flag_raw + flag_unx + flag_ipx
+! 	+ flag_ax25 + flag_netrom + flag_igmp + flag_x25 + flag_rose;
+  
+      if (flag_mas) {
+--- 1704,1717 ----
+  	usage();
+  
+!     if ((flag_inet || flag_inet6 || flag_sta) &amp;&amp; 
+!         !(flag_tcp || flag_udp || flag_udplite || flag_raw))
+! 	   flag_tcp = flag_udp = flag_udplite = flag_raw = 1;
+  
+!     if ((flag_tcp || flag_udp || flag_udplite || flag_raw || flag_igmp) &amp;&amp; 
+!         !(flag_inet || flag_inet6))
+          flag_inet = flag_inet6 = 1;
+  
+!     flag_arg = flag_tcp + flag_udplite + flag_udp + flag_raw + flag_unx 
+!         + flag_ipx + flag_ax25 + flag_netrom + flag_igmp + flag_x25 + flag_rose;
+  
+      if (flag_mas) {
+***************
+*** 1788,1792 ****
+      }
+      for (;;) {
+! 	if (!flag_arg || flag_tcp || flag_udp || flag_raw) {
+  #if HAVE_AFINET
+  	    prg_cache_load();
+--- 1793,1797 ----
+      }
+      for (;;) {
+! 	if (!flag_arg || flag_tcp || flag_udp || flag_udplite || flag_raw) {
+  #if HAVE_AFINET
+  	    prg_cache_load();
+***************
+*** 1821,1824 ****
+--- 1826,1830 ----
+  		return (i);
+  	}
++ 
+  	if (!flag_arg || flag_udp) {
+  	    i = udp_info();
+***************
+*** 1826,1829 ****
+--- 1832,1842 ----
+  		return (i);
+  	}
++ 
++ 	if (!flag_arg || flag_udplite) {
++ 	    i = udplite_info();
++ 	    if (i)
++ 		return (i);
++ 	}
++ 
+  	if (!flag_arg || flag_raw) {
+  	    i = raw_info();
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000046.html">[net-tools-cvscommit] net-tools/man/en_US netstat.8,1.22,1.23
+</A></li>
+	<LI>Next message: <A HREF="000048.html">[net-tools-cvscommit] net-tools netstat.c,1.61,1.62
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/net-tools-cvscommit">More information about the net-tools-cvscommit
+mailing list</a><br>
+</body></html>
